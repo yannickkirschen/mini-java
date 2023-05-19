@@ -1,4 +1,4 @@
 package de.dhbw.compiler.ast;
 
-public record Type() {
+public record Type(String name) {
 }
