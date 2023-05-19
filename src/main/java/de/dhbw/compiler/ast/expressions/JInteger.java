@@ -1,4 +1,4 @@
 package de.dhbw.compiler.ast.expressions;
 
-public record JInteger(Integer value) implements Expression {
+public record JInteger(String value) implements Expression {
 }
