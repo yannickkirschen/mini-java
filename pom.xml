@@ -19,6 +19,7 @@
         <antlr.version>4.12.0</antlr.version>
         <lombok.version>1.18.26</lombok.version>
         <junit.version>5.9.3</junit.version>
+        <asm.version>7.1</asm.version>
     </properties>
 
     <dependencies>
@@ -41,5 +42,13 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+
+            <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-util -->
+            <dependency>
+                <groupId>org.ow2.asm</groupId>
+                <artifactId>asm-util</artifactId>
+                <version>${asm.version}</version>
+            </dependency>
+
     </dependencies>
 </project>
