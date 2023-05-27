@@ -1,4 +1,10 @@
 package de.dhbw.compiler.ast.expressions;
 
+import de.dhbw.compiler.codegeneration.CodeGenVisitor;
+
 public record InstVar(Expression thisExpr, String varName) implements Expression {
+    @Override
+    public void accept(CodeGenVisitor visitor) {
+        visitor.visitExpression(this);
+    }
 }
