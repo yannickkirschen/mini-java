@@ -44,9 +44,7 @@ public class CodeGenVisitor implements Opcodes {
 
     }
 
-    public void visitStatement(Block stmt, MethodVisitor v) {
 
-    }
 
     public void visitExpression(Expression stmt) {
 
