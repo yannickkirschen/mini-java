@@ -1,18 +1,29 @@
 package de.dhbw.compiler.codegeneration;
 
 import de.dhbw.compiler.ast.expressions.*;
+import de.dhbw.compiler.typecheck.model.TypedType;
 import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import javax.lang.model.element.Element;
+import java.util.HashMap;
+import java.util.Map;
 
 //temporary
 public class ExpressionVisitor extends CodeGenVisitor {
 
-    public void visitExpression(Expression expr, MethodVisitor v) {
+    String className = "class";
+
+    // id:  identifier , value: index or identifier
+    Map<String, String> varStack = new HashMap<>();
+
+    private Boolean isLocal(String identifier) {
+        return varStack.get(identifier).matches("\\d+");
     }
 
+    private int getIndex(String identifier) {
+        return isLocal(identifier) ? Integer.parseInt(varStack.get(identifier)) : -1;
+    }
 
     public void visitExpression(Binary expr, MethodVisitor v) {
         expr.left().accept(this);
@@ -30,7 +41,7 @@ public class ExpressionVisitor extends CodeGenVisitor {
 
         Label jumpTrue = new Label();
         Label jumpFalse = new Label();
-        Label end = new Label();
+        Label jumpEnd = new Label();
 
         switch (operator) {
             case "<" -> v.visitJumpInsn(Opcodes.IF_ICMPGE, jumpFalse);
@@ -55,15 +66,16 @@ public class ExpressionVisitor extends CodeGenVisitor {
         }
         v.visitLabel(jumpTrue);
         v.visitInsn(Opcodes.ICONST_1); // true
-        v.visitJumpInsn(Opcodes.GOTO, end);
+        v.visitJumpInsn(Opcodes.GOTO, jumpEnd);
         v.visitLabel(jumpFalse);
         v.visitInsn(Opcodes.ICONST_0); // false
-        v.visitLabel(end);
+        v.visitLabel(jumpEnd);
     }
 
 
     public void visitExpression(InstVar expr, MethodVisitor v) {
-        // TODO
+        expr.thisExpr().accept(this);
+        v.visitFieldInsn(Opcodes.GETFIELD, className, expr.varName(), getDescriptor(new TypedType("type"))); // TODO after merged typing into ast -> get type from instVar
     }
 
     public void visitExpression(JBoolean expr, MethodVisitor v) {
@@ -92,7 +104,17 @@ public class ExpressionVisitor extends CodeGenVisitor {
     }
 
     public void visitExpression(LocalOrFieldVar expr, MethodVisitor v) {
-        //TODO
+        int varIndex = getIndex(expr.name());
+        if (varIndex == -1) {
+            v.visitVarInsn(Opcodes.ALOAD, 0);
+            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name(), getDescriptor(new TypedType("type"))); // TODO -> after merged typing into ast -> get type from instVar
+        } else {
+            if (isReference()) {
+                v.visitVarInsn(Opcodes.ALOAD, varIndex);
+            } else {
+                v.visitVarInsn(Opcodes.ILOAD, varIndex);
+            }
+        }
     }
 
     public void visitExpression(StmtExprExpr expr, MethodVisitor v) {
@@ -100,7 +122,7 @@ public class ExpressionVisitor extends CodeGenVisitor {
     }
 
     public void visitExpression(Super expr, MethodVisitor v) {
-        //TODO
+        v.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
     }
 
     public void visitExpression(This expr, MethodVisitor v) {
@@ -108,21 +130,32 @@ public class ExpressionVisitor extends CodeGenVisitor {
     }
 
     public void visitExpression(Unary expr, MethodVisitor v) {
-        Label trueLabel = new Label();
-        Label falseLabel = new Label();
-        Label end = new Label();
+        Label jumpTrue = new Label();
+        Label jumpFalse = new Label();
+        Label jumpEnd = new Label();
 
         if (expr.operator().equals("!")) {
             expr.argument().accept(this);
-            v.visitJumpInsn(Opcodes.IFNE, falseLabel);
+            v.visitJumpInsn(Opcodes.IFNE, jumpFalse);
         }
 
-        v.visitLabel(trueLabel);
+        v.visitLabel(jumpTrue);
         v.visitInsn(Opcodes.ICONST_1);
-        v.visitJumpInsn(Opcodes.GOTO, end);
-        v.visitLabel(falseLabel);
+        v.visitJumpInsn(Opcodes.GOTO, jumpEnd);
+        v.visitLabel(jumpFalse);
         v.visitInsn(Opcodes.ICONST_0);
-        v.visitLabel(end);
+        v.visitLabel(jumpEnd);
+    }
+
+    private String getDescriptor(TypedType type) {
+        //TODO
+        return "";
+    }
+
+
+    private Boolean isReference(/*TypedType type*/) {
+        // TODO
+        return true;
     }
 
 }
