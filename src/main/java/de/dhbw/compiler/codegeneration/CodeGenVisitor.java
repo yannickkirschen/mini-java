@@ -1,14 +1,12 @@
 package de.dhbw.compiler.codegeneration;
 
 import de.dhbw.compiler.ast.expressions.Expression;
-import de.dhbw.compiler.ast.statements.Block;
 import de.dhbw.compiler.ast.statements.Statement;
 import de.dhbw.compiler.typecheck.model.*;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
-import javax.lang.model.element.Element;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
