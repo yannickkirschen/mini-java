@@ -2,10 +2,13 @@ package de.dhbw.compiler.codegeneration;
 
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.statements.Statement;
+import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
 import de.dhbw.compiler.typecheck.model.*;
+import javassist.tools.reflect.Reflection;
 import org.objectweb.asm.ClassWriter;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
+import org.reflections.Reflections;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -43,14 +46,42 @@ public class CodeGenVisitor implements Opcodes {
     }
 
 
-
     public void visitExpression(Expression stmt) {
 
+    }
+
+    public Type parseType(Expression obj) {
+        return parseType(obj.getType());
+    }
+    public Type parseType(Statement obj) {
+        return parseType(obj.getType());
+    }
+    public Type parseType(StatementExpression obj) {
+        return parseType(obj.getType());
+    }
+
+    public Type parseType(String type) {
+        switch (type) {
+            case "java.lang.Integer" -> {
+                return PrimitiveType.INTEGER;
+            }
+            case "java.lang.Character" -> {
+                return PrimitiveType.CHARAKTER;
+            }
+            case "java.lang.Boolean" -> {
+                return PrimitiveType.BOOLEAN;
+            }
+            default -> {
+                return new ObjectType(type);
+            }
+        }
     }
 
 
     public String extractTypeString(TypedType t) {
         //TODO extract type to String
+
+
         return "java/lang/String";
     }
 
