@@ -22,4 +22,16 @@ public class MethodVarStack {
         return "";
     }
 
+    public boolean contains(String varName){
+        return varStack.containsKey(varName);
+    }
+
+    public int getIndex(String varName){
+        if(varStack.containsKey(varName)){
+            return varStack.get(varName);
+        }
+        return -1;
+
+    }
+
 }

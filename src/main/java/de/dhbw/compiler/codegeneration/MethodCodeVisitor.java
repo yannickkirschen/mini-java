@@ -11,6 +11,8 @@ import org.objectweb.asm.Label;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
+import java.util.List;
+
 public class MethodCodeVisitor implements Opcodes {
 
     MethodVisitor v;
@@ -40,8 +42,7 @@ public class MethodCodeVisitor implements Opcodes {
             v.visitInsn(RETURN);
         }
         // return opcode for bool, int, char, byte, short
-        // TODO find generic expression for type = bool or int or Boolean or java/lang/Integer, etc.
-        else if(ret.expression().type() == "bool" || ret.expression().type() == "int" || ret.expression().type() == "char"){
+        else if(ret.expression().type() instanceof PrimitiveType){
             v.visitInsn(IRETURN);
         }
         else{
@@ -92,10 +93,10 @@ public class MethodCodeVisitor implements Opcodes {
         // TODO field vars
 
         // TODO do proper type matching
-        if(stmtExpr.var() == "element of local vars") {
+        if(vars.contains(stmtExpr.var())) {
             stmtExpr.value().accept(this);
 
-            if (stmtExpr.value().type() == "bool, int, char, byte, short, etc.") {
+            if (stmtExpr.value().type() instanceof PrimitiveType) {
                 v.visitVarInsn(ISTORE, vars.getVar(stmtExpr.var()));
             }
             // TODO if we have any other type than int-derivative and other, we need to add this here
@@ -104,18 +105,25 @@ public class MethodCodeVisitor implements Opcodes {
             }
         }
         else{
-            // TODO putfield
+            v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
+            stmtExpr.value().accept(this);// load new variable value onto stack
+            v.visitFieldInsn(PUTFIELD, className, stmtExpr.var(), getFieldDescriptor(className, stmtExpr.var())); //TODO implement method to generate field descriptor from fieldName
         }
     }
 
     // TODO for the following two methods we might need a method stack or class stack to determine the references to methods based on their names
 
     public void visit(MethodCall stmtExpr){
-        //TODO
+        stmtExpr.thisExpr().accept(this);
+        stmtExpr.args().forEach(p -> p.accept(this));
+        v.visitMethodInsn(INVOKEVIRTUAL, stmtExpr.thisExpr().type().toString(), stmtExpr.name(), getDescriptor(stmtExpr.type(), stmtExpr.args()), false);
     }
 
     public void visit(New stmtExpr){
-        // TODO
+        ObjectType voidType = new ObjectType("VOID");
+        v.visitTypeInsn(NEW, stmtExpr.type().name());
+        stmtExpr.expressions().forEach(p -> p.accept(this));
+        v.visitMethodInsn(INVOKESPECIAL, stmtExpr.type().name(), "<init>", getDescriptor(voidType, stmtExpr.expressions()), false);
     }
 
 
@@ -170,7 +178,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(InstVar expr) {
         expr.thisExpr().accept(this);
-        v.visitFieldInsn(Opcodes.GETFIELD, className, expr.varName(), getDescriptor(new TypedType("type"))); // TODO after merged typing into ast -> get type from instVar
+        v.visitFieldInsn(Opcodes.GETFIELD, className, expr.varName(), getFieldDescriptor(className, expr.varName())); // TODO after merged typing into ast -> get type from instVar
     }
 
     public void visitExpression(JBoolean expr) {
@@ -199,10 +207,10 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     public void visitExpression(LocalOrFieldVar expr) {
-        int varIndex = getIndex(expr.name());
+        int varIndex = vars.getIndex(expr.name());
         if (varIndex == -1) {
             v.visitVarInsn(Opcodes.ALOAD, 0);
-            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name(), getDescriptor(new TypedType("type"))); // TODO -> after merged typing into ast -> get type from instVar
+            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name(), getFieldDescriptor(className, expr.name()));// TODO -> after merged typing into ast -> get type from instVar
         } else {
             if (isReference()) {
                 v.visitVarInsn(Opcodes.ALOAD, varIndex);
@@ -212,8 +220,8 @@ public class MethodCodeVisitor implements Opcodes {
         }
     }
 
-    public void visitExpression(StmtExprExpr expr, ) {
-        //TODO
+    public void visitExpression(StmtExprExpr expr) {
+        expr.statementExpression().accept(this);
     }
 
     public void visitExpression(Super expr) {
@@ -242,7 +250,7 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitLabel(jumpEnd);
     }
 
-    private String getDescriptor(TypedType type) {
+    private String getDescriptor(Type returnType, List<Expression> paramTypes) {
         //TODO
         return "";
     }
@@ -252,11 +260,5 @@ public class MethodCodeVisitor implements Opcodes {
         // TODO
         return true;
     }
-
-}
-
-
-
-
 
 }
