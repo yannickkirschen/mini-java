@@ -1,6 +1,7 @@
 package de.dhbw.compiler.parser;
 
 import de.dhbw.compiler.ast.*;
+import de.dhbw.compiler.ast.statements.Block;
 import de.dhbw.compiler.ast.statements.Statement;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
 
@@ -26,12 +27,34 @@ public class ASTGenerator {
             fields.add(generateField(varCtx));
         }
 
+        List<Constructor> constructors = new ArrayList<>();
+        if (clsCtx.const_() != null && clsCtx.const_().size() > 0) {
+            for (MinijavaParser.ConstContext constCtx : clsCtx.const_()) {
+                constructors.add(generateConstructor(constCtx));
+            }
+        } else {
+            constructors.add(new Constructor(
+                new ArrayList<>(),
+                new Block( new ArrayList<>() )
+            ) );
+        }
+
+
         List<Method> meths = new ArrayList<>();
         for(MinijavaParser.MethContext methCtx : clsCtx.meth()){
             meths.add(generateMeth(methCtx));
         }
 
-        return new Clazz(name, fields, meths);
+        return new Clazz(name, fields, constructors, meths);
+    }
+
+    private static Constructor generateConstructor(MinijavaParser.ConstContext constCtx) {
+        List<Parameter> parameters = generateParams(constCtx.params());
+
+        StatementGenerator sGen = new StatementGenerator();
+        Statement stmt = sGen.visit( constCtx.block() );
+
+        return new Constructor(parameters, stmt);
     }
 
     public static Type generateType(MinijavaParser.TypeContext tyContext) {

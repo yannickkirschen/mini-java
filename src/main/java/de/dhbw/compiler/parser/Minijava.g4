@@ -2,7 +2,7 @@ grammar Minijava;
 
 program : class*;
 
-class : 'class' type '{' (var | meth)* '}';
+class : 'class' type '{' (var | meth | const)* '}';
 
 var : type id ';';
 type : INT | BOOL | CHAR | STRING | VOID | refType;
@@ -11,6 +11,8 @@ refType : id;
 meth : type id '(' params? ')' block;
 params : param (',' param)*;
 param : type id;
+
+const : refType '(' params? ')' block;
 
 //TODO: implement var declaration and initialization in same line
 stmt : block                                    #BlockStmt

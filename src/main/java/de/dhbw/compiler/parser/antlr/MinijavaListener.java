@@ -88,6 +88,16 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitParam(MinijavaParser.ParamContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#const}.
+	 * @param ctx the parse tree
+	 */
+	void enterConst(MinijavaParser.ConstContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#const}.
+	 * @param ctx the parse tree
+	 */
+	void exitConst(MinijavaParser.ConstContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code BlockStmt}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
