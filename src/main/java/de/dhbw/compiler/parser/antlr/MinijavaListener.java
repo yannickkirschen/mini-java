@@ -88,17 +88,17 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitParam(MinijavaParser.ParamContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Block}
+	 * Enter a parse tree produced by the {@code BlockStmt}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
 	 */
-	void enterBlock(MinijavaParser.BlockContext ctx);
+	void enterBlockStmt(MinijavaParser.BlockStmtContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Block}
+	 * Exit a parse tree produced by the {@code BlockStmt}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
 	 */
-	void exitBlock(MinijavaParser.BlockContext ctx);
+	void exitBlockStmt(MinijavaParser.BlockStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Return}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
@@ -159,6 +159,28 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(MinijavaParser.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(MinijavaParser.BlockContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code LocationExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterLocationExpr(MinijavaParser.LocationExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LocationExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitLocationExpr(MinijavaParser.LocationExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Null}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -304,14 +326,12 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitThis(MinijavaParser.ThisContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Location}
-	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * Enter a parse tree produced by {@link MinijavaParser#location}.
 	 * @param ctx the parse tree
 	 */
 	void enterLocation(MinijavaParser.LocationContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code Location}
-	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * Exit a parse tree produced by {@link MinijavaParser#location}.
 	 * @param ctx the parse tree
 	 */
 	void exitLocation(MinijavaParser.LocationContext ctx);

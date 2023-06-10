@@ -59,12 +59,12 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitParam(MinijavaParser.ParamContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Block}
+	 * Visit a parse tree produced by the {@code BlockStmt}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBlock(MinijavaParser.BlockContext ctx);
+	T visitBlockStmt(MinijavaParser.BlockStmtContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Return}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
@@ -100,6 +100,19 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#block}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBlock(MinijavaParser.BlockContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code LocationExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLocationExpr(MinijavaParser.LocationExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code Null}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -185,8 +198,7 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitThis(MinijavaParser.ThisContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Location}
-	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * Visit a parse tree produced by {@link MinijavaParser#location}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */

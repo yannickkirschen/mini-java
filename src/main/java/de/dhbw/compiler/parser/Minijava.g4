@@ -2,18 +2,18 @@ grammar Minijava;
 
 program : class*;
 
-class : 'class' id '{' (var | meth)* '}';
+class : 'class' type '{' (var | meth)* '}';
 
 var : type id ';';
 type : INT | BOOL | CHAR | STRING | VOID | refType;
 refType : id;
 
-meth : type id '(' params? ')' '{' stmt* '}';
+meth : type id '(' params? ')' block;
 params : param (',' param)*;
 param : type id;
 
 //TODO: implement var declaration and initialization in same line
-stmt : '{' expr* '}'                            #Block
+stmt : block                                    #BlockStmt
     | 'return' expr ';'                         #Return
     | 'while' '(' expr ')' stmt                 #While
     | var                                       #LocalVarDecl
@@ -21,10 +21,12 @@ stmt : '{' expr* '}'                            #Block
     | stmtExpr                                  #StmtExprStmt
     ;
 
+block : '{' stmt* '}';
+
 //TODO: implement unary operator statements (i++;), maybe as stmtExprs
 expr : 'this'               #This
     | 'super'               #Super
-    | id                    #Location
+    | location              #LocationExpr
     | expr '.' id           #InstVar
     | unaryOpPre expr       #UnaryOperationPre
     | expr unaryOpPost      #UnaryOperationPost
@@ -37,10 +39,12 @@ expr : 'this'               #This
     | stmtExpr              #StmtExprExpr
     ;
 
+location : id;
+
 //TODO: iplement assignment to instVars (a.i = 1;) if required
 stmtExpr : id '=' expr ';'                      #Assign
     | 'new' type '(' args? ')'                  #New
-    | (id '.')? id '(' args? ')' ';'            #MethodCall
+    | (location '.')? id '(' args? ')' ';'      #MethodCall
     ;
 
 unaryOpPre : INCR | DECR | NOT | PLUS | MINUS;

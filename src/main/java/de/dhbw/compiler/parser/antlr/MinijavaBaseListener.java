@@ -113,13 +113,13 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlock(MinijavaParser.BlockContext ctx) { }
+	@Override public void enterBlockStmt(MinijavaParser.BlockStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlock(MinijavaParser.BlockContext ctx) { }
+	@Override public void exitBlockStmt(MinijavaParser.BlockStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -180,6 +180,30 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBlock(MinijavaParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBlock(MinijavaParser.BlockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLocationExpr(MinijavaParser.LocationExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLocationExpr(MinijavaParser.LocationExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

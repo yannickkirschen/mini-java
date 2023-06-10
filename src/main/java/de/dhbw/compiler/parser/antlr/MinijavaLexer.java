@@ -2,9 +2,12 @@
 package de.dhbw.compiler.parser.antlr;
 import org.antlr.v4.runtime.Lexer;
 import org.antlr.v4.runtime.CharStream;
+import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.TokenStream;
 import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.atn.*;
 import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.misc.*;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast", "CheckReturnValue"})
 public class MinijavaLexer extends Lexer {
@@ -14,10 +17,10 @@ public class MinijavaLexer extends Lexer {
 	protected static final PredictionContextCache _sharedContextCache =
 		new PredictionContextCache();
 	public static final int
-		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9,
-		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17,
-		T__17=18, T__18=19, T__19=20, T__20=21, INCR=22, DECR=23, NOT=24, PLUS=25,
-		MINUS=26, MUL=27, DIV=28, INT=29, BOOL=30, CHAR=31, STRING=32, VOID=33,
+		T__0=1, T__1=2, T__2=3, T__3=4, T__4=5, T__5=6, T__6=7, T__7=8, T__8=9, 
+		T__9=10, T__10=11, T__11=12, T__12=13, T__13=14, T__14=15, T__15=16, T__16=17, 
+		T__17=18, T__18=19, T__19=20, T__20=21, INCR=22, DECR=23, NOT=24, PLUS=25, 
+		MINUS=26, MUL=27, DIV=28, INT=29, BOOL=30, CHAR=31, STRING=32, VOID=33, 
 		IDENTIFIER=34, Number=35, CHARACTER=36, WS=37;
 	public static String[] channelNames = {
 		"DEFAULT_TOKEN_CHANNEL", "HIDDEN"
@@ -29,10 +32,10 @@ public class MinijavaLexer extends Lexer {
 
 	private static String[] makeRuleNames() {
 		return new String[] {
-			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8",
-			"T__9", "T__10", "T__11", "T__12", "T__13", "T__14", "T__15", "T__16",
-			"T__17", "T__18", "T__19", "T__20", "INCR", "DECR", "NOT", "PLUS", "MINUS",
-			"MUL", "DIV", "INT", "BOOL", "CHAR", "STRING", "VOID", "IDENTIFIER",
+			"T__0", "T__1", "T__2", "T__3", "T__4", "T__5", "T__6", "T__7", "T__8", 
+			"T__9", "T__10", "T__11", "T__12", "T__13", "T__14", "T__15", "T__16", 
+			"T__17", "T__18", "T__19", "T__20", "INCR", "DECR", "NOT", "PLUS", "MINUS", 
+			"MUL", "DIV", "INT", "BOOL", "CHAR", "STRING", "VOID", "IDENTIFIER", 
 			"Number", "CHARACTER", "WS"
 		};
 	}
@@ -40,19 +43,19 @@ public class MinijavaLexer extends Lexer {
 
 	private static String[] makeLiteralNames() {
 		return new String[] {
-			null, "'class'", "'{'", "'}'", "';'", "'('", "')'", "','", "'return'",
-			"'while'", "'if'", "'else'", "'this'", "'super'", "'.'", "'''", "'\"'",
-			"'null'", "'='", "'new'", "'true'", "'false'", "'++'", "'--'", "'!'",
-			"'+'", "'-'", "'*'", "'/'", "'int'", "'boolean'", "'char'", "'String'",
+			null, "'class'", "'{'", "'}'", "';'", "'('", "')'", "','", "'return'", 
+			"'while'", "'if'", "'else'", "'this'", "'super'", "'.'", "'''", "'\"'", 
+			"'null'", "'='", "'new'", "'true'", "'false'", "'++'", "'--'", "'!'", 
+			"'+'", "'-'", "'*'", "'/'", "'int'", "'boolean'", "'char'", "'String'", 
 			"'void'"
 		};
 	}
 	private static final String[] _LITERAL_NAMES = makeLiteralNames();
 	private static String[] makeSymbolicNames() {
 		return new String[] {
-			null, null, null, null, null, null, null, null, null, null, null, null,
-			null, null, null, null, null, null, null, null, null, null, "INCR", "DECR",
-			"NOT", "PLUS", "MINUS", "MUL", "DIV", "INT", "BOOL", "CHAR", "STRING",
+			null, null, null, null, null, null, null, null, null, null, null, null, 
+			null, null, null, null, null, null, null, null, null, null, "INCR", "DECR", 
+			"NOT", "PLUS", "MINUS", "MUL", "DIV", "INT", "BOOL", "CHAR", "STRING", 
 			"VOID", "IDENTIFIER", "Number", "CHARACTER", "WS"
 		};
 	}
