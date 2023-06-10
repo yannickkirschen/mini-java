@@ -8,8 +8,9 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class Parser {
-    public static Program parse(String[] args) throws Exception {
+    public static Program parse() {
         CharStream input = CharStreams.fromString("xyz");
+
         MinijavaLexer lexer = new MinijavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MinijavaParser parser = new MinijavaParser(tokens);
