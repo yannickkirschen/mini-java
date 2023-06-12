@@ -1,5 +1,6 @@
 package de.dhbw.compiler.codegeneration;
 
+import de.dhbw.compiler.ast.Constructor;
 import de.dhbw.compiler.ast.Method;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.statements.*;
@@ -21,6 +22,20 @@ public class MethodCodeVisitor implements Opcodes {
     public MethodCodeVisitor(MethodVisitor v){
         this. v = v;
         this.vars = new MethodVarStack();
+    }
+
+    public void visit(Constructor m){
+        v.visitCode();
+        // TODO check if type is actually classname
+        className = m.getType().toString();
+        m.parameterList.forEach(p -> vars.addVar(p.name()));
+        v.visitVarInsn(ALOAD, 0);
+        v.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+        if(m.getBody() != null)
+            m.getBody().accept(this);
+        v.visitInsn(RETURN);
+        v.visitMaxs(1,1);
+        v.visitEnd();
     }
 
     public void visit(Method m){

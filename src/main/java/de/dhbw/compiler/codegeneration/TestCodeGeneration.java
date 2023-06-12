@@ -13,11 +13,12 @@ public class TestCodeGeneration {
     public static void main(String[] args){
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
+        ArrayList<Constructor> constr = new ArrayList<>();
         ArrayList<Clazz> clazzes = new ArrayList<>();
         // TODO
-        Method m = new Method(new Type("VOID"), "TestClass", new ArrayList<Parameter>(), new Block(new ArrayList<Statement>(), new ObjectType("VOID")));
-        methods.add(m);
-        clazzes.add(new Clazz(new Type("TestClass"), fields, methods ));
+        Constructor m = new Constructor(new ObjectType("TestClass"), new ArrayList<>(), null);
+        constr.add(m);
+        clazzes.add(new Clazz(new Type("TestClass"), fields, constr, methods ));
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();

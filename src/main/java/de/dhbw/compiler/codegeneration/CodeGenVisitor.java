@@ -1,9 +1,6 @@
 package de.dhbw.compiler.codegeneration;
 
-import de.dhbw.compiler.ast.Clazz;
-import de.dhbw.compiler.ast.Field;
-import de.dhbw.compiler.ast.Method;
-import de.dhbw.compiler.ast.Parameter;
+import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.statements.Statement;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
@@ -27,6 +24,11 @@ public class CodeGenVisitor implements Opcodes {
         cw.visit(V1_8, ACC_PUBLIC, clazz.name().name(), null, "java/lang/Object", null);
         for (Field t : clazz.fields()) {
             visitField(t, cw);
+        }
+
+        for(Constructor c : clazz.constructors()){
+            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null));
+            mcv.visit(c);
         }
 
         for (Method m : clazz.methods()) {
