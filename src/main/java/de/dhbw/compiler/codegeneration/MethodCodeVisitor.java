@@ -28,7 +28,7 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitCode();
         // TODO check if type is actually classname
         className = m.getType().toString();
-        m.parameterList.forEach(p -> vars.addVar(p.name()));
+        m.parameterList.forEach(p -> vars.addVar(p.name));
         v.visitVarInsn(ALOAD, 0);
         v.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
         if(m.getBody() != null)
@@ -39,10 +39,10 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     public void visit(Method m){
-        className = m.name();
+        className = m.name;
         vars.addVar("this");
-        m.parameters().forEach(p -> vars.addVar(p.name()));
-        m.statement().accept(this);
+        m.parameters.forEach(p -> vars.addVar(p.name));
+        m.statement.accept(this);
 
         v.visitMaxs(0,0);
         v.visitEnd();
