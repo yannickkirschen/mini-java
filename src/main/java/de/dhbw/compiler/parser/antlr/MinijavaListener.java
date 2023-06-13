@@ -204,6 +204,30 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitNull(MinijavaParser.NullContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Super}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSuper(MinijavaParser.SuperContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Super}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSuper(MinijavaParser.SuperContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code UnaryOperation}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryOperation(MinijavaParser.UnaryOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnaryOperation}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryOperation(MinijavaParser.UnaryOperationContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Character}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -216,6 +240,18 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitCharacter(MinijavaParser.CharacterContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code Expression}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(MinijavaParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Expression}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(MinijavaParser.ExpressionContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Constant}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -227,6 +263,18 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConstant(MinijavaParser.ConstantContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StmtExprExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StmtExprExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code BinaryOperation}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -252,78 +300,6 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitInstVar(MinijavaParser.InstVarContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code String}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterString(MinijavaParser.StringContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code String}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitString(MinijavaParser.StringContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code UnaryOperationPost}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterUnaryOperationPost(MinijavaParser.UnaryOperationPostContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code UnaryOperationPost}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitUnaryOperationPost(MinijavaParser.UnaryOperationPostContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Super}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterSuper(MinijavaParser.SuperContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Super}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitSuper(MinijavaParser.SuperContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Expression}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpression(MinijavaParser.ExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Expression}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpression(MinijavaParser.ExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code UnaryOperationPre}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterUnaryOperationPre(MinijavaParser.UnaryOperationPreContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code UnaryOperationPre}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitUnaryOperationPre(MinijavaParser.UnaryOperationPreContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code StmtExprExpr}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code StmtExprExpr}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code This}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -336,6 +312,18 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitThis(MinijavaParser.ThisContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code String}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterString(MinijavaParser.StringContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code String}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitString(MinijavaParser.StringContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link MinijavaParser#location}.
 	 * @param ctx the parse tree
 	 */
@@ -345,6 +333,30 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLocation(MinijavaParser.LocationContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code UnaryAssignPost}
+	 * labeled alternative in {@link MinijavaParser#stmtExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryAssignPost(MinijavaParser.UnaryAssignPostContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnaryAssignPost}
+	 * labeled alternative in {@link MinijavaParser#stmtExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryAssignPost(MinijavaParser.UnaryAssignPostContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code UnaryAssignPre}
+	 * labeled alternative in {@link MinijavaParser#stmtExpr}.
+	 * @param ctx the parse tree
+	 */
+	void enterUnaryAssignPre(MinijavaParser.UnaryAssignPreContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code UnaryAssignPre}
+	 * labeled alternative in {@link MinijavaParser#stmtExpr}.
+	 * @param ctx the parse tree
+	 */
+	void exitUnaryAssignPre(MinijavaParser.UnaryAssignPreContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code Assign}
 	 * labeled alternative in {@link MinijavaParser#stmtExpr}.
@@ -382,25 +394,25 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitMethodCall(MinijavaParser.MethodCallContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinijavaParser#unaryOpPre}.
+	 * Enter a parse tree produced by {@link MinijavaParser#unaryAssOp}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnaryOpPre(MinijavaParser.UnaryOpPreContext ctx);
+	void enterUnaryAssOp(MinijavaParser.UnaryAssOpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinijavaParser#unaryOpPre}.
+	 * Exit a parse tree produced by {@link MinijavaParser#unaryAssOp}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnaryOpPre(MinijavaParser.UnaryOpPreContext ctx);
+	void exitUnaryAssOp(MinijavaParser.UnaryAssOpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinijavaParser#unaryOpPost}.
+	 * Enter a parse tree produced by {@link MinijavaParser#unaryOp}.
 	 * @param ctx the parse tree
 	 */
-	void enterUnaryOpPost(MinijavaParser.UnaryOpPostContext ctx);
+	void enterUnaryOp(MinijavaParser.UnaryOpContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinijavaParser#unaryOpPost}.
+	 * Exit a parse tree produced by {@link MinijavaParser#unaryOp}.
 	 * @param ctx the parse tree
 	 */
-	void exitUnaryOpPost(MinijavaParser.UnaryOpPostContext ctx);
+	void exitUnaryOp(MinijavaParser.UnaryOpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MinijavaParser#binaryOp}.
 	 * @param ctx the parse tree

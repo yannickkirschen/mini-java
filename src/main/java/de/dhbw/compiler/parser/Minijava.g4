@@ -20,18 +20,16 @@ stmt : block                                    #BlockStmt
     | 'while' '(' expr ')' stmt                 #While
     | var                                       #LocalVarDecl
     | 'if' '(' expr ')' stmt ('else' stmt)?     #If
-    | stmtExpr                                  #StmtExprStmt
+    | stmtExpr ';'                              #StmtExprStmt
     ;
 
 block : '{' stmt* '}';
 
-//TODO: implement unary operator statements (i++;), maybe as stmtExprs
 expr : 'this'               #This
     | 'super'               #Super
     | location              #LocationExpr
     | expr '.' id           #InstVar
-    | unaryOpPre expr       #UnaryOperationPre
-    | expr unaryOpPost      #UnaryOperationPost
+    | unaryOp expr          #UnaryOperation
     | expr binaryOp expr    #BinaryOperation
     | literal               #Constant
     | '\'' CHARACTER? '\''  #Character
@@ -44,13 +42,15 @@ expr : 'this'               #This
 location : id;
 
 //TODO: iplement assignment to instVars (a.i = 1;) if required
-stmtExpr : id '=' expr ';'                      #Assign
+stmtExpr : id unaryAssOp                        #UnaryAssignPost
+    | unaryAssOp id                             #UnaryAssignPre
+    | id '=' expr                               #Assign
     | 'new' type '(' args? ')'                  #New
-    | (location '.')? id '(' args? ')' ';'      #MethodCall
+    | (location '.')? id '(' args? ')'          #MethodCall
     ;
 
-unaryOpPre : INCR | DECR | NOT | PLUS | MINUS;
-unaryOpPost : INCR | DECR;
+unaryAssOp : INCR | DECR;
+unaryOp : NOT | PLUS | MINUS;
 binaryOp : PLUS | MINUS | MUL;
 
 args : expr (',' expr)*;

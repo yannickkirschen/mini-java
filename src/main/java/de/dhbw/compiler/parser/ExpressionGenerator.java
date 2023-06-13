@@ -58,35 +58,16 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     }
 
     @Override
-    public Expression visitUnaryOperationPre(MinijavaParser.UnaryOperationPreContext ctx) {
+    public Expression visitUnaryOperation(MinijavaParser.UnaryOperationContext ctx) {
         String operator = null;
-        if (ctx.unaryOpPre().INCR() != null) {
-            operator = ctx.unaryOpPre().INCR().getSymbol().getText();
+        if (ctx.unaryOp().NOT() != null) {
+            operator = ctx.unaryOp().NOT().getSymbol().getText();
         }
-        if (ctx.unaryOpPre().DECR() != null) {
-            operator = ctx.unaryOpPre().DECR().getSymbol().getText();
+        if (ctx.unaryOp().PLUS() != null) {
+            operator = ctx.unaryOp().PLUS().getSymbol().getText();
         }
-        if (ctx.unaryOpPre().NOT() != null) {
-            operator = ctx.unaryOpPre().NOT().getSymbol().getText();
-        }
-        if (ctx.unaryOpPre().PLUS() != null) {
-            operator = ctx.unaryOpPre().PLUS().getSymbol().getText();
-        }
-        if (ctx.unaryOpPre().MINUS() != null) {
-            operator = ctx.unaryOpPre().MINUS().getSymbol().getText();
-        }
-
-        return new Unary(operator, this.visit( ctx.expr() ));
-    }
-
-    @Override
-    public Expression visitUnaryOperationPost(MinijavaParser.UnaryOperationPostContext ctx) {
-        String operator = null;
-        if (ctx.unaryOpPost().INCR() != null) {
-            operator = ctx.unaryOpPost().INCR().getSymbol().getText();
-        }
-        if (ctx.unaryOpPost().DECR() != null) {
-            operator = ctx.unaryOpPost().DECR().getSymbol().getText();
+        if (ctx.unaryOp().MINUS() != null) {
+            operator = ctx.unaryOp().MINUS().getSymbol().getText();
         }
 
         return new Unary(operator, this.visit( ctx.expr() ));

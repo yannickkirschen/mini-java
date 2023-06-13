@@ -1,7 +1,10 @@
 package de.dhbw.compiler.parser;
 
 import de.dhbw.compiler.ast.Type;
+import de.dhbw.compiler.ast.expressions.Binary;
 import de.dhbw.compiler.ast.expressions.Expression;
+import de.dhbw.compiler.ast.expressions.JInteger;
+import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
@@ -48,4 +51,37 @@ public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementE
 
         return new MethodCall(thisExpr, name, args);
     }
+
+    @Override
+    public StatementExpression visitUnaryAssignPost(MinijavaParser.UnaryAssignPostContext ctx) {
+        return generateUnaryAssign( ctx.id(), ctx.unaryAssOp() );
+    }
+
+    @Override
+    public StatementExpression visitUnaryAssignPre(MinijavaParser.UnaryAssignPreContext ctx) {
+        return generateUnaryAssign( ctx.id(), ctx.unaryAssOp() );
+    }
+
+    // TODO: separate unaryAssignPre and unaryAssignPost
+    private Assign generateUnaryAssign(MinijavaParser.IdContext id, MinijavaParser.UnaryAssOpContext unaryAssOp) {
+        String var = ASTGenerator.generateId( id );
+
+        String operator = null;
+        if (unaryAssOp.INCR() != null) {
+            operator = "+";
+        }
+        if (unaryAssOp.DECR() != null) {
+            operator = "-";
+        }
+
+        Expression expr = new Binary(
+            operator,
+            new LocalOrFieldVar(var),
+            new JInteger("1")
+        );
+
+        return new Assign(var, expr);
+    }
+
+
 }
