@@ -15,6 +15,11 @@ public non-sealed class Unary implements Expression {
         this.type = type;
     }
 
+    public Unary(String operator, Expression argument) {
+        this.operator = operator;
+        this.argument = argument;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

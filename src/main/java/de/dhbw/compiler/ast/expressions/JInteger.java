@@ -13,6 +13,10 @@ public non-sealed class JInteger implements Expression {
         this.type = type;
     }
 
+    public JInteger(String value) {
+        this.value = value;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

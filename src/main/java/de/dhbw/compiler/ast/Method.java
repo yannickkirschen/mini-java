@@ -12,8 +12,15 @@ public class Method {
     public List<Parameter> parameters;
     public Statement statement;
 
-    public Method(Type type, AstType astType, String name, List<Parameter> parameters, Statement statement) {
+    public Method(Type type, AstType returnType, String name, List<Parameter> parameters, Statement statement) {
         this.type = type;
+        this.astType = returnType;
+        this.name = name;
+        this.parameters = parameters;
+        this.statement = statement;
+    }
+
+    public Method(AstType astType, String name, List<Parameter> parameters, Statement statement) {
         this.astType = astType;
         this.name = name;
         this.parameters = parameters;

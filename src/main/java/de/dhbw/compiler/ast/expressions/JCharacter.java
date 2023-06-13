@@ -13,6 +13,10 @@ public non-sealed class JCharacter implements Expression {
         this.type = type;
     }
 
+    public JCharacter(String value) {
+        this.value = value;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

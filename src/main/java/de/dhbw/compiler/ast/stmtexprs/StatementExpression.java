@@ -1,6 +1,5 @@
 package de.dhbw.compiler.ast.stmtexprs;
 
-import de.dhbw.compiler.ast.Method;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.codegeneration.Type;
 

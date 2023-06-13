@@ -17,6 +17,11 @@ public class Constructor {
         this.body = body;
     }
 
+    public Constructor(List<Parameter> parameterList, Statement body) {
+        this.parameterList = parameterList;
+        this.body = body;
+    }
+
     public void accept(MethodCodeVisitor v){
         v.visit(this);
     }

@@ -19,6 +19,13 @@ public class Clazz {
         this.methods = methods;
     }
 
+    public Clazz(AstType name, List<Field> fields, List<Constructor> constructors, List<Method> methods) {
+        this.name = name;
+        this.fields = fields;
+        this.constructors = constructors;
+        this.methods = methods;
+    }
+
     public Type getType() {
         return type;
     }

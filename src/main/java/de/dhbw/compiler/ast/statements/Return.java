@@ -15,6 +15,10 @@ public non-sealed class Return implements Statement {
         this.type = type;
     }
 
+    public Return(Expression expression) {
+        this.expression = expression;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

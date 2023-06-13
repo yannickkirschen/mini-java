@@ -14,6 +14,11 @@ public non-sealed class StmtExprExpr implements Expression {
         this.statementExpression = statementExpression;
         this.type = type;
     }
+
+    public StmtExprExpr(StatementExpression statementExpression) {
+        this.statementExpression = statementExpression;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

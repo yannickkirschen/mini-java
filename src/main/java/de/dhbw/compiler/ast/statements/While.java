@@ -15,6 +15,11 @@ public non-sealed class While implements Statement {
         this.type = type;
     }
 
+    public While(Expression condition, Statement statement) {
+        this.condition = condition;
+        this.statement = statement;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

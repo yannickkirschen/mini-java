@@ -1,6 +1,5 @@
 package de.dhbw.compiler.ast.statements;
 
-import de.dhbw.compiler.codegeneration.CodeGenVisitor;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.codegeneration.Type;
 

@@ -15,6 +15,11 @@ public non-sealed class InstVar implements Expression {
         this.type = type;
     }
 
+    public InstVar(Expression thisExpr, String varName) {
+        this.thisExpr = thisExpr;
+        this.varName = varName;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

@@ -18,6 +18,12 @@ public non-sealed class If implements Statement {
         this.type = type;
     }
 
+    public If(Expression condition, Statement ifBody, Statement elseBody) {
+        this.condition = condition;
+        this.ifBody = ifBody;
+        this.elseBody = elseBody;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

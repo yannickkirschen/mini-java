@@ -16,6 +16,12 @@ public non-sealed class Binary implements Expression {
         this.type = type;
     }
 
+    public Binary(String operator, Expression left, Expression right) {
+        this.operator = operator;
+        this.left = left;
+        this.right = right;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

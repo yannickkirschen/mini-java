@@ -19,6 +19,12 @@ public non-sealed class MethodCall implements StatementExpression {
         this.type = type;
     }
 
+    public MethodCall(Expression thisExpr, String name, List<Expression> args) {
+        this.thisExpr = thisExpr;
+        this.name = name;
+        this.args = args;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

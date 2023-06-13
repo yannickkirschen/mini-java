@@ -13,6 +13,10 @@ public non-sealed class StmtExprStmt implements Statement {
         this.type = type;
     }
 
+    public StmtExprStmt(StatementExpression statementExpression) {
+        this.statementExpression = statementExpression;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

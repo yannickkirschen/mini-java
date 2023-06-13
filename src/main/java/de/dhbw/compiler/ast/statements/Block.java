@@ -1,6 +1,5 @@
 package de.dhbw.compiler.ast.statements;
 
-import de.dhbw.compiler.codegeneration.CodeGenVisitor;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.codegeneration.Type;
 
@@ -13,6 +12,10 @@ public non-sealed class Block implements Statement {
     public Block(List<Statement> stmts, Type type) {
         this.stmts = stmts;
         this.type = type;
+    }
+
+    public Block(List<Statement> stmts) {
+        this.stmts = stmts;
     }
 
     @Override

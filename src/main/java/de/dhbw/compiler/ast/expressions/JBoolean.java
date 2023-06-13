@@ -12,6 +12,10 @@ public non-sealed class JBoolean implements Expression {
         this.type = type;
     }
 
+    public JBoolean(String value) {
+        this.value = value;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

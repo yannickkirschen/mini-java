@@ -13,6 +13,11 @@ public class Parameter {
         this.name = name;
     }
 
+    public Parameter(AstType astType, String name) {
+        this.astType = astType;
+        this.name = name;
+    }
+
     public Type getType() {
         return type;
     }

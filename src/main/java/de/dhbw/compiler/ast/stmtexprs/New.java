@@ -11,10 +11,15 @@ public non-sealed class New implements StatementExpression {
     public List<Expression> expressions;
     Type type;
 
-    public New(Type passedType, List<Expression> expressions, Type type) {
+    public New(Type passedType, List<Expression> args, Type type) {
+        this.passedType = passedType;
+        this.expressions = args;
+        this.type = type;
+    }
+
+    public New(Type passedType, List<Expression> expressions) {
         this.passedType = passedType;
         this.expressions = expressions;
-        this.type = type;
     }
 
     @Override

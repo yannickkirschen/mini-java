@@ -15,6 +15,11 @@ public non-sealed class LocalVarDecl implements Statement {
         this.type = type;
     }
 
+    public LocalVarDecl(Type passedType, String name) {
+        this.passedType = passedType;
+        this.name = name;
+    }
+
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visit(this);

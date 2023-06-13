@@ -13,6 +13,11 @@ public class Field {
         this.name = name;
     }
 
+    public Field(AstType astType, String name) {
+        this.astType = astType;
+        this.name = name;
+    }
+
     public Type getType() {
         return type;
     }
