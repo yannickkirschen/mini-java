@@ -161,6 +161,18 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterLocalVarDecl(MinijavaParser.LocalVarDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}

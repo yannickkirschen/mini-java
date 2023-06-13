@@ -3,6 +3,7 @@ package de.dhbw.compiler.parser;
 import de.dhbw.compiler.ast.Type;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.statements.*;
+import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
 import de.dhbw.compiler.parser.antlr.MinijavaBaseVisitor;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
@@ -38,12 +39,31 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
     }
 
     @Override
+    public Statement visitLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx) {
+        List<Statement> stmts = new ArrayList<>();
+
+        LocalVarDecl decl = generateLocalVarDecl( ctx.var() );
+        stmts.add( decl );
+
+        Expression expr = new ExpressionGenerator().visit( ctx.expr() );
+        Assign assign = new Assign( decl.name(), expr );
+        stmts.add( new StmtExprStmt( assign ) );
+
+        return new Block( stmts );
+    }
+
+    @Override
     public Statement visitLocalVarDecl(MinijavaParser.LocalVarDeclContext ctx) {
-        Type type = ASTGenerator.generateType( ctx.var().type() );
-        String name = ASTGenerator.generateId( ctx.var().id() );
+        return generateLocalVarDecl( ctx.var() );
+    }
+
+    private LocalVarDecl generateLocalVarDecl(MinijavaParser.VarContext var) {
+        Type type = ASTGenerator.generateType( var.type() );
+        String name = ASTGenerator.generateId( var.id() );
 
         return new LocalVarDecl(type, name);
     }
+
 
     @Override
     public Statement visitIf(MinijavaParser.IfContext ctx) {

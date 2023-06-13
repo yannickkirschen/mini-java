@@ -2,9 +2,9 @@ grammar Minijava;
 
 program : class*;
 
-class : 'class' type '{' (var | meth | const)* '}';
+class : 'class' type '{' (var ';' | meth | const)* '}';
 
-var : type id ';';
+var : type id;
 type : INT | BOOL | CHAR | STRING | VOID | refType;
 refType : id;
 
@@ -18,6 +18,7 @@ const : refType '(' params? ')' block;
 stmt : block                                    #BlockStmt
     | 'return' expr ';'                         #Return
     | 'while' '(' expr ')' stmt                 #While
+    | var '=' expr ';'                          #LocalVarDeclAssign
     | var                                       #LocalVarDecl
     | 'if' '(' expr ')' stmt ('else' stmt)?     #If
     | stmtExpr ';'                              #StmtExprStmt

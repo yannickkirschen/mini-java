@@ -86,6 +86,13 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWhile(MinijavaParser.WhileContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code LocalVarDeclAssign}
+	 * labeled alternative in {@link MinijavaParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code LocalVarDecl}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree

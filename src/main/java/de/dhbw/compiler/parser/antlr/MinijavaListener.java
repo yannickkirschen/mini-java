@@ -134,6 +134,18 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitWhile(MinijavaParser.WhileContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code LocalVarDeclAssign}
+	 * labeled alternative in {@link MinijavaParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code LocalVarDeclAssign}
+	 * labeled alternative in {@link MinijavaParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code LocalVarDecl}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
