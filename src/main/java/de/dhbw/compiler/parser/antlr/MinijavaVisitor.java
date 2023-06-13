@@ -107,6 +107,13 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIf(MinijavaParser.IfContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code InstVarAssignStmt}
+	 * labeled alternative in {@link MinijavaParser#stmt}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code StmtExprStmt}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
@@ -127,19 +134,19 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitLocationExpr(MinijavaParser.LocationExprContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code InstVarAssignExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code Null}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitNull(MinijavaParser.NullContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code Super}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitSuper(MinijavaParser.SuperContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code UnaryOperation}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -155,26 +162,12 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitCharacter(MinijavaParser.CharacterContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code Expression}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitExpression(MinijavaParser.ExpressionContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code Constant}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitConstant(MinijavaParser.ConstantContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code StmtExprExpr}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code BinaryOperation}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -190,19 +183,40 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitInstVar(MinijavaParser.InstVarContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code This}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitThis(MinijavaParser.ThisContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code String}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitString(MinijavaParser.StringContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Super}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSuper(MinijavaParser.SuperContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code Expression}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExpression(MinijavaParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code StmtExprExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code This}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitThis(MinijavaParser.ThisContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MinijavaParser#location}.
 	 * @param ctx the parse tree

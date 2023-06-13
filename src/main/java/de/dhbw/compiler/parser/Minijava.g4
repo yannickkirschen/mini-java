@@ -14,13 +14,13 @@ param : type id;
 
 const : refType '(' params? ')' block;
 
-//TODO: implement var declaration and initialization in same line
 stmt : block                                    #BlockStmt
     | 'return' expr ';'                         #Return
     | 'while' '(' expr ')' stmt                 #While
     | var '=' expr ';'                          #LocalVarDeclAssign
     | var                                       #LocalVarDecl
     | 'if' '(' expr ')' stmt ('else' stmt)?     #If
+    | expr '.' id '=' expr ';'                  #InstVarAssignStmt
     | stmtExpr ';'                              #StmtExprStmt
     ;
 
@@ -37,6 +37,7 @@ expr : 'this'               #This
     | '"' CHARACTER* '"'    #String
     | 'null'                #Null
     | '(' expr ')'          #Expression
+    | expr '.' id '=' expr  #InstVarAssignExpr
     | stmtExpr              #StmtExprExpr
     ;
 

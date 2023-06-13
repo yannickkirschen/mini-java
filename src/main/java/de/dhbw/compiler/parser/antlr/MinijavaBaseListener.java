@@ -197,6 +197,18 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -233,6 +245,18 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterNull(MinijavaParser.NullContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -240,18 +264,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitNull(MinijavaParser.NullContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSuper(MinijavaParser.SuperContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSuper(MinijavaParser.SuperContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -281,18 +293,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExpression(MinijavaParser.ExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitExpression(MinijavaParser.ExpressionContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterConstant(MinijavaParser.ConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -300,18 +300,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitConstant(MinijavaParser.ConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -341,18 +329,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterThis(MinijavaParser.ThisContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitThis(MinijavaParser.ThisContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterString(MinijavaParser.StringContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -360,6 +336,54 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitString(MinijavaParser.StringContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSuper(MinijavaParser.SuperContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSuper(MinijavaParser.SuperContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExpression(MinijavaParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExpression(MinijavaParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterThis(MinijavaParser.ThisContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitThis(MinijavaParser.ThisContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

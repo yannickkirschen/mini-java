@@ -170,6 +170,18 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitIf(MinijavaParser.IfContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code InstVarAssignStmt}
+	 * labeled alternative in {@link MinijavaParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code InstVarAssignStmt}
+	 * labeled alternative in {@link MinijavaParser#stmt}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code StmtExprStmt}
 	 * labeled alternative in {@link MinijavaParser#stmt}.
 	 * @param ctx the parse tree
@@ -204,6 +216,18 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitLocationExpr(MinijavaParser.LocationExprContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code InstVarAssignExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code InstVarAssignExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code Null}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -215,18 +239,6 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitNull(MinijavaParser.NullContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code Super}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterSuper(MinijavaParser.SuperContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Super}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitSuper(MinijavaParser.SuperContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code UnaryOperation}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -252,18 +264,6 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitCharacter(MinijavaParser.CharacterContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code Expression}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterExpression(MinijavaParser.ExpressionContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code Expression}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitExpression(MinijavaParser.ExpressionContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code Constant}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -275,18 +275,6 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitConstant(MinijavaParser.ConstantContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code StmtExprExpr}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code StmtExprExpr}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code BinaryOperation}
 	 * labeled alternative in {@link MinijavaParser#expr}.
@@ -312,18 +300,6 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitInstVar(MinijavaParser.InstVarContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code This}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void enterThis(MinijavaParser.ThisContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code This}
-	 * labeled alternative in {@link MinijavaParser#expr}.
-	 * @param ctx the parse tree
-	 */
-	void exitThis(MinijavaParser.ThisContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code String}
 	 * labeled alternative in {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -335,6 +311,54 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitString(MinijavaParser.StringContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Super}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterSuper(MinijavaParser.SuperContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Super}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitSuper(MinijavaParser.SuperContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code Expression}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterExpression(MinijavaParser.ExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code Expression}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitExpression(MinijavaParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code StmtExprExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code StmtExprExpr}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code This}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void enterThis(MinijavaParser.ThisContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code This}
+	 * labeled alternative in {@link MinijavaParser#expr}.
+	 * @param ctx the parse tree
+	 */
+	void exitThis(MinijavaParser.ThisContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MinijavaParser#location}.
 	 * @param ctx the parse tree
