@@ -111,21 +111,21 @@ public class MethodCodeVisitor implements Opcodes {
         // TODO field vars
 
         // TODO do proper type matching
-        if(vars.contains(stmtExpr.var)) {
+        if(vars.contains(stmtExpr.target)) {
             stmtExpr.value.accept(this);
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
-                v.visitVarInsn(ISTORE, vars.getVar(stmtExpr.var));
+                v.visitVarInsn(ISTORE, vars.getVar(stmtExpr.target));
             }
             // TODO if we have any other type than int-derivative and other, we need to add this here
             else {
-                v.visitVarInsn(ASTORE, vars.getVar(stmtExpr.var));
+                v.visitVarInsn(ASTORE, vars.getVar(stmtExpr.target));
             }
         }
         else{
             v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
             stmtExpr.value.accept(this);// load new variable value onto stack
-            v.visitFieldInsn(PUTFIELD, className, stmtExpr.var, getFieldDescriptor(className, stmtExpr.var)); //TODO implement method to generate field descriptor from fieldName
+            v.visitFieldInsn(PUTFIELD, className, stmtExpr.target, getFieldDescriptor(className, stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
         }
     }
 

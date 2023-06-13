@@ -5,14 +5,19 @@ import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.codegeneration.Type;
 
 public non-sealed class Assign implements StatementExpression {
-    public String var;
+    public Expression target;
     public Expression value;
     Type type;
 
-    public Assign(String var, Expression value, Type type) {
-        this.var = var;
+    public Assign(Expression target, Expression value, Type type) {
+        this.target = target;
         this.value = value;
         this.type = type;
+    }
+
+    public Assign(Expression target, Expression value) {
+        this.target = target;
+        this.value = value;
     }
 
     @Override
