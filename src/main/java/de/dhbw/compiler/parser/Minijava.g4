@@ -2,84 +2,119 @@ grammar Minijava;
 
 program : class*;
 
-class : 'class' type '{' (var ';' | meth | const)* '}';
+class : 'class' type '{' (varDecl ';' | meth | constructor)* '}';
 
-var : type id;
-type : INT | BOOL | CHAR | STRING | VOID | refType;
-refType : id;
+varDecl : type Id;
+type : Int | Bool | Char | String | Void | refType;
+refType : Id;
 
-meth : type id '(' params? ')' block;
+meth : type Id '(' params? ')' block;
 params : param (',' param)*;
-param : type id;
+param : type Id;
 
-const : refType '(' params? ')' block;
+constructor : refType '(' params? ')' block;
 
-stmt : block                                    #BlockStmt
-    | 'return' expr ';'                         #Return
-    | 'while' '(' expr ')' stmt                 #While
-    | var '=' expr ';'                          #LocalVarDeclAssign
-    | var                                       #LocalVarDecl
-    | 'if' '(' expr ')' stmt ('else' stmt)?     #If
-    | expr '.' id '=' expr ';'                  #InstVarAssignStmt
-    | stmtExpr ';'                              #StmtExprStmt
-    ;
-
+//Statements
 block : '{' stmt* '}';
+return : 'return' expr ';';
+while : 'while' '(' expr ')' stmt;
+localVarDeclAssign : varDecl '=' expr ';';
+if : 'if' '(' expr ')' stmt ('else' stmt)?; //TODO: limit condition to bools
 
-expr : 'this'               #This
-    | 'super'               #Super
-    | location              #LocationExpr
-    | expr '.' id           #InstVar
-    | unaryOp expr          #UnaryOperation
-    | expr binaryOp expr    #BinaryOperation
-    | literal               #Constant
-    | '\'' CHARACTER? '\''  #Character
-    | '"' CHARACTER* '"'    #String
-    | 'null'                #Null
-    | '(' expr ')'          #Expression
-    | expr '.' id '=' expr  #InstVarAssignExpr
-    | stmtExpr              #StmtExprExpr
+stmt : block
+    | return
+    | while
+    | localVarDeclAssign
+    | varDecl
+    | if
+    | stmtExpr ';'
     ;
 
-location : id;
+//Expressions
+instVar : This '.' Id | (This '.')? (Id '.')+ Id;
+This : 'this';
+Super : 'super';
+localOrFieldVar : Id;
+unaryOperation : unaryOp expr;
+binaryOperation : subExpression binaryOp expr; //TODO: add operator priorities
+constant : Number | Boolean;
+char : '\'' Character? '\'';
+string : '"' Character* '"';
+Null : 'null';
+expression : '(' expr ')';
 
-//TODO: iplement assignment to instVars (a.i = 1;) if required
-stmtExpr : id unaryAssOp                        #UnaryAssignPost
-    | unaryAssOp id                             #UnaryAssignPre
-    | id '=' expr                               #Assign
-    | 'new' type '(' args? ')'                  #New
-    | (location '.')? id '(' args? ')'          #MethodCall
+
+expr : subExpression | binaryOperation;
+// introduce subExpression to avoid left-recursion
+subExpression : This
+    | Super
+    | localOrFieldVar
+    | instVar
+    | unaryOperation
+    | constant
+    | char
+    | string
+    | Null
+    | expression
+    | stmtExpr
     ;
 
-unaryAssOp : INCR | DECR;
-unaryOp : NOT | PLUS | MINUS;
-binaryOp : PLUS | MINUS | MUL;
+//StatementExpressions
+unaryAssign : assignable unaryAssOp | unaryAssOp assignable;
+new: 'new' type '(' args? ')';
+methodCall : (localOrFieldVar '.')? Id '(' args? ')';
+assign : assignable '=' expr;
+assignable : Id | instVar;
+
+stmtExpr : unaryAssign
+    | assign
+    | new
+    | methodCall
+    ;
+
+
+unaryAssOp : Incr | Decr;
+unaryOp : Not | Plus | Minus;
+binaryOp : binCalcOp | binBoolOp;
+
+binCalcOp : Plus | Minus | Mul | Div | Mod;
+binBoolOp : Equal | NotEqual | Greater | GreaterOrEqual | Less | LessOrEqual | And | Or;
 
 args : expr (',' expr)*;
 
-literal : number | boolean;
 
-boolean : 'true' | 'false' ;
+//Literals
+Incr : '++';
+Decr : '--';
+Not : '!';
+Plus : '+';
+Minus : '-';
 
-number : Number;
-id : IDENTIFIER;
+Mul : '*';
+Div : '/';
+Mod : '%';
 
-INCR : '++';
-DECR : '--';
-NOT : '!';
-PLUS : '+';
-MINUS : '-';
+Equal : '==';
+NotEqual : '!=';
+Greater : '>';
+GreaterOrEqual : '>=';
+Less : '<';
+LessOrEqual : '<=';
+Or : '||';
+And : '&&';
 
-MUL : '*';
-DIV : '/';
+Int : 'int';
+Bool : 'boolean';
+Char : 'char';
+String : 'String';
+Void : 'void';
+Boolean : 'true' | 'false' ;
 
-INT : 'int';
-BOOL : 'boolean';
-CHAR : 'char';
-STRING : 'String';
-VOID : 'void';
-
-IDENTIFIER : [a-zA-Z]+;
+Id : [a-zA-Z]+;
 Number : [0-9]+;
-CHARACTER : [a-zA-Z0-9];
+Character : [a-zA-Z0-9];
+
+
 WS : [ \t\r\n] -> skip;
+Comment:'//' ~[\r\n]* -> skip;
+BlockComment: '/*' .*? '*/' -> skip;

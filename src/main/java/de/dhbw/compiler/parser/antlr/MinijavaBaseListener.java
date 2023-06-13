@@ -41,13 +41,13 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVar(MinijavaParser.VarContext ctx) { }
+	@Override public void enterVarDecl(MinijavaParser.VarDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVar(MinijavaParser.VarContext ctx) { }
+	@Override public void exitVarDecl(MinijavaParser.VarDeclContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -113,25 +113,25 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterConst(MinijavaParser.ConstContext ctx) { }
+	@Override public void enterConstructor(MinijavaParser.ConstructorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitConst(MinijavaParser.ConstContext ctx) { }
+	@Override public void exitConstructor(MinijavaParser.ConstructorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlockStmt(MinijavaParser.BlockStmtContext ctx) { }
+	@Override public void enterBlock(MinijavaParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlockStmt(MinijavaParser.BlockStmtContext ctx) { }
+	@Override public void exitBlock(MinijavaParser.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -173,18 +173,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLocalVarDecl(MinijavaParser.LocalVarDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLocalVarDecl(MinijavaParser.LocalVarDeclContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterIf(MinijavaParser.IfContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -197,121 +185,13 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx) { }
+	@Override public void enterStmt(MinijavaParser.StmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInstVarAssignStmt(MinijavaParser.InstVarAssignStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBlock(MinijavaParser.BlockContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBlock(MinijavaParser.BlockContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLocationExpr(MinijavaParser.LocationExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLocationExpr(MinijavaParser.LocationExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitInstVarAssignExpr(MinijavaParser.InstVarAssignExprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNull(MinijavaParser.NullContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNull(MinijavaParser.NullContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterUnaryOperation(MinijavaParser.UnaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnaryOperation(MinijavaParser.UnaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterCharacter(MinijavaParser.CharacterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitCharacter(MinijavaParser.CharacterContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterConstant(MinijavaParser.ConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitConstant(MinijavaParser.ConstantContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
+	@Override public void exitStmt(MinijavaParser.StmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -329,6 +209,66 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterLocalOrFieldVar(MinijavaParser.LocalOrFieldVarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLocalOrFieldVar(MinijavaParser.LocalOrFieldVarContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterUnaryOperation(MinijavaParser.UnaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitUnaryOperation(MinijavaParser.UnaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterConstant(MinijavaParser.ConstantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitConstant(MinijavaParser.ConstantContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterChar(MinijavaParser.CharContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitChar(MinijavaParser.CharContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterString(MinijavaParser.StringContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -336,18 +276,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitString(MinijavaParser.StringContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterSuper(MinijavaParser.SuperContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitSuper(MinijavaParser.SuperContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -365,73 +293,37 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStmtExprExpr(MinijavaParser.StmtExprExprContext ctx) { }
+	@Override public void enterExpr(MinijavaParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStmtExprExpr(MinijavaParser.StmtExprExprContext ctx) { }
+	@Override public void exitExpr(MinijavaParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterThis(MinijavaParser.ThisContext ctx) { }
+	@Override public void enterSubExpression(MinijavaParser.SubExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitThis(MinijavaParser.ThisContext ctx) { }
+	@Override public void exitSubExpression(MinijavaParser.SubExpressionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLocation(MinijavaParser.LocationContext ctx) { }
+	@Override public void enterUnaryAssign(MinijavaParser.UnaryAssignContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLocation(MinijavaParser.LocationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterUnaryAssignPost(MinijavaParser.UnaryAssignPostContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnaryAssignPost(MinijavaParser.UnaryAssignPostContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterUnaryAssignPre(MinijavaParser.UnaryAssignPreContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitUnaryAssignPre(MinijavaParser.UnaryAssignPreContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterAssign(MinijavaParser.AssignContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitAssign(MinijavaParser.AssignContext ctx) { }
+	@Override public void exitUnaryAssign(MinijavaParser.UnaryAssignContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -456,6 +348,42 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMethodCall(MinijavaParser.MethodCallContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssign(MinijavaParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssign(MinijavaParser.AssignContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterAssignable(MinijavaParser.AssignableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignable(MinijavaParser.AssignableContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStmtExpr(MinijavaParser.StmtExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStmtExpr(MinijavaParser.StmtExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -497,6 +425,30 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBinCalcOp(MinijavaParser.BinCalcOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinCalcOp(MinijavaParser.BinCalcOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinBoolOp(MinijavaParser.BinBoolOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinBoolOp(MinijavaParser.BinBoolOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterArgs(MinijavaParser.ArgsContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -504,54 +456,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArgs(MinijavaParser.ArgsContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterLiteral(MinijavaParser.LiteralContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitLiteral(MinijavaParser.LiteralContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterBoolean(MinijavaParser.BooleanContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBoolean(MinijavaParser.BooleanContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterNumber(MinijavaParser.NumberContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitNumber(MinijavaParser.NumberContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterId(MinijavaParser.IdContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitId(MinijavaParser.IdContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

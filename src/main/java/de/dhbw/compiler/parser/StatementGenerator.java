@@ -2,6 +2,7 @@ package de.dhbw.compiler.parser;
 
 import de.dhbw.compiler.ast.Type;
 import de.dhbw.compiler.ast.expressions.Expression;
+import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
@@ -42,24 +43,25 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
     public Statement visitLocalVarDeclAssign(MinijavaParser.LocalVarDeclAssignContext ctx) {
         List<Statement> stmts = new ArrayList<>();
 
-        LocalVarDecl decl = generateLocalVarDecl( ctx.var() );
+        LocalVarDecl decl = generateLocalVarDecl( ctx.varDecl() );
         stmts.add( decl );
 
         Expression expr = new ExpressionGenerator().visit( ctx.expr() );
-        Assign assign = new Assign( decl.name(), expr );
+        LocalOrFieldVar var = new LocalOrFieldVar( decl.name() );
+        Assign assign = new Assign( var, expr );
         stmts.add( new StmtExprStmt( assign ) );
 
         return new Block( stmts );
     }
 
     @Override
-    public Statement visitLocalVarDecl(MinijavaParser.LocalVarDeclContext ctx) {
-        return generateLocalVarDecl( ctx.var() );
+    public Statement visitVarDecl(MinijavaParser.VarDeclContext ctx) {
+        return generateLocalVarDecl( ctx );
     }
 
-    private LocalVarDecl generateLocalVarDecl(MinijavaParser.VarContext var) {
+    private LocalVarDecl generateLocalVarDecl(MinijavaParser.VarDeclContext var) {
         Type type = ASTGenerator.generateType( var.type() );
-        String name = ASTGenerator.generateId( var.id() );
+        String name = var.Id().getSymbol().getText();
 
         return new LocalVarDecl(type, name);
     }
@@ -76,9 +78,9 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
     }
 
     @Override
-    public Statement visitStmtExprStmt(MinijavaParser.StmtExprStmtContext ctx) {
+    public Statement visitStmtExpr(MinijavaParser.StmtExprContext ctx) {
         StatementExpressionGenerator seGen = new StatementExpressionGenerator();
-        StatementExpression stmtExpr = seGen.visit( ctx.stmtExpr() );
+        StatementExpression stmtExpr = seGen.visit( ctx );
 
         return new StmtExprStmt( stmtExpr );
     }

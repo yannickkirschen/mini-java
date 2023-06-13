@@ -1,10 +1,7 @@
 package de.dhbw.compiler.parser;
 
 import de.dhbw.compiler.ast.Type;
-import de.dhbw.compiler.ast.expressions.Binary;
-import de.dhbw.compiler.ast.expressions.Expression;
-import de.dhbw.compiler.ast.expressions.JInteger;
-import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
+import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
@@ -18,11 +15,20 @@ import java.util.List;
 public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementExpression> {
     @Override
     public StatementExpression visitAssign(MinijavaParser.AssignContext ctx) {
-        String var = ASTGenerator.generateId( ctx.id() );
+        Expression assignable = null;
         ExpressionGenerator eGen = new ExpressionGenerator();
+
+        if (ctx.assignable().Id() != null) {
+            String id = ctx.assignable().Id().getText();
+            assignable = new LocalOrFieldVar( id );
+        }
+        if (ctx.assignable().instVar() != null) {
+            assignable = eGen.visit( ctx.assignable().instVar() );
+        }
+
         Expression value = eGen.visit( ctx.expr() );
 
-        return new Assign(var, value);
+        return new Assign(assignable, value);
     }
 
     @Override
@@ -41,8 +47,8 @@ public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementE
     @Override
     public StatementExpression visitMethodCall(MinijavaParser.MethodCallContext ctx) {
         ExpressionGenerator eGen = new ExpressionGenerator();
-        Expression thisExpr = eGen.visit( ctx.location() );
-        String name = ASTGenerator.generateId( ctx.id() );
+        Expression thisExpr = eGen.visit( ctx.localOrFieldVar() );
+        String name = ctx.Id().getText();
 
         List<Expression> args = new ArrayList<>();
         for (MinijavaParser.ExprContext eCtx : ctx.args().expr()) {
@@ -53,35 +59,30 @@ public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementE
     }
 
     @Override
-    public StatementExpression visitUnaryAssignPost(MinijavaParser.UnaryAssignPostContext ctx) {
-        return generateUnaryAssign( ctx.id(), ctx.unaryAssOp() );
-    }
-
-    @Override
-    public StatementExpression visitUnaryAssignPre(MinijavaParser.UnaryAssignPreContext ctx) {
-        return generateUnaryAssign( ctx.id(), ctx.unaryAssOp() );
-    }
-
-    // TODO: separate unaryAssignPre and unaryAssignPost
-    private Assign generateUnaryAssign(MinijavaParser.IdContext id, MinijavaParser.UnaryAssOpContext unaryAssOp) {
-        String var = ASTGenerator.generateId( id );
+    public StatementExpression visitUnaryAssign(MinijavaParser.UnaryAssignContext ctx) {
+        Expression assignable = null;
+        if (ctx.assignable().Id() != null)  {
+            assignable = new LocalOrFieldVar( ctx.assignable().Id().getText() );
+        }
+        if (ctx.assignable().instVar() != null) {
+            ExpressionGenerator eGen = new ExpressionGenerator();
+            assignable = eGen.visit( ctx.assignable().instVar() );
+        }
 
         String operator = null;
-        if (unaryAssOp.INCR() != null) {
+        if (ctx.unaryAssOp().Incr() != null) {
             operator = "+";
         }
-        if (unaryAssOp.DECR() != null) {
+        if (ctx.unaryAssOp().Decr() != null) {
             operator = "-";
         }
 
         Expression expr = new Binary(
             operator,
-            new LocalOrFieldVar(var),
+            assignable,
             new JInteger("1")
         );
 
-        return new Assign(var, expr);
+        return new Assign( assignable, expr );
     }
-
-
 }
