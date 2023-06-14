@@ -17,29 +17,32 @@ import java.util.List;
 public class MethodCodeVisitor implements Opcodes {
 
     MethodVisitor v;
+    String methodName;
     String className;
     MethodVarStack vars;
-    public MethodCodeVisitor(MethodVisitor v){
-        this. v = v;
+    public MethodCodeVisitor(MethodVisitor v, String className){
+        this.v = v;
+        this.className = className;
         this.vars = new MethodVarStack();
     }
 
     public void visit(Constructor m){
         v.visitCode();
         // TODO check if type is actually classname
-        className = m.getType().toString();
+        methodName = m.getType().toString();
+        vars.addVar("this");
         m.parameterList.forEach(p -> vars.addVar(p.name));
-        v.visitVarInsn(ALOAD, 0);
-        v.visitMethodInsn(INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
+        new Super().accept(this);
         if(m.getBody() != null)
             m.getBody().accept(this);
         v.visitInsn(RETURN);
-        v.visitMaxs(1,1);
+        v.visitMaxs(0,0);
         v.visitEnd();
     }
 
     public void visit(Method m){
-        className = m.name;
+        v.visitCode();
+        methodName = m.name;
         vars.addVar("this");
         m.parameters.forEach(p -> vars.addVar(p.name));
         m.statement.accept(this);
@@ -52,6 +55,7 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     public void visit(Return ret){
+        System.out.println("ret.expr: " + ret.expression);
         ret.expression.accept(this);
 
 
@@ -111,21 +115,21 @@ public class MethodCodeVisitor implements Opcodes {
         // TODO field vars
 
         // TODO do proper type matching
-        if(vars.contains(stmtExpr.target)) {
+        if(vars.contains(stmtExpr.target.toString())) {
             stmtExpr.value.accept(this);
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
-                v.visitVarInsn(ISTORE, vars.getVar(stmtExpr.target));
+                v.visitVarInsn(ISTORE, vars.getVar(stmtExpr.target.toString()));
             }
             // TODO if we have any other type than int-derivative and other, we need to add this here
             else {
-                v.visitVarInsn(ASTORE, vars.getVar(stmtExpr.target));
+                v.visitVarInsn(ASTORE, vars.getVar(stmtExpr.target.toString()));
             }
         }
         else{
             v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
             stmtExpr.value.accept(this);// load new variable value onto stack
-            v.visitFieldInsn(PUTFIELD, className, stmtExpr.target, getFieldDescriptor(className, stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
+            v.visitFieldInsn(PUTFIELD, className, stmtExpr.target.toString(), getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
         }
     }
 
@@ -196,7 +200,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(InstVar expr) {
         expr.thisExpr.accept(this);
-        v.visitFieldInsn(Opcodes.GETFIELD, className, expr.varName, getFieldDescriptor(className, expr.varName)); // TODO after merged typing into ast -> get type from instVar
+        v.visitFieldInsn(Opcodes.GETFIELD, className, expr.varName, getFieldDescriptor(expr)); // TODO after merged typing into ast -> get type from instVar
     }
 
     public void visitExpression(JBoolean expr) {
@@ -213,7 +217,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     // TODO could be optimized
     public void visitExpression(JInteger expr) {
-        v.visitLdcInsn(expr.value);
+        v.visitLdcInsn(Integer.valueOf(expr.value));
     }
 
     public void visitExpression(JNull expr) {
@@ -226,11 +230,15 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(LocalOrFieldVar expr) {
         int varIndex = vars.getIndex(expr.name);
+        System.out.println("varIndex: " + varIndex);
+        System.out.println("className: " + className);
+        vars.printAll();
         if (varIndex == -1) {
             v.visitVarInsn(Opcodes.ALOAD, 0);
-            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name, getFieldDescriptor(className, expr.name));// TODO -> after merged typing into ast -> get type from instVar
+            v.visitFieldInsn(Opcodes.GETFIELD, "TestClass", expr.name, getFieldDescriptor(expr));// TODO -> after merged typing into ast -> get type from instVar
+
         } else {
-            if (isReference()) {
+            if (isReference(expr.getType())) {
                 v.visitVarInsn(Opcodes.ALOAD, varIndex);
             } else {
                 v.visitVarInsn(Opcodes.ILOAD, varIndex);
@@ -243,6 +251,7 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     public void visitExpression(Super expr) {
+        v.visitVarInsn(ALOAD, 0);
         v.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
     }
 
@@ -274,13 +283,13 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
 
-    private Boolean isReference(/*TypedType type*/) {
+    private Boolean isReference(Type t) {
         // TODO
-        return true;
+        return t instanceof ObjectType;
     }
 
-    public String getFieldDescriptor(String className, String fieldName){
-        return "I";
+    public String getFieldDescriptor( Expression field){
+        return field.getType().getName();
     }
 
 }

@@ -34,4 +34,10 @@ public class MethodVarStack {
 
     }
 
+    public void printAll(){
+        for(String key : varStack.keySet()){
+            System.out.println(key + ": " + varStack.get(key) );
+        }
+    }
+
 }

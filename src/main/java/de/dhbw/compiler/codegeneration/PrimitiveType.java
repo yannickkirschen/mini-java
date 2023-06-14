@@ -1,10 +1,10 @@
 package de.dhbw.compiler.codegeneration;
 
 public enum PrimitiveType implements Type {
-    INTEGER("java.lang.Integer"),
-    CHARACTER("java.lang.Character"),
-    BOOLEAN("java.lang.Boolean"),
-    VOID("void"),
+    INTEGER("I"),
+    CHARACTER("C"),
+    BOOLEAN("Z"),
+    VOID("V"),
     NULL("null");
 
     private final String name;

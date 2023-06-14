@@ -23,12 +23,12 @@ public class CodeGenVisitor implements Opcodes {
         }
 
         for(Constructor c : clazz.constructors){
-            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null));
+            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null), clazz.name.name());
             mcv.visit(c);
         }
 
         for (Method m : clazz.methods) {
-            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(Opcodes.ACC_PUBLIC, m.name, extractMethodDescriptor(m.astType, m.parameters), null, null));
+            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(Opcodes.ACC_PUBLIC, m.name, extractMethodDescriptor(m.getType(), m.parameters), null, null), clazz.name.name());
             mcv.visit(m);
         }
         cw.visitEnd();
@@ -54,11 +54,6 @@ public class CodeGenVisitor implements Opcodes {
     }
     */
 
-    private String extractMethodDescriptor(AstType astType, List<Parameter> parameters) {
-        return "()V";
-    }
-
-
     public void visitExpression(Expression stmt) {
 
     }
@@ -83,7 +78,7 @@ public class CodeGenVisitor implements Opcodes {
                 return PrimitiveType.INTEGER;
             }
             case "java.lang.Character" -> {
-                return PrimitiveType.CHARAKTER;
+                return PrimitiveType.CHARACTER;
             }
             case "java.lang.Boolean" -> {
                 return PrimitiveType.BOOLEAN;
@@ -96,19 +91,16 @@ public class CodeGenVisitor implements Opcodes {
 
 
     public String extractTypeString(Type t) {
-        //TODO extract type to String
-
-        return "Ljava/lang/String;";
-    }
-
-    public int extractMethodKeywords() {
-        // TODO
-        // TODO also find out where / how they are passed in the first place
-        return 0;
+        return t.getName();
     }
 
     public String extractMethodDescriptor(Type returnType, List<Parameter> params) {
-        return "(I)I";
+        StringBuilder out = new StringBuilder("()");
+        for(Parameter p : params){
+            out.insert(1,p.getType().getName());
+        }
+        out.append(returnType.getName());
+        return out.toString();
     }
 
     public void writeFile(byte[] bytes, String filename) {
