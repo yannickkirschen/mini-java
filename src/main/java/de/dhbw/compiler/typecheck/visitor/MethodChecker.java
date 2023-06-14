@@ -11,24 +11,24 @@ import java.util.*;
 public class MethodChecker implements BaseMethodChecker {
     private final String className;
 
-    private final BaseStatementChecker statementVisitor;
+    private final BaseStatementChecker statementChecker;
 
     public MethodChecker(Clazz clazz, BaseClassChecker baseClassChecker) {
         this.className = clazz.name.name();
 
         List<LocalOrFieldVar> localVariables = new LinkedList<>();
-        BaseStatementExpressionChecker statementExpressionVisitor = new StatementExpressionChecker(className, clazz.fields, clazz.methods, localVariables);
-        BaseExpressionChecker expressionVisitor = new ExpressionChecker(className, clazz.fields, localVariables, statementExpressionVisitor);
+        BaseStatementExpressionChecker statementExpressionChecker = new StatementExpressionChecker(className, clazz.fields, clazz.methods, localVariables);
+        BaseExpressionChecker expressionChecker = new ExpressionChecker(className, clazz.fields, localVariables, statementExpressionChecker);
 
-        statementExpressionVisitor.setBaseClassVisitor(baseClassChecker);
-        statementExpressionVisitor.setExpressionVisitor(expressionVisitor);
+        statementExpressionChecker.setBaseClassChecker(baseClassChecker);
+        statementExpressionChecker.setExpressionChecker(expressionChecker);
 
-        this.statementVisitor = new StatementChecker(className, localVariables, expressionVisitor, statementExpressionVisitor);
+        this.statementChecker = new StatementChecker(className, localVariables, expressionChecker, statementExpressionChecker);
     }
 
     @Override
     public Method check(Method method) throws SyntaxException, TypeException {
-        Statement statement = statementVisitor.check(method.statement);
+        Statement statement = statementChecker.check(method.statement);
 
         for (Parameter parameter : method.parameters) {
             parameter.setType(check(parameter).getType());
