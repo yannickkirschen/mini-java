@@ -1,10 +1,9 @@
-package de.dhbw.compiler.typecheck.visitor;
+package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.*;
 import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.typecheck.*;
 import lombok.*;
 
 import java.util.*;

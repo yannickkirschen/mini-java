@@ -1,7 +1,6 @@
-package de.dhbw.compiler.typecheck.visitor;
+package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.statements.*;
-import de.dhbw.compiler.typecheck.*;
 
 public interface BaseStatementChecker {
     Statement check(Statement statement) throws SyntaxException, TypeException;

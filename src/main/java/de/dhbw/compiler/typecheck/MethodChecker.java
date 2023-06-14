@@ -1,10 +1,9 @@
-package de.dhbw.compiler.typecheck.visitor;
+package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.Statement;
 import de.dhbw.compiler.codegeneration.*;
-import de.dhbw.compiler.typecheck.*;
 
 import java.util.*;
 

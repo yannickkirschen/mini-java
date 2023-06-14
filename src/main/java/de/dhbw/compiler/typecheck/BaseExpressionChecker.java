@@ -1,7 +1,6 @@
-package de.dhbw.compiler.typecheck.visitor;
+package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.expressions.*;
-import de.dhbw.compiler.typecheck.*;
 
 public interface BaseExpressionChecker {
     Expression check(Expression expression) throws SyntaxException, TypeException;

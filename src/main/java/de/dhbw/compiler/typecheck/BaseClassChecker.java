@@ -1,7 +1,6 @@
-package de.dhbw.compiler.typecheck.visitor;
+package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.typecheck.*;
 
 public interface BaseClassChecker {
     Field check(Field field) throws SyntaxException;

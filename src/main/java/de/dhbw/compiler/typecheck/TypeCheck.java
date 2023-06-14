@@ -1,7 +1,6 @@
 package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.typecheck.visitor.*;
 
 public class TypeCheck {
     public Program check(Program program) throws SyntaxException, TypeException {
