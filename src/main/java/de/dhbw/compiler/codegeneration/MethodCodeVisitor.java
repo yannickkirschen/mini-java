@@ -55,7 +55,6 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     public void visit(Return ret){
-        System.out.println("ret.expr: " + ret.expression);
         ret.expression.accept(this);
 
 
@@ -114,22 +113,30 @@ public class MethodCodeVisitor implements Opcodes {
         // TODO only deals with local vars at this moment
         // TODO field vars
 
-        // TODO do proper type matching
-        if(vars.contains(stmtExpr.target.toString())) {
+        String targetName = "";
+        if(stmtExpr.target instanceof LocalOrFieldVar)
+            targetName = ((LocalOrFieldVar) stmtExpr.target).name;
+        // TODO find out other type of lhs of assign
+        //if(stmtExpr.target instanceof InstVar)
+        //    targetName = ((InstVar) stmtExpr.target).varName;
+
+
+        if(vars.contains(targetName)) {
             stmtExpr.value.accept(this);
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
-                v.visitVarInsn(ISTORE, vars.getVar(stmtExpr.target.toString()));
+                v.visitVarInsn(ISTORE, vars.getVar(targetName));
             }
             // TODO if we have any other type than int-derivative and other, we need to add this here
             else {
-                v.visitVarInsn(ASTORE, vars.getVar(stmtExpr.target.toString()));
+                v.visitVarInsn(ASTORE, vars.getVar(targetName));
             }
         }
         else{
+            System.out.println("stmtExpr.target.toString: " + targetName);
             v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
             stmtExpr.value.accept(this);// load new variable value onto stack
-            v.visitFieldInsn(PUTFIELD, className, stmtExpr.target.toString(), getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
+            v.visitFieldInsn(PUTFIELD, className, targetName, getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
         }
     }
 

@@ -1,21 +1,22 @@
 package de.dhbw.compiler.ast.statements;
 
+import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.codegeneration.Type;
 
 
 public non-sealed class LocalVarDecl implements Statement {
-    Type passedType;
+    AstType passedType;
     public String name;
     Type type;
 
-    public LocalVarDecl(Type passedType, String name, Type type) {
+    public LocalVarDecl(AstType passedType, String name, Type type) {
         this.passedType = passedType;
         this.name = name;
         this.type = type;
     }
 
-    public LocalVarDecl(Type passedType, String name) {
+    public LocalVarDecl(AstType passedType, String name) {
         this.passedType = passedType;
         this.name = name;
     }
