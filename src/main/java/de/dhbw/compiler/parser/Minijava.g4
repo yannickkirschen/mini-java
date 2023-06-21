@@ -12,7 +12,8 @@ meth : type Id '(' params? ')' block;
 params : param (',' param)*;
 param : type Id;
 
-constructor : refType '(' params? ')' block;
+constructor : refType '(' params? ')' '{' subConstructor? stmt* '}';
+subConstructor : ('this' | 'super') '(' args? ')' ';';
 
 //Statements
 block : '{' stmt* '}';
