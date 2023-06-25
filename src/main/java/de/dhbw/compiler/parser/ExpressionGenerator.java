@@ -7,9 +7,32 @@ import de.dhbw.compiler.parser.antlr.MinijavaParser;
 public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     @Override
     public Expression visitBinaryOperation(MinijavaParser.BinaryOperationContext ctx) {
-        String operator = ctx.binaryOp().getText();
+        return ctx.arithmeticBinOp() != null ?
+            handleArithmeticBinOp( ctx.arithmeticBinOp() ) :
+            handleLogicalBinOp( ctx.logicalBinOp() )
+            ;
+    }
 
-        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expr() ) );
+    private Expression handleLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx) {
+        String operator = ctx.binLogicalOperator().getText();
+        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expression() ) );
+    }
+
+    private Expression handleArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx) {
+        String operator = ctx.binMulOperator().getText();
+        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.mulOp() ) );
+    }
+
+    @Override
+    public Expression visitMulOp(MinijavaParser.MulOpContext ctx) {
+        String operator = ctx.binMulOperator().getText();
+        return new Binary(operator, this.visit( ctx.mulSubOp() ), this.visit( ctx.mulOp() ) );
+    }
+
+    @Override
+    public Expression visitMulSubOp(MinijavaParser.MulSubOpContext ctx) {
+        ExpressionGenerator eGen = new ExpressionGenerator();
+        return eGen.visit( ctx.getChild(0) );
     }
 
     @Override

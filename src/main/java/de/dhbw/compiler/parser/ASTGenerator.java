@@ -82,7 +82,7 @@ public class ASTGenerator {
     private static Method generateMeth(MinijavaParser.MethContext ctx) {
         Type returnType = generateType(ctx.type());
         String name = ctx.Id().getSymbol().getText();
-        List<Parameter> parameters = generateParams(ctx.params());
+        List<Parameter> parameters = ctx.params() != null ? generateParams(ctx.params()) : new ArrayList<>();
 
         StatementGenerator sGen = new StatementGenerator();
         Statement stmt = sGen.visit( ctx.block() );

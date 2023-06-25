@@ -1,6 +1,6 @@
 grammar Minijava;
 
-program : class*;
+program : class+;
 
 class : 'class' type '{' (varDecl ';' | meth | constructor)* '}';
 
@@ -12,15 +12,14 @@ meth : type Id '(' params? ')' block;
 params : param (',' param)*;
 param : type Id;
 
-constructor : refType '(' params? ')' '{' subConstructor? stmt* '}';
-subConstructor : ('this' | 'super') '(' args? ')' ';';
+constructor : refType '(' params? ')' block;
 
 //Statements
 block : '{' stmt* '}';
 return : 'return' expr ';';
 while : 'while' '(' expr ')' stmt;
 localVarDeclAssign : varDecl '=' expr ';';
-if : 'if' '(' expr ')' stmt ('else' stmt)?; //TODO: limit condition to bools
+if : 'if' '(' expr ')' stmt ('else' stmt)?;
 
 stmt : block
     | return
@@ -37,13 +36,17 @@ This : 'this';
 Super : 'super';
 localOrFieldVar : Id;
 unaryOperation : unaryOp expr;
-binaryOperation : subExpression binaryOp expr; //TODO: add operator priorities
 constant : Number | Boolean;
 char : '\'' Character? '\'';
 string : '"' Character* '"';
 Null : 'null';
 expression : '(' expr ')';
 
+binaryOperation : arithmeticBinOp | logicalBinOp;
+arithmeticBinOp : subExpression binMulOperator mulOp | mulOp;
+mulOp : mulOp binMulOperator mulSubOp | mulSubOp;
+mulSubOp : Number | localOrFieldVar | instVar | methodCall | '(' arithmeticBinOp ')';
+logicalBinOp : subExpression binLogicalOperator expression;
 
 expr : subExpression | binaryOperation;
 // introduce subExpression to avoid left-recursion
@@ -76,10 +79,10 @@ stmtExpr : unaryAssign
 
 unaryAssOp : Incr | Decr;
 unaryOp : Not | Plus | Minus;
-binaryOp : binCalcOp | binBoolOp;
 
-binCalcOp : Plus | Minus | Mul | Div | Mod;
-binBoolOp : Equal | NotEqual | Greater | GreaterOrEqual | Less | LessOrEqual | And | Or;
+binMulOperator: Mul | Div | Mod;
+binAddOperator : Plus | Minus;
+binLogicalOperator : Equal | NotEqual | Greater | GreaterOrEqual | Less | LessOrEqual | And | Or;
 
 args : expr (',' expr)*;
 

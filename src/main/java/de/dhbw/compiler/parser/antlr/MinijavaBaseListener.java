@@ -233,18 +233,6 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterConstant(MinijavaParser.ConstantContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -288,6 +276,66 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitExpression(MinijavaParser.ExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBinaryOperation(MinijavaParser.BinaryOperationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMulOp(MinijavaParser.MulOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMulOp(MinijavaParser.MulOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMulSubOp(MinijavaParser.MulSubOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMulSubOp(MinijavaParser.MulSubOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -413,37 +461,37 @@ public class MinijavaBaseListener implements MinijavaListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinaryOp(MinijavaParser.BinaryOpContext ctx) { }
+	@Override public void enterBinMulOperator(MinijavaParser.BinMulOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBinaryOp(MinijavaParser.BinaryOpContext ctx) { }
+	@Override public void exitBinMulOperator(MinijavaParser.BinMulOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinCalcOp(MinijavaParser.BinCalcOpContext ctx) { }
+	@Override public void enterBinAddOperator(MinijavaParser.BinAddOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBinCalcOp(MinijavaParser.BinCalcOpContext ctx) { }
+	@Override public void exitBinAddOperator(MinijavaParser.BinAddOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBinBoolOp(MinijavaParser.BinBoolOpContext ctx) { }
+	@Override public void enterBinLogicalOperator(MinijavaParser.BinLogicalOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBinBoolOp(MinijavaParser.BinBoolOpContext ctx) { }
+	@Override public void exitBinLogicalOperator(MinijavaParser.BinLogicalOperatorContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

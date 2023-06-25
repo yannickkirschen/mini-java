@@ -9,7 +9,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 
 public class Parser {
     public static Program parse() {
-        CharStream input = CharStreams.fromString("xyz");
+        CharStream input = CharStreams.fromString("class Main { void main() { int i = 0; } }");
 
         MinijavaLexer lexer = new MinijavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);

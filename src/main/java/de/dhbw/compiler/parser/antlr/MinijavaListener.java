@@ -188,16 +188,6 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitUnaryOperation(MinijavaParser.UnaryOperationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinijavaParser#binaryOperation}.
-	 * @param ctx the parse tree
-	 */
-	void enterBinaryOperation(MinijavaParser.BinaryOperationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link MinijavaParser#binaryOperation}.
-	 * @param ctx the parse tree
-	 */
-	void exitBinaryOperation(MinijavaParser.BinaryOperationContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link MinijavaParser#constant}.
 	 * @param ctx the parse tree
 	 */
@@ -237,6 +227,56 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitExpression(MinijavaParser.ExpressionContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#binaryOperation}.
+	 * @param ctx the parse tree
+	 */
+	void enterBinaryOperation(MinijavaParser.BinaryOperationContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#binaryOperation}.
+	 * @param ctx the parse tree
+	 */
+	void exitBinaryOperation(MinijavaParser.BinaryOperationContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#arithmeticBinOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#arithmeticBinOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#mulOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulOp(MinijavaParser.MulOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#mulOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulOp(MinijavaParser.MulOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#mulSubOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterMulSubOp(MinijavaParser.MulSubOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#mulSubOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitMulSubOp(MinijavaParser.MulSubOpContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#logicalBinOp}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#logicalBinOp}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -338,35 +378,35 @@ public interface MinijavaListener extends ParseTreeListener {
 	 */
 	void exitUnaryOp(MinijavaParser.UnaryOpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinijavaParser#binaryOp}.
+	 * Enter a parse tree produced by {@link MinijavaParser#binMulOperator}.
 	 * @param ctx the parse tree
 	 */
-	void enterBinaryOp(MinijavaParser.BinaryOpContext ctx);
+	void enterBinMulOperator(MinijavaParser.BinMulOperatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinijavaParser#binaryOp}.
+	 * Exit a parse tree produced by {@link MinijavaParser#binMulOperator}.
 	 * @param ctx the parse tree
 	 */
-	void exitBinaryOp(MinijavaParser.BinaryOpContext ctx);
+	void exitBinMulOperator(MinijavaParser.BinMulOperatorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinijavaParser#binCalcOp}.
+	 * Enter a parse tree produced by {@link MinijavaParser#binAddOperator}.
 	 * @param ctx the parse tree
 	 */
-	void enterBinCalcOp(MinijavaParser.BinCalcOpContext ctx);
+	void enterBinAddOperator(MinijavaParser.BinAddOperatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinijavaParser#binCalcOp}.
+	 * Exit a parse tree produced by {@link MinijavaParser#binAddOperator}.
 	 * @param ctx the parse tree
 	 */
-	void exitBinCalcOp(MinijavaParser.BinCalcOpContext ctx);
+	void exitBinAddOperator(MinijavaParser.BinAddOperatorContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link MinijavaParser#binBoolOp}.
+	 * Enter a parse tree produced by {@link MinijavaParser#binLogicalOperator}.
 	 * @param ctx the parse tree
 	 */
-	void enterBinBoolOp(MinijavaParser.BinBoolOpContext ctx);
+	void enterBinLogicalOperator(MinijavaParser.BinLogicalOperatorContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link MinijavaParser#binBoolOp}.
+	 * Exit a parse tree produced by {@link MinijavaParser#binLogicalOperator}.
 	 * @param ctx the parse tree
 	 */
-	void exitBinBoolOp(MinijavaParser.BinBoolOpContext ctx);
+	void exitBinLogicalOperator(MinijavaParser.BinLogicalOperatorContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link MinijavaParser#args}.
 	 * @param ctx the parse tree

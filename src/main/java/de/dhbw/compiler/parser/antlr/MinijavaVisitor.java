@@ -119,12 +119,6 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUnaryOperation(MinijavaParser.UnaryOperationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MinijavaParser#binaryOperation}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitBinaryOperation(MinijavaParser.BinaryOperationContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link MinijavaParser#constant}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -148,6 +142,36 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitExpression(MinijavaParser.ExpressionContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#binaryOperation}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitBinaryOperation(MinijavaParser.BinaryOperationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#arithmeticBinOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#mulOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulOp(MinijavaParser.MulOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#mulSubOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMulSubOp(MinijavaParser.MulSubOpContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#logicalBinOp}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MinijavaParser#expr}.
 	 * @param ctx the parse tree
@@ -209,23 +233,23 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitUnaryOp(MinijavaParser.UnaryOpContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MinijavaParser#binaryOp}.
+	 * Visit a parse tree produced by {@link MinijavaParser#binMulOperator}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBinaryOp(MinijavaParser.BinaryOpContext ctx);
+	T visitBinMulOperator(MinijavaParser.BinMulOperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MinijavaParser#binCalcOp}.
+	 * Visit a parse tree produced by {@link MinijavaParser#binAddOperator}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBinCalcOp(MinijavaParser.BinCalcOpContext ctx);
+	T visitBinAddOperator(MinijavaParser.BinAddOperatorContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link MinijavaParser#binBoolOp}.
+	 * Visit a parse tree produced by {@link MinijavaParser#binLogicalOperator}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitBinBoolOp(MinijavaParser.BinBoolOpContext ctx);
+	T visitBinLogicalOperator(MinijavaParser.BinLogicalOperatorContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link MinijavaParser#args}.
 	 * @param ctx the parse tree
