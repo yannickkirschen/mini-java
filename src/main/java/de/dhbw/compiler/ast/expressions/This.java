@@ -6,6 +6,10 @@ import de.dhbw.compiler.codegeneration.Type;
 public non-sealed class This implements Expression {
 
     Type type;
+
+    public This(Type type){
+        this.type = type;
+    }
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);

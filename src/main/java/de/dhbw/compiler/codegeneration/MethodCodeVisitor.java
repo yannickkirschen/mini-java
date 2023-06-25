@@ -146,7 +146,7 @@ public class MethodCodeVisitor implements Opcodes {
     public void visit(MethodCall stmtExpr) {
         stmtExpr.thisExpr.accept(this);
         stmtExpr.args.forEach(p -> p.accept(this));
-        v.visitMethodInsn(INVOKEVIRTUAL, stmtExpr.thisExpr.getType().toString(), stmtExpr.name, getDescriptor(stmtExpr.getType(), stmtExpr.args), false);
+        v.visitMethodInsn(INVOKEVIRTUAL, stmtExpr.thisExpr.getType().getName(), stmtExpr.name, getDescriptor(stmtExpr.getType(), stmtExpr.args), false);
     }
 
     public void visit(New stmtExpr) {
@@ -238,9 +238,6 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(LocalOrFieldVar expr) {
         int varIndex = vars.getIndex(expr.name);
-        System.out.println("varIndex: " + varIndex);
-        System.out.println("className: " + className);
-        vars.printAll();
         if (varIndex == -1) {
             v.visitVarInsn(Opcodes.ALOAD, 0);
             v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name, getFieldDescriptor(expr));// TODO -> after merged typing into ast -> get type from instVar

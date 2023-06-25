@@ -5,15 +5,11 @@ import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.statements.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
+import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
 import de.dhbw.compiler.typecheck.SyntaxException;
-import de.dhbw.compiler.typecheck.TypeCheck;
 import de.dhbw.compiler.typecheck.TypeException;
 
-import java.io.File;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +18,7 @@ public class TestCodeGeneration {
     public static void main(String[] args) throws NoSuchMethodException, SyntaxException, TypeException {
         //System.out.println(Type.getMethodDescriptor(TestCodeGeneration.class.getMethod("test")));
         ArrayList<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(testCaseWhile());
+        clazzes.add(testCaseMethodCall());
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();
@@ -134,6 +130,8 @@ public class TestCodeGeneration {
      *
      * @return
      */
+
+    // Statements
     public static Clazz testCaseReturnLocalVar() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -404,6 +402,90 @@ public class TestCodeGeneration {
 
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
+
+    // Statement Expressions
+
+    /**
+     * public class TestClassWhile{
+     *     public int callDoWhile(){
+     *         return doWhile();
+     *     }
+     *
+     *     public int doWhile(){
+     *         int i = 10;
+     *         int c = 0;
+     *         while( i > 0){
+     *             i = i - 1;
+     *             c = c + 1;
+     *         }
+     *         return c;
+     *     }
+     * }
+     * @return
+     */
+    public static Clazz testCaseMethodCall(){
+        ArrayList<Field> fields = new ArrayList<>();
+        ArrayList<Method> methods = new ArrayList<>();
+        ArrayList<Constructor> constr = new ArrayList<>();
+        ArrayList<Statement> doWhileBodyContent = new ArrayList<>();
+        ArrayList<Statement> callDoWhileBodyContent = new ArrayList<>();
+
+        ArrayList<Statement> whileBody = new ArrayList<>();
+        whileBody.add(new StmtExprStmt(new Assign(
+            new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+            new Binary(
+                "-",
+                new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+                new JInteger("1", PrimitiveType.INTEGER), PrimitiveType.INTEGER)),
+            PrimitiveType.INTEGER));
+        whileBody.add(new StmtExprStmt(new Assign(
+            new LocalOrFieldVar("c", PrimitiveType.INTEGER),
+            new Binary(
+                "+",
+                new LocalOrFieldVar("c", PrimitiveType.INTEGER),
+                new JInteger("1", PrimitiveType.INTEGER), PrimitiveType.INTEGER)),
+            PrimitiveType.INTEGER));
+
+        doWhileBodyContent.add(new LocalVarDecl(new AstType("int"), "i", PrimitiveType.INTEGER));
+        doWhileBodyContent.add(new StmtExprStmt(
+            new Assign(
+                new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+                new JInteger("10", PrimitiveType.INTEGER))));
+        doWhileBodyContent.add(new LocalVarDecl(new AstType("int"), "c", PrimitiveType.INTEGER));
+        doWhileBodyContent.add(new StmtExprStmt(
+            new Assign(
+                new LocalOrFieldVar("c", PrimitiveType.INTEGER),
+                new JInteger("0", PrimitiveType.INTEGER))));
+        doWhileBodyContent.add(new While(
+            new Binary(
+                ">",
+                new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+                new JInteger("0", PrimitiveType.INTEGER), PrimitiveType.INTEGER),
+            new Block(whileBody, PrimitiveType.INTEGER)));
+
+        doWhileBodyContent.add(new Return(new LocalOrFieldVar("c", PrimitiveType.INTEGER), PrimitiveType.INTEGER));
+        callDoWhileBodyContent.add(new Return(
+            new StmtExprExpr(
+                new MethodCall(
+                    new This(new ObjectType("TestClassMethodCall")),
+                    "doWhile",
+                    new ArrayList<>(),
+                    PrimitiveType.INTEGER), PrimitiveType.INTEGER), PrimitiveType.INTEGER));
+        Statement callDoWhileBody = new Block(callDoWhileBodyContent, PrimitiveType.INTEGER);
+        Statement doWhileBody = new Block(doWhileBodyContent, PrimitiveType.INTEGER);
+
+        Method methodCallDoWhile = new Method(PrimitiveType.INTEGER, new AstType("int"), "callDoWhile", new ArrayList<>(), callDoWhileBody);
+        Method methodDoWhile = new Method(PrimitiveType.INTEGER, new AstType("int"), "doWhile", new ArrayList<>(), doWhileBody);
+        methods.add(methodCallDoWhile);
+        methods.add(methodDoWhile);
+
+        Field f = new Field(PrimitiveType.INTEGER, new AstType("int"), "field");
+        fields.add(f);
+        Constructor m = new Constructor(new ObjectType("TestClassMethodCall"), new ArrayList<>(), null);
+        constr.add(m);
+        return new Clazz(new ObjectType("TestClassMethodCall"), new AstType("TestClassMethodCall"), fields, constr, methods);
+    }
+
 
 
 }
