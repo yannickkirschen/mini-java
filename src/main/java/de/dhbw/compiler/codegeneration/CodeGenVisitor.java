@@ -22,7 +22,7 @@ public class CodeGenVisitor implements Opcodes {
             visitField(t, cw);
         }
 
-        for(Constructor c : clazz.constructors){
+        for (Constructor c : clazz.constructors) {
             MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null), clazz.name.name());
             mcv.visit(c);
         }
@@ -61,14 +61,16 @@ public class CodeGenVisitor implements Opcodes {
     public Type parseType(Expression obj) {
         return parseType(obj.getType());
     }
+
     public Type parseType(Statement obj) {
         return parseType(obj.getType());
     }
+
     public Type parseType(StatementExpression obj) {
         return parseType(obj.getType());
     }
 
-    public Type parseType(Type t){
+    public Type parseType(Type t) {
         return parseType(t.getName());
     }
 
@@ -91,13 +93,18 @@ public class CodeGenVisitor implements Opcodes {
 
 
     public String extractTypeString(Type t) {
-        return t.getName();
+        if (t instanceof ObjectType) {
+            return String.format("L%s;", t.getName());
+        } else {
+            return t.getName();
+        }
+
     }
 
     public String extractMethodDescriptor(Type returnType, List<Parameter> params) {
         StringBuilder out = new StringBuilder("()");
-        for(Parameter p : params){
-            out.insert(1,p.getType().getName());
+        for (Parameter p : params) {
+            out.insert(1, p.getType().getName());
         }
         out.append(returnType.getName());
         return out.toString();

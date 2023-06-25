@@ -20,58 +20,60 @@ public class MethodCodeVisitor implements Opcodes {
     String methodName;
     String className;
     MethodVarStack vars;
-    public MethodCodeVisitor(MethodVisitor v, String className){
+
+    public MethodCodeVisitor(MethodVisitor v, String className) {
         this.v = v;
         this.className = className;
         this.vars = new MethodVarStack();
     }
 
-    public void visit(Constructor m){
+    public void visit(Constructor m) {
         v.visitCode();
         // TODO check if type is actually classname
         methodName = m.getType().toString();
         vars.addVar("this");
         m.parameterList.forEach(p -> vars.addVar(p.name));
         new Super().accept(this);
-        if(m.getBody() != null)
+        if (m.getBody() != null)
             m.getBody().accept(this);
         v.visitInsn(RETURN);
-        v.visitMaxs(0,0);
+        v.visitMaxs(0, 0);
         v.visitEnd();
     }
 
-    public void visit(Method m){
+    public void visit(Method m) {
         v.visitCode();
         methodName = m.name;
         vars.addVar("this");
         m.parameters.forEach(p -> vars.addVar(p.name));
         m.statement.accept(this);
 
-        v.visitMaxs(0,0);
+        if (m.getType().equals(PrimitiveType.VOID))
+            v.visitInsn(RETURN);
+
+        v.visitMaxs(0, 0);
         v.visitEnd();
     }
+
     public void visit(Block stmt) {
         stmt.stmts.forEach(s -> s.accept(this));
     }
 
-    public void visit(Return ret){
+    public void visit(Return ret) {
         ret.expression.accept(this);
-
-
         // TODO can we do void-return?
-        if(ret.expression == null){
+        if (ret.expression == null) {
             v.visitInsn(RETURN);
         }
         // return opcode for bool, int, char, byte, short
-        else if(ret.expression.getType() instanceof PrimitiveType){
+        else if (ret.expression.getType() instanceof PrimitiveType) {
             v.visitInsn(IRETURN);
-        }
-        else{
+        } else {
             v.visitInsn(ARETURN);
         }
     }
 
-    public void visit(If stmt){
+    public void visit(If stmt) {
 
         Label elseBranch = new Label();
         Label end = new Label();
@@ -86,7 +88,7 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitLabel(end);
     }
 
-    public void visit(While stmt){
+    public void visit(While stmt) {
         Label whileStart = new Label();
         Label end = new Label();
 
@@ -100,28 +102,28 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitLabel(end);
     }
 
-    public void visit (StmtExprStmt stmt){
+    public void visit(StmtExprStmt stmt) {
         stmt.statementExpression.accept(this);
     }
 
-    public void visit (LocalVarDecl stmt){
+    public void visit(LocalVarDecl stmt) {
         // assuming that declaration and initialization are not possible at the same time / line of code
         vars.addVar(stmt.name);
     }
 
-    public void visit(Assign stmtExpr){
+    public void visit(Assign stmtExpr) {
         // TODO only deals with local vars at this moment
         // TODO field vars
 
         String targetName = "";
-        if(stmtExpr.target instanceof LocalOrFieldVar)
+        if (stmtExpr.target instanceof LocalOrFieldVar)
             targetName = ((LocalOrFieldVar) stmtExpr.target).name;
         // TODO find out other type of lhs of assign
         //if(stmtExpr.target instanceof InstVar)
         //    targetName = ((InstVar) stmtExpr.target).varName;
 
 
-        if(vars.contains(targetName)) {
+        if (vars.contains(targetName)) {
             stmtExpr.value.accept(this);
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
@@ -131,8 +133,7 @@ public class MethodCodeVisitor implements Opcodes {
             else {
                 v.visitVarInsn(ASTORE, vars.getVar(targetName));
             }
-        }
-        else{
+        } else {
             System.out.println("stmtExpr.target.toString: " + targetName);
             v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
             stmtExpr.value.accept(this);// load new variable value onto stack
@@ -142,19 +143,19 @@ public class MethodCodeVisitor implements Opcodes {
 
     // TODO for the following two methods we might need a method stack or class stack to determine the references to methods based on their names
 
-    public void visit(MethodCall stmtExpr){
+    public void visit(MethodCall stmtExpr) {
         stmtExpr.thisExpr.accept(this);
         stmtExpr.args.forEach(p -> p.accept(this));
         v.visitMethodInsn(INVOKEVIRTUAL, stmtExpr.thisExpr.getType().toString(), stmtExpr.name, getDescriptor(stmtExpr.getType(), stmtExpr.args), false);
     }
 
-    public void visit(New stmtExpr){
-        ObjectType voidType = new ObjectType("VOID");
+    public void visit(New stmtExpr) {
+        ObjectType voidType = new ObjectType("V");  // was VOID
         v.visitTypeInsn(NEW, stmtExpr.getType().getName());
         stmtExpr.expressions.forEach(p -> p.accept(this));
+        v.visitInsn(Opcodes.DUP);   // invoke-special pops the top, but doesn't return it back -> duplicate first
         v.visitMethodInsn(INVOKESPECIAL, stmtExpr.getType().getName(), "<init>", getDescriptor(voidType, stmtExpr.expressions), false);
     }
-
 
 
     public void visitExpression(Binary expr) {
@@ -207,7 +208,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(InstVar expr) {
         expr.thisExpr.accept(this);
-        v.visitFieldInsn(Opcodes.GETFIELD, className, expr.varName, getFieldDescriptor(expr)); // TODO after merged typing into ast -> get type from instVar
+        v.visitFieldInsn(Opcodes.GETFIELD, expr.thisExpr.getType().getName(), expr.varName, getFieldDescriptor(expr)); // TODO after merged typing into ast -> get type from instVar
     }
 
     public void visitExpression(JBoolean expr) {
@@ -242,7 +243,7 @@ public class MethodCodeVisitor implements Opcodes {
         vars.printAll();
         if (varIndex == -1) {
             v.visitVarInsn(Opcodes.ALOAD, 0);
-            v.visitFieldInsn(Opcodes.GETFIELD, "TestClass", expr.name, getFieldDescriptor(expr));// TODO -> after merged typing into ast -> get type from instVar
+            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name, getFieldDescriptor(expr));// TODO -> after merged typing into ast -> get type from instVar
 
         } else {
             if (isReference(expr.getType())) {
@@ -285,18 +286,27 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     private String getDescriptor(Type returnType, List<Expression> paramTypes) {
-        //TODO
-        return "";
+        var start = new StringBuilder("(");
+        for (var expr : paramTypes) start.append(getFieldDescriptor(expr));
+        start.append(")");
+        start.append(returnType.getName());
+
+        return start.toString();
     }
 
 
     private Boolean isReference(Type t) {
-        // TODO
+
+
         return t instanceof ObjectType;
     }
 
-    public String getFieldDescriptor( Expression field){
-        return field.getType().getName();
+    public String getFieldDescriptor(Expression field) {
+        if (field.getType() instanceof ObjectType) {
+            return String.format("L%s;", field.getType().getName());
+        } else {
+            return field.getType().getName();
+        }
     }
 
 }
