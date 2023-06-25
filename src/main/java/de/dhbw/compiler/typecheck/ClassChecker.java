@@ -1,19 +1,26 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.codegeneration.*;
+import de.dhbw.compiler.ast.Clazz;
+import de.dhbw.compiler.ast.Field;
+import de.dhbw.compiler.ast.Method;
+import de.dhbw.compiler.codegeneration.ObjectType;
+import de.dhbw.compiler.codegeneration.PrimitiveType;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Optional;
 
 public class ClassChecker implements BaseClassChecker {
     private final BaseMethodChecker methodVisitor;
 
-    private final Clazz clazz;
+    private final String className;
+    private final List<Field> fields;
     private final List<Method> methods;
     private final List<Method> typedMethods = new LinkedList<>();
 
-    public ClassChecker(Clazz clazz, List<Method> methods) {
-        this.clazz = clazz;
+    public ClassChecker(Clazz clazz, List<Field> fields, List<Method> methods) {
+        className = clazz.name.name();
+        this.fields = fields;
         this.methods = methods;
 
         this.methodVisitor = new MethodChecker(clazz, this);
@@ -29,7 +36,7 @@ public class ClassChecker implements BaseClassChecker {
             default -> throw new SyntaxException("Unexpected field type: %s", field.getType().getName());
         }
 
-        clazz.fields.add(field);
+        fields.add(field);
         return field;
     }
 
@@ -53,6 +60,6 @@ public class ClassChecker implements BaseClassChecker {
             }
         }
 
-        throw new SyntaxException("Cannot resolve method %s in type %s.", methodName, clazz.name);
+        throw new SyntaxException("Cannot resolve method %s in type %s.", methodName, className);
     }
 }
