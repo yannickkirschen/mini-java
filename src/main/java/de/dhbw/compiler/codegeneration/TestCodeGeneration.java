@@ -22,7 +22,7 @@ public class TestCodeGeneration {
     public static void main(String[] args) throws NoSuchMethodException, SyntaxException, TypeException {
         //System.out.println(Type.getMethodDescriptor(TestCodeGeneration.class.getMethod("test")));
         ArrayList<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(testInstVar());
+        clazzes.add(testCaseWhile());
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();
@@ -99,7 +99,7 @@ public class TestCodeGeneration {
      *
      * @return
      */
-    public static Clazz testCase4() {
+    public static Clazz testCaseAlterAndReturnField() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
         ArrayList<Constructor> constr = new ArrayList<>();
@@ -134,7 +134,7 @@ public class TestCodeGeneration {
      *
      * @return
      */
-    public static Clazz testCase5() {
+    public static Clazz testCaseReturnLocalVar() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
         ArrayList<Constructor> constr = new ArrayList<>();
@@ -153,6 +153,107 @@ public class TestCodeGeneration {
         constr.add(m);
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
+
+    /**
+     * public class TestClassIf{
+     *     public boolean doIf(boolean valu){
+     *         if(valu){
+     *             return false;
+     *         }
+     *         else return true;
+     *     }
+     * }
+     * @return
+     */
+    public static Clazz testCaseIf(){
+        ArrayList<Field> fields = new ArrayList<>();
+        ArrayList<Method> methods = new ArrayList<>();
+        ArrayList<Constructor> constr = new ArrayList<>();
+        ArrayList<Statement> bodyContent = new ArrayList<>();
+        bodyContent.add(new If(
+            new LocalOrFieldVar("valu", PrimitiveType.BOOLEAN),
+            new Return(new JBoolean("false", PrimitiveType.BOOLEAN), PrimitiveType.BOOLEAN),
+            new Return(new JBoolean("true", PrimitiveType.BOOLEAN), PrimitiveType.BOOLEAN),
+            PrimitiveType.BOOLEAN
+            ));
+        Statement body = new Block(bodyContent, PrimitiveType.INTEGER);
+        ArrayList<Parameter> doIfParameters = new ArrayList<>();
+        doIfParameters.add(new Parameter(PrimitiveType.BOOLEAN, new AstType("boolean"), "valu"));
+        Method method = new Method(PrimitiveType.BOOLEAN, new AstType("boolean"), "doIf", doIfParameters, body);
+        methods.add(method);
+
+        Field f = new Field(PrimitiveType.INTEGER, new AstType("int"), "field");
+        fields.add(f);
+        Constructor m = new Constructor(new ObjectType("TestClassIf"), new ArrayList<>(), null);
+        constr.add(m);
+        return new Clazz(new ObjectType("TestClassIf"), new AstType("TestClassIf"), fields, constr, methods);
+    }
+
+    /**
+     * public class TestClassWhile{
+     *     public int doIf(){
+     *         int i = 10;
+     *         int c = 0;
+     *         while( i > 0){
+     *             i = i - 1;
+     *             c = c + 1;
+     *         }
+     *         return c;
+     *     }
+     * }
+     * @return
+     */
+    public static Clazz testCaseWhile(){
+        ArrayList<Field> fields = new ArrayList<>();
+        ArrayList<Method> methods = new ArrayList<>();
+        ArrayList<Constructor> constr = new ArrayList<>();
+        ArrayList<Statement> bodyContent = new ArrayList<>();
+
+        ArrayList<Statement> whileBody = new ArrayList<>();
+        whileBody.add(new StmtExprStmt(new Assign(
+            new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+            new Binary(
+                "-",
+                new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+                new JInteger("1", PrimitiveType.INTEGER), PrimitiveType.INTEGER)),
+            PrimitiveType.INTEGER));
+        whileBody.add(new StmtExprStmt(new Assign(
+            new LocalOrFieldVar("c", PrimitiveType.INTEGER),
+            new Binary(
+                "+",
+                new LocalOrFieldVar("c", PrimitiveType.INTEGER),
+                new JInteger("1", PrimitiveType.INTEGER), PrimitiveType.INTEGER)),
+            PrimitiveType.INTEGER));
+
+        bodyContent.add(new LocalVarDecl(new AstType("int"), "i", PrimitiveType.INTEGER));
+        bodyContent.add(new StmtExprStmt(
+            new Assign(
+                new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+                new JInteger("10", PrimitiveType.INTEGER))));
+        bodyContent.add(new LocalVarDecl(new AstType("int"), "c", PrimitiveType.INTEGER));
+        bodyContent.add(new StmtExprStmt(
+            new Assign(
+                new LocalOrFieldVar("c", PrimitiveType.INTEGER),
+                new JInteger("0", PrimitiveType.INTEGER))));
+        bodyContent.add(new While(
+            new Binary(
+                ">",
+                new LocalOrFieldVar("i", PrimitiveType.INTEGER),
+                new JInteger("0", PrimitiveType.INTEGER), PrimitiveType.INTEGER),
+            new Block(whileBody, PrimitiveType.INTEGER)));
+
+        bodyContent.add(new Return(new LocalOrFieldVar("c", PrimitiveType.INTEGER), PrimitiveType.INTEGER));
+        Statement body = new Block(bodyContent, PrimitiveType.INTEGER);
+        Method method = new Method(PrimitiveType.INTEGER, new AstType("int"), "doIf", new ArrayList<>(), body);
+        methods.add(method);
+
+        Field f = new Field(PrimitiveType.INTEGER, new AstType("int"), "field");
+        fields.add(f);
+        Constructor m = new Constructor(new ObjectType("TestClassWhile"), new ArrayList<>(), null);
+        constr.add(m);
+        return new Clazz(new ObjectType("TestClassWhile"), new AstType("TestClassWhile"), fields, constr, methods);
+    }
+
 
     // Expressions
 
@@ -213,8 +314,6 @@ public class TestCodeGeneration {
      *
      * @return
      */
-
-
     public static Clazz testBinaryWithParameter() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -237,8 +336,6 @@ public class TestCodeGeneration {
 
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
-
-
 
     public static Clazz getterSetter() {
         ArrayList<Field> fields = new ArrayList<>();
@@ -269,7 +366,6 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
 
-
     /**
      *
      * public class TestClass {
@@ -284,8 +380,6 @@ public class TestCodeGeneration {
      * }
      * @return
      */
-
-
     public static Clazz testInstVar() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();

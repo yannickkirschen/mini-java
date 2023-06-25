@@ -75,16 +75,16 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visit(If stmt) {
 
-        Label elseBranch = new Label();
         Label end = new Label();
+        Label elseBranch = new Label();
 
         stmt.condition.accept(this);
 
-        v.visitJumpInsn(IFEQ, elseBranch);      // if result of above visit is false (i.e. 0) -> go to else label, otherwise continue here
+        v.visitJumpInsn(IFEQ, stmt.elseBody != null ? elseBranch : end);      // if result of above visit is false (i.e. 0) -> go to else label, otherwise continue here
         stmt.ifBody.accept(this);
         v.visitJumpInsn(GOTO, end);
         v.visitLabel(elseBranch);
-        stmt.elseBody.accept(this);
+        if(stmt.elseBody != null) stmt.elseBody.accept(this);
         v.visitLabel(end);
     }
 
@@ -296,8 +296,6 @@ public class MethodCodeVisitor implements Opcodes {
 
 
     private Boolean isReference(Type t) {
-
-
         return t instanceof ObjectType;
     }
 
