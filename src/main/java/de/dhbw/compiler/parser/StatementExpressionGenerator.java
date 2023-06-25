@@ -47,8 +47,13 @@ public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementE
     @Override
     public StatementExpression visitMethodCall(MinijavaParser.MethodCallContext ctx) {
         ExpressionGenerator eGen = new ExpressionGenerator();
-        Expression thisExpr = eGen.visit( ctx.localOrFieldVar() );
         String name = ctx.Id().getText();
+        Expression thisExpr;
+        if ( ctx.localOrFieldVar() != null ) {
+            thisExpr = eGen.visit( ctx.localOrFieldVar() );
+        } else {
+            thisExpr = new This();
+        }
 
         List<Expression> args = new ArrayList<>();
         for (MinijavaParser.ExprContext eCtx : ctx.args().expr()) {
