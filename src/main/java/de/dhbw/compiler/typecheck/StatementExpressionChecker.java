@@ -1,12 +1,20 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.ast.expressions.*;
-import de.dhbw.compiler.ast.stmtexprs.*;
+import de.dhbw.compiler.ast.Field;
+import de.dhbw.compiler.ast.Method;
+import de.dhbw.compiler.ast.expressions.Expression;
+import de.dhbw.compiler.ast.expressions.InstVar;
+import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
+import de.dhbw.compiler.ast.stmtexprs.Assign;
+import de.dhbw.compiler.ast.stmtexprs.MethodCall;
+import de.dhbw.compiler.ast.stmtexprs.New;
+import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
 import de.dhbw.compiler.codegeneration.ObjectType;
-import lombok.*;
+import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 public class StatementExpressionChecker implements BaseStatementExpressionChecker {
@@ -109,7 +117,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
 
     @Override
     public New check(New new_) throws SyntaxException, TypeException {
-        if (new_.getType().getName().equals(className)) {
+        if (new_.getPassedType().name().equals(className)) {
             List<Expression> expressions = new ArrayList<>(new_.expressions.size());
             for (Expression expression : new_.expressions) {
                 expressions.add(expressionChecker.check(expression));
@@ -138,6 +146,6 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
             return check(new_);
         }
 
-        throw new SyntaxException("Cannot resolve type %s", new_.getType().getName());
+        throw new SyntaxException("Cannot resolve type %s", new_.getPassedType().name());
     }
 }

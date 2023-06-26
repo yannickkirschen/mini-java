@@ -14,7 +14,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
     private final List<Field> fields;
     private final List<LocalOrFieldVar> localVariables;
 
-    private final BaseStatementExpressionChecker statementExpressionVisitor;
+    private final BaseStatementExpressionChecker statementExpressionChecker;
 
     @Override
     public Expression check(Expression expression) throws SyntaxException, TypeException {
@@ -161,7 +161,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
 
     @Override
     public StmtExprExpr check(StmtExprExpr stmtExprExpr) throws SyntaxException, TypeException {
-        StatementExpression typedStmtExprExpr = statementExpressionVisitor.check(stmtExprExpr.statementExpression);
+        StatementExpression typedStmtExprExpr = statementExpressionChecker.check(stmtExprExpr.statementExpression);
 
         stmtExprExpr.setType(typedStmtExprExpr.getType());
         return stmtExprExpr;

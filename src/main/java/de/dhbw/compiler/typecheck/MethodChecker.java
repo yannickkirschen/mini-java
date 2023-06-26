@@ -1,15 +1,21 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.*;
+import de.dhbw.compiler.ast.Clazz;
+import de.dhbw.compiler.ast.Method;
+import de.dhbw.compiler.ast.Parameter;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.Statement;
-import de.dhbw.compiler.codegeneration.*;
+import de.dhbw.compiler.codegeneration.ObjectType;
+import de.dhbw.compiler.codegeneration.PrimitiveType;
+import lombok.Getter;
 
-import java.util.*;
+import java.util.LinkedList;
+import java.util.List;
 
 public class MethodChecker implements BaseMethodChecker {
     private final String className;
 
+    @Getter
     private final BaseStatementChecker statementChecker;
 
     public MethodChecker(Clazz clazz, BaseClassChecker baseClassChecker) {

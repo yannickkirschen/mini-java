@@ -1,8 +1,6 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.Clazz;
-import de.dhbw.compiler.ast.Field;
-import de.dhbw.compiler.ast.Method;
+import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.codegeneration.ObjectType;
 import de.dhbw.compiler.codegeneration.PrimitiveType;
 
@@ -11,7 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 public class ClassChecker implements BaseClassChecker {
-    private final BaseMethodChecker methodVisitor;
+    private final BaseMethodChecker methodChecker;
+    private final BaseStatementChecker statementChecker;
 
     private final String className;
     private final List<Field> fields;
@@ -23,7 +22,8 @@ public class ClassChecker implements BaseClassChecker {
         this.fields = fields;
         this.methods = methods;
 
-        this.methodVisitor = new MethodChecker(clazz, this);
+        this.methodChecker = new MethodChecker(clazz, this);
+        this.statementChecker = methodChecker.getStatementChecker();
     }
 
     @Override
@@ -41,8 +41,22 @@ public class ClassChecker implements BaseClassChecker {
     }
 
     @Override
+    public Constructor check(Constructor constructor) throws SyntaxException, TypeException {
+        for (Parameter parameter : constructor.getParameterList()) {
+            parameter.setType(methodChecker.check(parameter).getType());
+        }
+
+        if (constructor.getBody() != null) {
+            statementChecker.check(constructor.getBody());
+        }
+
+        constructor.setType(new ObjectType(className));
+        return constructor;
+    }
+
+    @Override
     public Method check(Method method) throws SyntaxException, TypeException {
-        return methodVisitor.check(method);
+        return methodChecker.check(method);
     }
 
     @Override

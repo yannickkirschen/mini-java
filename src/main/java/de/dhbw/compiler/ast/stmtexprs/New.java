@@ -1,15 +1,17 @@
 package de.dhbw.compiler.ast.stmtexprs;
 
 import de.dhbw.compiler.ast.AstType;
-import de.dhbw.compiler.codegeneration.Type;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
+import de.dhbw.compiler.codegeneration.Type;
+import lombok.Getter;
 
 import java.util.List;
 
 public non-sealed class New implements StatementExpression {
-    AstType passedType;
     public List<Expression> expressions;
+    @Getter
+    AstType passedType;
     Type type;
 
     public New(AstType passedType, List<Expression> args, Type type) {

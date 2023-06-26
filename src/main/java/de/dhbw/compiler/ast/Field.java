@@ -1,11 +1,13 @@
 package de.dhbw.compiler.ast;
 
 import de.dhbw.compiler.codegeneration.Type;
+import lombok.Getter;
 
 public class Field {
-    Type type;
+    @Getter
     public AstType astType;
     public String name;
+    Type type;
 
     public Field(Type type, AstType astType, String name) {
         this.type = type;

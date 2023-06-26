@@ -1,8 +1,10 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.expressions.*;
+import de.dhbw.compiler.ast.expressions.Expression;
+import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.*;
-import de.dhbw.compiler.codegeneration.*;
+import de.dhbw.compiler.codegeneration.ObjectType;
+import de.dhbw.compiler.codegeneration.PrimitiveType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -12,8 +14,8 @@ public class StatementChecker implements BaseStatementChecker {
     private final String className;
     private final List<LocalOrFieldVar> localVariables;
 
-    private final BaseExpressionChecker expressionVisitor;
-    private final BaseStatementExpressionChecker statementExpressionVisitor;
+    private final BaseExpressionChecker expressionChecker;
+    private final BaseStatementExpressionChecker statementExpressionChecker;
 
     @Override
     public Statement check(Statement statement) throws SyntaxException, TypeException {
@@ -53,7 +55,7 @@ public class StatementChecker implements BaseStatementChecker {
 
     @Override
     public If check(If if_) throws SyntaxException, TypeException {
-        Expression expression = expressionVisitor.check(if_.condition);
+        Expression expression = expressionChecker.check(if_.condition);
 
         if (expression.getType().equals(PrimitiveType.BOOLEAN)) {
             Statement body = check(if_.ifBody);
@@ -76,13 +78,13 @@ public class StatementChecker implements BaseStatementChecker {
 
     @Override
     public LocalVarDecl check(LocalVarDecl localVarDecl) throws SyntaxException {
-        switch (localVarDecl.getType().getName()) {
+        switch (localVarDecl.getPassedType().name()) {
             case "Boolean", "boolean" -> localVarDecl.setType(PrimitiveType.BOOLEAN);
             case "Integer", "int" -> localVarDecl.setType(PrimitiveType.INTEGER);
             case "Character", "char" -> localVarDecl.setType(PrimitiveType.CHARACTER);
             case "String" -> localVarDecl.setType(ObjectType.string());
             default -> {
-                if (localVarDecl.getType().getName().equals(className)) {
+                if (localVarDecl.getPassedType().name().equals(className)) {
                     localVarDecl.setType(new ObjectType(className));
                 }
 
@@ -96,19 +98,19 @@ public class StatementChecker implements BaseStatementChecker {
 
     @Override
     public Return check(Return return_) throws SyntaxException, TypeException {
-        return_.setType(expressionVisitor.check(return_.expression).getType());
+        return_.setType(expressionChecker.check(return_.expression).getType());
         return return_;
     }
 
     @Override
     public StmtExprStmt check(StmtExprStmt stmtExprStmt) throws SyntaxException, TypeException {
-        stmtExprStmt.setType(statementExpressionVisitor.check(stmtExprStmt.statementExpression).getType());
+        stmtExprStmt.setType(statementExpressionChecker.check(stmtExprStmt.statementExpression).getType());
         return stmtExprStmt;
     }
 
     @Override
     public While check(While while_) throws SyntaxException, TypeException {
-        Expression expression = expressionVisitor.check(while_.condition);
+        Expression expression = expressionChecker.check(while_.condition);
         if (expression.getType().getName().equals("java.lang.Boolean")) {
             while_.setType(PrimitiveType.BOOLEAN);
             return while_;
