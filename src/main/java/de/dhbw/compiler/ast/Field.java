@@ -4,7 +4,7 @@ import de.dhbw.compiler.codegeneration.Type;
 
 public class Field {
     Type type;
-    AstType astType;
+    public AstType astType;
     public String name;
 
     public Field(Type type, AstType astType, String name) {

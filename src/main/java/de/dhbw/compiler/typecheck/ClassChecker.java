@@ -28,12 +28,12 @@ public class ClassChecker implements BaseClassChecker {
 
     @Override
     public Field check(Field field) throws SyntaxException {
-        switch (field.getType().getName()) {
+        switch (field.astType.name()) {
             case "Boolean", "boolean" -> field.setType(PrimitiveType.BOOLEAN);
             case "Integer", "int" -> field.setType(PrimitiveType.INTEGER);
             case "Character", "char" -> field.setType(PrimitiveType.CHARACTER);
             case "String" -> field.setType(ObjectType.string());
-            default -> throw new SyntaxException("Unexpected field type: %s", field.getType().getName());
+            default -> throw new SyntaxException("Unexpected field type: %s", field.astType.name());
         }
 
         fields.add(field);
