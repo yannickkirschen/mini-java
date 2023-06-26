@@ -11,9 +11,11 @@ import org.objectweb.asm.Opcodes;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 
 public class CodeGenVisitor implements Opcodes {
+    private static String[] knownDescriptors = new String[]{"V", "B", "C", "D", "F", "I", "J", "S", "Z"};
 
     public void visitClass(Clazz clazz) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
@@ -106,7 +108,7 @@ public class CodeGenVisitor implements Opcodes {
         for (Parameter p : params) {
             out.insert(1, p.getType().getName());
         }
-        out.append(returnType.getName());
+        out.append(Arrays.stream(knownDescriptors).anyMatch(n -> n.equals(returnType.getName())) ? returnType.getName() : "L" + returnType.getName() + ";");
         return out.toString();
     }
 

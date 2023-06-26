@@ -1,5 +1,6 @@
 package de.dhbw.compiler.ast.stmtexprs;
 
+import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.codegeneration.Type;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
@@ -7,17 +8,17 @@ import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import java.util.List;
 
 public non-sealed class New implements StatementExpression {
-    Type passedType;
+    AstType passedType;
     public List<Expression> expressions;
     Type type;
 
-    public New(Type passedType, List<Expression> args, Type type) {
+    public New(AstType passedType, List<Expression> args, Type type) {
         this.passedType = passedType;
         this.expressions = args;
         this.type = type;
     }
 
-    public New(Type passedType, List<Expression> expressions) {
+    public New(AstType passedType, List<Expression> expressions) {
         this.passedType = passedType;
         this.expressions = expressions;
     }

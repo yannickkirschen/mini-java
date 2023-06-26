@@ -9,6 +9,7 @@ import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
 import de.dhbw.compiler.typecheck.SyntaxException;
 import de.dhbw.compiler.typecheck.TypeException;
+ import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,13 +17,16 @@ import java.util.List;
 
 public class TestCodeGeneration {
     public static void main(String[] args) throws NoSuchMethodException, SyntaxException, TypeException {
-        //System.out.println(Type.getMethodDescriptor(TestCodeGeneration.class.getMethod("test")));
+
+        System.out.println(Type.getMethodDescriptor(TestCodeGeneration.class.getMethod("testCaseEmptyClass")));
         ArrayList<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(testCaseMethodCall());
+        clazzes.add(testCaseNew());
+        clazzes.add(testCaseEmptyClass());
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();
         visitor.visitClass(clazzes.get(0));
+        visitor.visitClass(clazzes.get(1));
 
     }
 
@@ -390,17 +394,17 @@ public class TestCodeGeneration {
         Field f = new Field(testClassType, new AstType("TestInstVar"), "var");
         fields.add(f);
         var fieldVar = new LocalOrFieldVar("var", testClassType);
-        bodyContent.add(new StmtExprStmt(new Assign(fieldVar, new StmtExprExpr(new New(testClassType, new ArrayList<Expression>(), testClassType), testClassType), testClassType)));
+        bodyContent.add(new StmtExprStmt(new Assign(fieldVar, new StmtExprExpr(new New(new AstType("TestInstVar"), new ArrayList<Expression>(), testClassType), testClassType), testClassType)));
 
         getContent.add(new Return( new InstVar(fieldVar, "test", PrimitiveType.INTEGER)));
         Statement getBody = new Block(getContent, PrimitiveType.INTEGER);
         Method getter = new Method(PrimitiveType.INTEGER, new AstType("int"), "getInstVar", new ArrayList<Parameter>(), getBody);
         methods.add(getter);
 
-        Constructor m = new Constructor(new ObjectType("TestClass"), new ArrayList<>(), new Block(bodyContent, PrimitiveType.INTEGER));
+        Constructor m = new Constructor(new ObjectType("TestClassInstVar"), new ArrayList<>(), new Block(bodyContent, PrimitiveType.INTEGER));
         constr.add(m);
 
-        return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
+        return new Clazz(new ObjectType("TestClassInstVar"), new AstType("TestClassInstVar"), fields, constr, methods);
     }
 
     // Statement Expressions
@@ -488,4 +492,41 @@ public class TestCodeGeneration {
 
 
 
+    // Statement Expressions
+
+    /**
+     * public class TestClassNewCaller{
+     *      public TestClass getTestClass(){
+     *          return new TestClass();
+     *      }
+     * }
+     * @return
+     */
+    public static Clazz testCaseNew(){
+        ArrayList<Field> fields = new ArrayList<>();
+        ArrayList<Method> methods = new ArrayList<>();
+        ArrayList<Constructor> constr = new ArrayList<>();
+
+        ObjectType testClassObjectType = new ObjectType("TestClass");
+
+        ArrayList<Statement> getTestClassBlockStmts = new ArrayList<>();
+        getTestClassBlockStmts.add(new Return(
+            new StmtExprExpr(
+                new New(
+                    new AstType("TestClass"),
+                    new ArrayList<>(),
+                    testClassObjectType
+                ),
+                testClassObjectType), testClassObjectType));
+        Statement getTestClassBody = new Block(getTestClassBlockStmts, new ObjectType("TestClass"));
+
+        Method getTestClass = new Method(testClassObjectType, new AstType("TestClass"), "getTestClass", new ArrayList<>(), getTestClassBody);
+        methods.add(getTestClass);
+
+        Field f = new Field(PrimitiveType.INTEGER, new AstType("int"), "field");
+        fields.add(f);
+        Constructor m = new Constructor(new ObjectType("TestClassNew"), new ArrayList<>(), null);
+        constr.add(m);
+        return new Clazz(new ObjectType("TestClassNew"), new AstType("TestClassNew"), fields, constr, methods);
+    }
 }
