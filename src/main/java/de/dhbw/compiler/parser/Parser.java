@@ -8,15 +8,14 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 
 public class Parser {
-    public static Program parse() {
-        CharStream input = CharStreams.fromString("class Main { void main() { int i = 0; } }");
+    public static Program parse(String inputString) {
+        CharStream input = CharStreams.fromString( inputString);
 
         MinijavaLexer lexer = new MinijavaLexer(input);
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         MinijavaParser parser = new MinijavaParser(tokens);
         MinijavaParser.ProgramContext tree = parser.program();
 
-        Program program = ASTGenerator.generateAST(tree);
-        return program;
+        return ASTGenerator.generateAST(tree);
     }
 }
