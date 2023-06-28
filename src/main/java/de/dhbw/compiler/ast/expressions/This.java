@@ -10,6 +10,7 @@ public non-sealed class This implements Expression {
     public This(Type type){
         this.type = type;
     }
+    public This(){};
     @Override
     public void accept(MethodCodeVisitor visitor) {
         visitor.visitExpression(this);
