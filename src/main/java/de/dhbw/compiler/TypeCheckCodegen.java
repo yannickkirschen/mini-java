@@ -5,7 +5,7 @@ import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.Block;
 import de.dhbw.compiler.ast.statements.Return;
 import de.dhbw.compiler.ast.statements.Statement;
-import de.dhbw.compiler.codegeneration.CodeGenVisitor;
+import de.dhbw.compiler.codegeneration.CodeGenerator;
 import de.dhbw.compiler.typecheck.SyntaxException;
 import de.dhbw.compiler.typecheck.TypeCheck;
 import de.dhbw.compiler.typecheck.TypeException;
@@ -39,9 +39,6 @@ public class TypeCheckCodegen {
         Program p = new Program(clazzes);
         TypeCheck types = new TypeCheck();
         p = types.check(p);
-        CodeGenVisitor visitor = new CodeGenVisitor();
-        visitor.visitClass(p.classes().get(0));
-        //visitor.visitClass(clazzes.get(1));
-
+        CodeGenerator.generateCode(p);
     }
 }
