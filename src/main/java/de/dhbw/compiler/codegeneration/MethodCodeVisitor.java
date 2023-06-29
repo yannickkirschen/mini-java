@@ -84,7 +84,7 @@ public class MethodCodeVisitor implements Opcodes {
         stmt.ifBody.accept(this);
         v.visitJumpInsn(GOTO, end);
         v.visitLabel(elseBranch);
-        if(stmt.elseBody != null) stmt.elseBody.accept(this);
+        if (stmt.elseBody != null) stmt.elseBody.accept(this);
         v.visitLabel(end);
     }
 
@@ -181,8 +181,20 @@ public class MethodCodeVisitor implements Opcodes {
             case "<=" -> v.visitJumpInsn(Opcodes.IF_ICMPGT, jumpFalse);
             case ">" -> v.visitJumpInsn(Opcodes.IF_ICMPLE, jumpFalse);
             case ">=" -> v.visitJumpInsn(Opcodes.IF_ICMPLT, jumpFalse);
-            case "==" -> v.visitJumpInsn(Opcodes.IF_ACMPNE, jumpFalse); // enough to check only the reference ?
-            case "!=" -> v.visitJumpInsn(Opcodes.IF_ACMPEQ, jumpFalse); // enough to check only the reference ?
+            case "==" -> {
+                if (right.getType() instanceof PrimitiveType) {              // checking only right side should be enough, cause type checker runs before
+                    v.visitJumpInsn(Opcodes.IF_ICMPNE, jumpFalse);
+                } else {
+                    v.visitJumpInsn(Opcodes.IF_ACMPNE, jumpFalse);
+                }
+            }
+            case "!=" -> {
+                if (right.getType() instanceof PrimitiveType) {              // checking only right side should be enough, cause type checker runs before
+                    v.visitJumpInsn(Opcodes.IF_ICMPEQ, jumpFalse);
+                } else {
+                    v.visitJumpInsn(Opcodes.IF_ACMPEQ, jumpFalse);
+                }
+            }
             case "&&" -> {
                 v.visitInsn(Opcodes.POP);
                 v.visitJumpInsn(Opcodes.IFEQ, jumpFalse);
@@ -208,7 +220,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(InstVar expr) {
         expr.thisExpr.accept(this);
-        v.visitFieldInsn(Opcodes.GETFIELD, expr.thisExpr.getType().getName(), expr.varName, getFieldDescriptor(expr)); // TODO after merged typing into ast -> get type from instVar
+        v.visitFieldInsn(Opcodes.GETFIELD, expr.thisExpr.getType().getName(), expr.varName, getFieldDescriptor(expr));
     }
 
     public void visitExpression(JBoolean expr) {
@@ -220,8 +232,10 @@ public class MethodCodeVisitor implements Opcodes {
 
     // TODO could be optimized
     public void visitExpression(JCharacter expr) {
-        v.visitLdcInsn(expr.value);
+        int value = (int) expr.value.toCharArray()[0];
+        v.visitLdcInsn(value);
     }
+
 
     // TODO could be optimized
     public void visitExpression(JInteger expr) {
@@ -230,6 +244,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visitExpression(JNull expr) {
         v.visitInsn(Opcodes.ACONST_NULL);
+
     }
 
     public void visitExpression(JString expr) {
@@ -268,18 +283,52 @@ public class MethodCodeVisitor implements Opcodes {
         Label jumpTrue = new Label();
         Label jumpFalse = new Label();
         Label jumpEnd = new Label();
+        int varIndex;
+        if (expr.argument instanceof LocalOrFieldVar)
+            varIndex = vars.getIndex(((LocalOrFieldVar) expr.argument).name);
+        else if (expr.argument instanceof InstVar)
+            varIndex = -2;
+        else
+            throw new IllegalArgumentException("not allowed here: " + expr.argument.toString());
 
-        if (expr.operator.equals("!")) {
-            expr.argument.accept(this);
-            v.visitJumpInsn(Opcodes.IFNE, jumpFalse);
+
+        switch (expr.operator) {
+            case "!" -> {
+                expr.argument.accept(this);
+                v.visitJumpInsn(Opcodes.IFNE, jumpFalse);
+                v.visitLabel(jumpTrue);
+                v.visitInsn(Opcodes.ICONST_1);
+                v.visitJumpInsn(Opcodes.GOTO, jumpEnd);
+                v.visitLabel(jumpFalse);
+                v.visitInsn(Opcodes.ICONST_0);
+                v.visitLabel(jumpEnd);
+            }
+            case "++" -> {
+                if (varIndex > -1) {  // LocalVar
+                    v.visitIincInsn(varIndex, 1);
+                    expr.argument.accept(this);
+                } else if (varIndex == -2) {  // InstVar
+                    var instVar = (InstVar) expr.argument;
+                    visitExpression(instVar);
+                    v.visitInsn(Opcodes.DUP);
+                    v.visitFieldInsn(Opcodes.GETFIELD, instVar.thisExpr.getType().getName(), instVar.varName, getFieldDescriptor(instVar));
+                    v.visitInsn(Opcodes.ICONST_1);
+                    v.visitInsn(Opcodes.IADD);
+                    v.visitFieldInsn(Opcodes.PUTFIELD, instVar.thisExpr.getType().getName(), instVar.varName, getFieldDescriptor(instVar));
+                }
+            }
+            case "--" -> {
+                if (varIndex > -1) {
+                    v.visitIincInsn(varIndex, -1);
+                    expr.argument.accept(this);
+                } else {
+                    //TODO
+                }
+            }
+
         }
 
-        v.visitLabel(jumpTrue);
-        v.visitInsn(Opcodes.ICONST_1);
-        v.visitJumpInsn(Opcodes.GOTO, jumpEnd);
-        v.visitLabel(jumpFalse);
-        v.visitInsn(Opcodes.ICONST_0);
-        v.visitLabel(jumpEnd);
+
     }
 
     private String getDescriptor(Type returnType, List<Expression> paramTypes) {

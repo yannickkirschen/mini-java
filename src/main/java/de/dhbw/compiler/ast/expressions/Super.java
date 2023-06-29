@@ -2,7 +2,11 @@ package de.dhbw.compiler.ast.expressions;
 
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.codegeneration.Type;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 
+@AllArgsConstructor
+@NoArgsConstructor
 public non-sealed class Super implements Expression {
 
     Type type;

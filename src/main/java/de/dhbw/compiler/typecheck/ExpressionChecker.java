@@ -130,7 +130,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
 
     @Override
     public JNull check(JNull jnull) {
-        jnull.setType(PrimitiveType.NULL);
+        jnull.setType(ObjectType.jNull());
         return jnull;
     }
 

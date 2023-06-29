@@ -4,8 +4,7 @@ public enum PrimitiveType implements Type {
     INTEGER("I"),
     CHARACTER("C"),
     BOOLEAN("Z"),
-    VOID("V"),
-    NULL("null");
+    VOID("V");
 
     private final String name;
 
