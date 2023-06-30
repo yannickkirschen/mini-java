@@ -9,8 +9,6 @@ import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
 import de.dhbw.compiler.typecheck.SyntaxException;
 import de.dhbw.compiler.typecheck.TypeException;
-import javassist.bytecode.SignatureAttribute;
-import org.objectweb.asm.Type;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,7 +17,7 @@ import java.util.List;
 public class TestCodeGeneration {
     public static void main(String[] args) throws NoSuchMethodException, SyntaxException, TypeException {
         ArrayList<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(testUnaryWithInstVar());
+        clazzes.add(testInstVar2());
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();
@@ -422,7 +420,16 @@ public class TestCodeGeneration {
         Field f = new Field(testClassType, new AstType("TestInstVar"), "var");
         fields.add(f);
         var fieldVar = new LocalOrFieldVar("var", testClassType);
-        bodyContent.add(new StmtExprStmt(new Assign(fieldVar, new StmtExprExpr(new New(new AstType("TestInstVar"), new ArrayList<Expression>(), testClassType), testClassType), testClassType)));
+        bodyContent.add(new StmtExprStmt(
+            new Assign(
+                fieldVar,
+                new StmtExprExpr(
+                    new New(
+                        new AstType("TestInstVar"),
+                        new ArrayList<Expression>(),
+                        testClassType),
+                    testClassType),
+                testClassType)));
 
         getContent.add(new Return(new InstVar(fieldVar, "test", PrimitiveType.INTEGER)));
         Statement getBody = new Block(getContent, PrimitiveType.INTEGER);
@@ -657,8 +664,24 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
 
+    /**
+     * public class TestClass {
+     *     public TestInstVar var;
+     *
+     *     public TestClass() {
+     *       this.var = new TestInstVar();
+     *     }
+     *
+     *     public int get() {
+     *         this.var.test += 3;
+     *         return this.var.test;
+     *     }
+     * }
+     * @return
+     */
 
-    public static Clazz testUnaryWithInstVar() {
+
+    public static Clazz testInstVar2() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
         ArrayList<Constructor> constr = new ArrayList<>();
@@ -669,22 +692,49 @@ public class TestCodeGeneration {
 
 
 
-        Field f = new Field(testClassType, new AstType("TestInstVar"), "var");
-        fields.add(f);
-        var fieldVar = new LocalOrFieldVar("var", testClassType);
-        bodyContent.add(new StmtExprStmt(new Assign(fieldVar, new StmtExprExpr(new New(new AstType("TestInstVar"), new ArrayList<Expression>(), testClassType), testClassType), testClassType)));
+//        Field f = new Field(testClassType, new AstType("TestInstVar"), "var");
+//        fields.add(f);
+//        var fieldVar = new LocalOrFieldVar("var", testClassType);
+//        bodyContent.add(new StmtExprStmt(
+//            new Assign(
+//                fieldVar,
+//                new StmtExprExpr(
+//                    new New(
+//                        new AstType("TestInstVar"),
+//                        new ArrayList<Expression>(),
+//                        testClassType),
+//                    testClassType),
+//                testClassType)));
 
-        var inst = new InstVar(fieldVar, "test", PrimitiveType.INTEGER);
+        Constructor m = new Constructor(new ObjectType("TestClass"), new ArrayList<>(), new Block(bodyContent, null));
 
-        fContent.add(new StmtExprStmt(new Assign(inst, new Unary("++", inst, PrimitiveType.INTEGER)), PrimitiveType.INTEGER));
 
-        fContent.add(new Return(inst));
+        LocalOrFieldVar localVar = new LocalOrFieldVar("localVar", testClassType);
+
+        var instLocal = new InstVar(localVar, "test", PrimitiveType.INTEGER);
+        fContent.add(new LocalVarDecl(new AstType("TestInstVar"), "localVar", testClassType));
+        fContent.add(new StmtExprStmt(
+            new Assign(localVar
+                ,
+                new StmtExprExpr(
+                    new New(
+                        new AstType("TestInstVar"),
+                        new ArrayList<Expression>(),
+                        testClassType),
+                    testClassType),
+                testClassType)));
+
+        fContent.add(new StmtExprStmt(
+            new Assign(
+                instLocal, new Binary("+", instLocal, new JInteger("3", PrimitiveType.INTEGER), PrimitiveType.INTEGER)),
+            PrimitiveType.INTEGER));
+
+        fContent.add(new Return(instLocal));
 
         Statement fBody = new Block(fContent, PrimitiveType.INTEGER);
         Method getter = new Method(PrimitiveType.INTEGER, new AstType("int"), "get", new ArrayList<Parameter>(), fBody);
         methods.add(getter);
 
-        Constructor m = new Constructor(new ObjectType("TestClass"), new ArrayList<>(), new Block(bodyContent, null));
         constr.add(m);
 
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);

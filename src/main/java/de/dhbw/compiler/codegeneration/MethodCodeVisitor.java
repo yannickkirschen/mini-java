@@ -19,6 +19,7 @@ public class MethodCodeVisitor implements Opcodes {
     MethodVisitor v;
     String methodName;
     String className;
+    String lastClass;
     MethodVarStack vars;
 
     public MethodCodeVisitor(MethodVisitor v, String className) {
@@ -118,12 +119,14 @@ public class MethodCodeVisitor implements Opcodes {
         String targetName = "";
         if (stmtExpr.target instanceof LocalOrFieldVar)
             targetName = ((LocalOrFieldVar) stmtExpr.target).name;
-        // TODO find out other type of lhs of assign
-        //if(stmtExpr.target instanceof InstVar)
-        //    targetName = ((InstVar) stmtExpr.target).varName;
 
+        // TODO find out other type of lhs of assign
+        if(stmtExpr.target instanceof InstVar)
+            targetName = ((InstVar) stmtExpr.target).varName;
+        System.out.println("targetName: " + targetName);
 
         if (vars.contains(targetName)) {
+            System.out.println("visiting local var");
             stmtExpr.value.accept(this);
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
@@ -133,11 +136,18 @@ public class MethodCodeVisitor implements Opcodes {
             else {
                 v.visitVarInsn(ASTORE, vars.getVar(targetName));
             }
-        } else {
-            System.out.println("stmtExpr.target.toString: " + targetName);
-            v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
+        } else if(stmtExpr.target instanceof InstVar){
+            System.out.println("visiting instVar");
+            //v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
+            visitExpressionInstVar((InstVar) stmtExpr.target, false);
             stmtExpr.value.accept(this);// load new variable value onto stack
-            v.visitFieldInsn(PUTFIELD, className, targetName, getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
+            v.visitFieldInsn(PUTFIELD, lastClass, targetName, getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
+        }
+        else{
+            v.visitVarInsn(ALOAD, 0);
+            stmtExpr.value.accept(this);
+            v.visitFieldInsn(PUTFIELD, className, targetName, getFieldDescriptor(stmtExpr.target));
+            System.out.println("stmt.expr target type: " + stmtExpr.target.getClass());
         }
     }
 
@@ -218,9 +228,16 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
 
-    public void visitExpression(InstVar expr) {
+    public void visitExpression(InstVar expr){
+        visitExpressionInstVar(expr, true);
+    }
+
+    public void visitExpressionInstVar(InstVar expr, boolean withField) {
+        System.out.println("visiting instvar with: "+ expr.thisExpr.getType().getName());
         expr.thisExpr.accept(this);
-        v.visitFieldInsn(Opcodes.GETFIELD, expr.thisExpr.getType().getName(), expr.varName, getFieldDescriptor(expr));
+        lastClass = expr.thisExpr.getType().getName();
+        if(withField)
+            v.visitFieldInsn(Opcodes.GETFIELD, lastClass, expr.varName, getFieldDescriptor(expr));
     }
 
     public void visitExpression(JBoolean expr) {
@@ -303,29 +320,6 @@ public class MethodCodeVisitor implements Opcodes {
                 v.visitInsn(Opcodes.ICONST_0);
                 v.visitLabel(jumpEnd);
             }
-            case "++" -> {
-                if (varIndex > -1) {  // LocalVar
-                    v.visitIincInsn(varIndex, 1);
-                    expr.argument.accept(this);
-                } else if (varIndex == -2) {  // InstVar
-                    var instVar = (InstVar) expr.argument;
-                    visitExpression(instVar);
-                    v.visitInsn(Opcodes.DUP);
-                    v.visitFieldInsn(Opcodes.GETFIELD, instVar.thisExpr.getType().getName(), instVar.varName, getFieldDescriptor(instVar));
-                    v.visitInsn(Opcodes.ICONST_1);
-                    v.visitInsn(Opcodes.IADD);
-                    v.visitFieldInsn(Opcodes.PUTFIELD, instVar.thisExpr.getType().getName(), instVar.varName, getFieldDescriptor(instVar));
-                }
-            }
-            case "--" -> {
-                if (varIndex > -1) {
-                    v.visitIincInsn(varIndex, -1);
-                    expr.argument.accept(this);
-                } else {
-                    //TODO
-                }
-            }
-
         }
 
 
