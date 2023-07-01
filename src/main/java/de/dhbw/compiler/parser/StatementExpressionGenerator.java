@@ -1,6 +1,6 @@
 package de.dhbw.compiler.parser;
 
-import de.dhbw.compiler.ast.Type;
+import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.MethodCall;
@@ -33,7 +33,7 @@ public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementE
 
     @Override
     public StatementExpression visitNew(MinijavaParser.NewContext ctx) {
-        Type type = ASTGenerator.generateType( ctx.type() );
+        AstType type = ASTGenerator.generateType( ctx.type() );
 
         ExpressionGenerator eGen = new ExpressionGenerator();
         List<Expression> args = new ArrayList<>();

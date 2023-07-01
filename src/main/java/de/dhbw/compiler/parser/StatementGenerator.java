@@ -1,6 +1,6 @@
 package de.dhbw.compiler.parser;
 
-import de.dhbw.compiler.ast.Type;
+import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.*;
@@ -47,7 +47,7 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
         stmts.add( decl );
 
         Expression expr = new ExpressionGenerator().visit( ctx.expr() );
-        LocalOrFieldVar var = new LocalOrFieldVar( decl.name() );
+        LocalOrFieldVar var = new LocalOrFieldVar( decl.name );
         Assign assign = new Assign( var, expr );
         stmts.add( new StmtExprStmt( assign ) );
 
@@ -60,7 +60,7 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
     }
 
     private LocalVarDecl generateLocalVarDecl(MinijavaParser.VarDeclContext var) {
-        Type type = ASTGenerator.generateType( var.type() );
+        AstType type = ASTGenerator.generateType( var.type() );
         String name = var.Id().getSymbol().getText();
 
         return new LocalVarDecl(type, name);

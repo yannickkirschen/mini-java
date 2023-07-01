@@ -1,4 +1,35 @@
 package de.dhbw.compiler.ast.expressions;
 
-public record JInteger(String value) implements Expression {
+import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
+import de.dhbw.compiler.codegeneration.Type;
+
+public non-sealed class JInteger implements Expression {
+
+    public String value;
+    Type type;
+
+    public JInteger(String value, Type type) {
+        this.value = value;
+        this.type = type;
+    }
+
+    public JInteger(String value) {
+        this.value = value;
+    }
+
+    @Override
+    public void accept(MethodCodeVisitor visitor) {
+        visitor.visitExpression(this);
+    }
+
+
+    @Override
+    public Type getType() {
+        return type;
+    }
+
+    @Override
+    public void setType(Type t) {
+        type = t;
+    }
 }

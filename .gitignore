@@ -56,5 +56,4 @@ cabal.project.local~
 .ghc.environment.*
 
 .idea/*
-*.iml
 .DS_Store

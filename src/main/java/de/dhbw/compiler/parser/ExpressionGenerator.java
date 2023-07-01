@@ -44,7 +44,7 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
             return new Super();
         }
         if (ctx.Null() != null) {
-            return new Jnull();
+            return new JNull();
         }
 
         SubExpressionGenerator subGen = new SubExpressionGenerator();

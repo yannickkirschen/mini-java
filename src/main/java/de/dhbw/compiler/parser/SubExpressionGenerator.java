@@ -17,7 +17,7 @@ public class SubExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     public Expression visitInstVar(MinijavaParser.InstVarContext ctx) {
         Expression var = generateInstVar( ctx.This(), ctx.Id(), null, 0);
         if (var instanceof LocalOrFieldVar) {
-            return new InstVar( new This(), ((LocalOrFieldVar) var).name() );
+            return new InstVar( new This(), ((LocalOrFieldVar) var).name );
         }
         return var;
     }

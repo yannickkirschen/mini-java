@@ -17,7 +17,9 @@
         <maven.compiler.target>17</maven.compiler.target>
 
         <antlr.version>4.13.0</antlr.version>
+        <lombok.version>1.18.26</lombok.version>
         <junit.version>5.9.3</junit.version>
+        <asm.version>7.1</asm.version>
     </properties>
 
     <dependencies>
@@ -28,10 +30,30 @@
         </dependency>
 
         <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
+        </dependency>
+
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.reflections</groupId>
+            <artifactId>reflections</artifactId>
+            <version>0.9.12</version>
+        </dependency>
+
+        <!-- https://mvnrepository.com/artifact/org.ow2.asm/asm-util -->
+        <dependency>
+            <groupId>org.ow2.asm</groupId>
+            <artifactId>asm-util</artifactId>
+            <version>${asm.version}</version>
+        </dependency>
+
     </dependencies>
 </project>
