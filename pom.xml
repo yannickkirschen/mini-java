@@ -19,7 +19,7 @@
         <antlr.version>4.13.0</antlr.version>
         <lombok.version>1.18.26</lombok.version>
         <junit.version>5.9.3</junit.version>
-        <asm.version>7.1</asm.version>
+        <asm.version>9.5</asm.version>
     </properties>
 
     <dependencies>
