@@ -15,9 +15,7 @@ import org.objectweb.asm.Opcodes;
 import java.util.List;
 
 public class MethodCodeVisitor implements Opcodes {
-
     MethodVisitor v;
-    String methodName;
     String className;
     String lastClass;
     MethodVarStack vars;
@@ -31,7 +29,6 @@ public class MethodCodeVisitor implements Opcodes {
     public void visit(Constructor m) {
         v.visitCode();
         // TODO check if type is actually classname
-        methodName = m.getType().toString();
         vars.addVar("this");
         m.parameterList.forEach(p -> vars.addVar(p.name));
         new Super().accept(this);
@@ -44,7 +41,6 @@ public class MethodCodeVisitor implements Opcodes {
 
     public void visit(Method m) {
         v.visitCode();
-        methodName = m.name;
         vars.addVar("this");
         m.parameters.forEach(p -> vars.addVar(p.name));
         m.statement.accept(this);
