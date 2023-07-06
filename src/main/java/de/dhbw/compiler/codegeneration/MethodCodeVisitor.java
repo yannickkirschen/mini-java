@@ -14,18 +14,34 @@ import org.objectweb.asm.Opcodes;
 
 import java.util.List;
 
+/**
+ * Visitor that handles writing the bytecode for one method
+ */
 public class MethodCodeVisitor implements Opcodes {
     MethodVisitor v;
     String className;
     String lastClass;
     MethodVarStack vars;
 
+    /**
+     *
+     * @param v the visitor that handles the actual bytecode creation and everything (like constantPool, etc.) related
+     * @param className name of the class the method belongs to
+     */
     public MethodCodeVisitor(MethodVisitor v, String className) {
         this.v = v;
         this.className = className;
         this.vars = new MethodVarStack();
     }
 
+    /**
+     * Takes an object of the type constructor and translates it to bytecode.
+     * The method is the main entrypoint for method-bytecode-generation
+     * The method puts this and the passed parameters to the localVarStack,
+     * visits the mandatory super() call as well as the body containing the statements (if a body is given)
+     * The super() call is hardcoded, since inheriting is not included in our java-subset and therefor the only possible super() call is to java.lang.Object
+     * @param m the Constructor to be translated to bytecode
+     */
     public void visit(Constructor m) {
         v.visitCode();
         // TODO check if type is actually classname
@@ -39,6 +55,13 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitEnd();
     }
 
+    /**
+     * Takes an object of the type Method and translates it to bytecode
+     * The method adds this and the passed parameters to the localVars and visits the body of the method.
+     * If the methods returntype is VOID, a default VOID-return is added.
+     * If the method does not return VOID, it is assumed the program is valid and the return is part of the body.
+     * @param m the Method to be translated to bytecode
+     */
     public void visit(Method m) {
         v.visitCode();
         vars.addVar("this");
@@ -52,10 +75,21 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitEnd();
     }
 
+    /**
+     * takes an object of the type Block and translates it to bytecode
+     * by iterating over all the statements in the block and calling their respective accept-methods
+     * @param stmt the Block to be translated to bytecode
+     */
     public void visit(Block stmt) {
         stmt.stmts.forEach(s -> s.accept(this));
     }
 
+    /**
+     * takes an object of the type Return and translates it to bytecode.
+     * First the expression that is to be returned is visited and afterward the corresponding (VOID, Integer or other)
+     * return statement is translated to bytecode
+     * @param ret the Return to be translated to bytecode
+     */
     public void visit(Return ret) {
         ret.expression.accept(this);
         // TODO can we do void-return?
@@ -70,6 +104,14 @@ public class MethodCodeVisitor implements Opcodes {
         }
     }
 
+    /**
+     * takes an object of the type If and translates it to bytecode.
+     * First the condition is visited. Afterward the ifBody and, if present, the elseBody are visited.
+     * Last but not least, using Labels provided by the ASM-package, the control-flow is set up in such a way
+     * that the ifBody is used if the condition evaluates to TRUE otherwise the elseBody
+     *
+     * @param stmt the If to be translated to bytecode
+     */
     public void visit(If stmt) {
 
         Label end = new Label();
@@ -85,6 +127,13 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitLabel(end);
     }
 
+    /**
+     * takes an object of the type While and translates it to bytecode.
+     * First the condition is visited. Afterward the whileBody is visited.
+     * Thirdly, using Labels provided by the ASM-package,
+     * the controlflow is set up such that the whileBody is evaluated as long as the condition evaluates to TRUE.
+     * @param stmt the While to be translated to bytecode
+     */
     public void visit(While stmt) {
         Label whileStart = new Label();
         Label end = new Label();
@@ -99,12 +148,20 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitLabel(end);
     }
 
+    /**
+     * visits the statementExpression of the passed StmtExprStmt
+     * @param stmt the StmtExprStmt to be translated to bytecode
+     */
     public void visit(StmtExprStmt stmt) {
         stmt.statementExpression.accept(this);
     }
 
+    /**
+     * since the LocalVarDecl does not require any bytecode changes,
+     * only the information which variablename corresponds to which number is stored in the loclVarStack
+     * @param stmt the LocalVarDecl to be processed
+     */
     public void visit(LocalVarDecl stmt) {
-        // assuming that declaration and initialization are not possible at the same time / line of code
         vars.addVar(stmt.name);
     }
 
