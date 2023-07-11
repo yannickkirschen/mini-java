@@ -165,6 +165,26 @@ public class MethodCodeVisitor implements Opcodes {
         vars.addVar(stmt.name);
     }
 
+    /**
+     * visits an assign-statement-expression.
+     * The method basically works through the following process>
+     *  > determine the string-value of the variable that is meant to attain a new value.
+     *    Since it is ensured by the parser/typechecker that the only possible types for stmtExpr.target ar LocalOrFieldVar or InstVar,
+     *    it is sufficient to just check these to, to properly extract the name
+     *  > if the name is in the localVarStack (vars), the rhs of the assign is simply visited and,
+     *    depending on the type (Integer-like or other) of the Assign the ISTORE or ASTORE opcode is called,
+     *    such that the new value is stored with the corresponding variable-constant-pool-number (extracted from 'vars') is stored.
+     *  > If the lhs of the Assign is an InstVar, the process differs a bit.
+     *    Firstly the instVar is visited.
+     *    The second step involves once again visiting the rhs of the assign.
+     *    Lastly, using the PUTFIELD-Opcode, the value of the assign (which at runtime is at the top of the stack) is stored in the instVar.
+     *  > The last case is now that the assign's lhs is a fieldVar.
+     *    This is handled by putting "this" onto that stack (since a fieldVar is basically a "this.var", which very similiar to an InstVar)
+     *    Afterward the value visited and the value put using PUTFIELD again (with slightly different parameters)
+     * @param stmtExpr the Assign to be processed
+     */
+
+
     public void visit(Assign stmtExpr) {
         // TODO only deals with local vars at this moment
         // TODO field vars
@@ -172,8 +192,6 @@ public class MethodCodeVisitor implements Opcodes {
         String targetName = "";
         if (stmtExpr.target instanceof LocalOrFieldVar)
             targetName = ((LocalOrFieldVar) stmtExpr.target).name;
-
-        // TODO find out other type of lhs of assign
         if(stmtExpr.target instanceof InstVar)
             targetName = ((InstVar) stmtExpr.target).varName;
         System.out.println("targetName: " + targetName);
@@ -185,7 +203,6 @@ public class MethodCodeVisitor implements Opcodes {
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
                 v.visitVarInsn(ISTORE, vars.getVar(targetName));
             }
-            // TODO if we have any other type than int-derivative and other, we need to add this here
             else {
                 v.visitVarInsn(ASTORE, vars.getVar(targetName));
             }
@@ -205,13 +222,29 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
     // TODO for the following two methods we might need a method stack or class stack to determine the references to methods based on their names
+    // I think this is resolved by extracting the type from the "thisExpr"
 
+    /**
+     * visits a method call.
+     * First the lhs (i.e. the bit to the left of the dot in a method call) is visited.
+     * Afterward the arguments are visited, such that at runtime the respective values are on the stack.
+     * Lastly the actual method-call-opcode is visited.
+     * @param stmtExpr the MethodCall to be processed
+     */
     public void visit(MethodCall stmtExpr) {
         stmtExpr.thisExpr.accept(this);
         stmtExpr.args.forEach(p -> p.accept(this));
         v.visitMethodInsn(INVOKEVIRTUAL, stmtExpr.thisExpr.getType().getName(), stmtExpr.name, getDescriptor(stmtExpr.getType(), stmtExpr.args), false);
     }
 
+    /**
+     * visits an object instantiation with "new".
+     * First the NEW opcode is visited, which at runtime triggers the construction of an index in the runtime-constant pool.
+     * Afterward the parameters for the constructor are visited and thus at runtime their values placed on the stack.
+     * The last step is the invocation of the constructor of the class that was created using the INVOKESPECIAL opcode.
+     *
+     * @param stmtExpr the New to be processed
+     */
     public void visit(New stmtExpr) {
         ObjectType voidType = new ObjectType("V");  // was VOID
         v.visitTypeInsn(NEW, stmtExpr.getType().getName());
@@ -221,6 +254,12 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
 
+    /**
+     * visits the Binary expr described by the parameter.
+     * First the lhs and rhs are visited and thus at runtime their respective values will be on the operand stack.
+     * Based on the operator of the expression the corresponding opcode is then visited. At runtime this will trigger the corresponding operation.
+     * @param expr the Binary to be processed
+     */
     public void visitExpression(Binary expr) {
         expr.left.accept(this);
         expr.right.accept(this);
