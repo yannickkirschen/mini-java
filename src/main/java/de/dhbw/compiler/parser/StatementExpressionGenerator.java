@@ -37,8 +37,10 @@ public class StatementExpressionGenerator extends MinijavaBaseVisitor<StatementE
 
         ExpressionGenerator eGen = new ExpressionGenerator();
         List<Expression> args = new ArrayList<>();
-        for (MinijavaParser.ExprContext eCtx : ctx.args().expr()) {
-            args.add( eGen.visit( eCtx ) );
+        if (ctx.args() != null) {
+            for (MinijavaParser.ExprContext eCtx : ctx.args().expr()) {
+                args.add( eGen.visit( eCtx ) );
+            }
         }
 
         return new New(type, args);
