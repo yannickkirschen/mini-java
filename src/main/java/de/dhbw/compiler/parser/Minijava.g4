@@ -37,7 +37,7 @@ Super : 'super';
 localOrFieldVar : Id;
 unaryOperation : unaryOp expr;
 constant : Number | Boolean;
-char : '\'' Character? '\'';
+char : '\'' Character '\'';
 string : '"' Character* '"';
 Null : 'null';
 expression : '(' expr ')';
