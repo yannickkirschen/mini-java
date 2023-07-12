@@ -183,12 +183,7 @@ public class MethodCodeVisitor implements Opcodes {
      *    Afterward the value visited and the value put using PUTFIELD again (with slightly different parameters)
      * @param stmtExpr the Assign to be processed
      */
-
-
     public void visit(Assign stmtExpr) {
-        // TODO only deals with local vars at this moment
-        // TODO field vars
-
         String targetName = "";
         if (stmtExpr.target instanceof LocalOrFieldVar)
             targetName = ((LocalOrFieldVar) stmtExpr.target).name;
@@ -208,7 +203,6 @@ public class MethodCodeVisitor implements Opcodes {
             }
         } else if(stmtExpr.target instanceof InstVar){
             System.out.println("visiting instVar");
-            //v.visitVarInsn(ALOAD, 0);       // load "this" onto stack
             visitExpressionInstVar((InstVar) stmtExpr.target, false);
             stmtExpr.value.accept(this);// load new variable value onto stack
             v.visitFieldInsn(PUTFIELD, lastClass, targetName, getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName

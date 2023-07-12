@@ -17,7 +17,7 @@ import java.util.List;
 public class TestCodeGeneration {
     public static void main(String[] args) throws NoSuchMethodException, SyntaxException, TypeException {
         ArrayList<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(testInstVar2());
+        clazzes.add(testUnary());
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();
@@ -25,6 +25,11 @@ public class TestCodeGeneration {
 
     }
 
+    /**
+     * public class TestClass {
+     *     public TestClass(){}
+     * }
+     */
     public static Clazz testCaseEmptyClass() {
         ArrayList<Method> methods = new ArrayList<>();
         ArrayList<Constructor> constr = new ArrayList<>();
@@ -33,6 +38,12 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), new ArrayList<Field>(), constr, methods);
     }
 
+    /**
+     * public class TestClass{
+     *     int field;
+     *     public TestClass(){}
+     * }
+     */
     public static Clazz testCaseClassWField() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -114,19 +125,16 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClass {
-     * public int field;
+     *      public int field;
      * <p>
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public int getInt() {
-     * int i;
-     * i = 4000;
-     * return i;
+     *      public int getInt() {
+     *          int i;
+     *          i = 4000;
+     *          return i;
+     *      }
      * }
-     * }
-     *
-     * @return
      */
 
     // Statements
@@ -152,15 +160,13 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClassIf{
-     * public boolean doIf(boolean valu){
-     * if(valu){
-     * return false;
+     *      public boolean doIf(boolean valu){
+     *          if(valu){
+     *              return false;
+     *          }
+     *          else return true;
+     *      }
      * }
-     * else return true;
-     * }
-     * }
-     *
-     * @return
      */
     public static Clazz testCaseIf() {
         ArrayList<Field> fields = new ArrayList<>();
@@ -188,18 +194,16 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClassWhile{
-     * public int doIf(){
-     * int i = 10;
-     * int c = 0;
-     * while( i > 0){
-     * i = i - 1;
-     * c = c + 1;
+     *      public int doIf(){
+     *          int i = 10;
+     *          int c = 0;
+     *          while( i > 0){
+     *              i = i - 1;
+     *              c = c + 1;
+     *          }
+     *          return c;
+     *      }
      * }
-     * return c;
-     * }
-     * }
-     *
-     * @return
      */
     public static Clazz testCaseWhile() {
         ArrayList<Field> fields = new ArrayList<>();
@@ -258,16 +262,15 @@ public class TestCodeGeneration {
     /**
      * public class TestClass {
      * <p>
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public int add() {
-     * int a = 15;
-     * int b = 3;
-     * int result = a + b;
-     * return result;
-     * }
-     * }
+     *      public int add() {
+     *          int a = 15;
+     *          int b = 3;
+     *          int result = a + b;
+     *          return result;
+     *      }
+     *  }
      *
      * @return
      */
@@ -299,6 +302,23 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
 
+
+    /**
+     * public class TestClass(){
+     *      int var;
+     *      int var2;
+     *      public TestClass(){
+     *          var  = 1000;
+     *          var2 = 2000
+     *      }
+     *      public int get(){
+     *          return var + var2;
+     *      }
+     *
+     *
+     * }
+     * @return
+     */
     public static Clazz testBinaryWithFields() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -331,15 +351,13 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClass {
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public int add(int var1, int var2) {
-     * int var3 = var1 * var2;
-     * return var3;
+     *      public int add(int var1, int var2) {
+     *          int var3 = var1 * var2;
+     *          return var3;
+     *      }
      * }
-     * }
-     *
      * @return
      */
     public static Clazz testBinaryWithParameter() {
@@ -365,6 +383,18 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
 
+    /**
+     *  public class TestClass {
+     *      public int var = 1000;
+     *      public TestClass() {}
+     *      public void setVar(int var1) {
+     *          this.var = var1;
+     *      }
+     *      public int getVar() {
+     *          return this.var;
+     *      }
+     * }
+     */
     public static Clazz getterSetter() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -396,17 +426,14 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClass {
-     * public TestInstVar var = new TestInstVar();
+     *      public TestInstVar var = new TestInstVar();
      * <p>
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public int getInstVar() {
-     * return this.var.test;
-     * }
-     * }
-     *
-     * @return
+     *      public int getInstVar() {
+     *          return this.var.test;
+     *      }
+     *  }
      */
     public static Clazz testInstVar() {
         ArrayList<Field> fields = new ArrayList<>();
@@ -469,6 +496,7 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
 
+
     public static Clazz testChar() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -491,6 +519,7 @@ public class TestCodeGeneration {
 
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
+
 
     public static Clazz testInteger() {
         ArrayList<Field> fields = new ArrayList<>();
@@ -521,18 +550,14 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClass {
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public boolean get() {
-     * Object var1 = null;
-     * return var1 == null;
+     *      public boolean get() {
+     *          Object var1 = null;
+     *          return var1 == null;
+     *      }
      * }
-     * }
-     *
-     * @return
      */
-
     public static Clazz testNull() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -559,18 +584,14 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClass {
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public String get() {
-     * String var1 = "Compilerbau macht Spaß";
-     * return var1;
+     *      public String get() {
+     *          String var1 = "Compilerbau macht Spaß";
+     *          return var1;
+     *      }
      * }
-     * }
-     *
-     * @return
      */
-
     public static Clazz testString() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -599,19 +620,16 @@ public class TestCodeGeneration {
     // StmtExprExpr tested already -> testInstVar()
 
 
-    // TODO test super()
+    // TODO test super() ->
 
     /**
      * public class TestClass {
-     * public TestClass() {
-     * }
+     *      public TestClass() {}
      * <p>
-     * public TestClass get() {
-     * return this;
+     *      public TestClass get() {
+     *          return this;
+     *      }
      * }
-     * }
-     *
-     * @return
      */
 
     public static Clazz testThis() {
@@ -634,7 +652,18 @@ public class TestCodeGeneration {
         return new Clazz(new ObjectType("TestClass"), new AstType("TestClass"), fields, constr, methods);
     }
 
-    // TODO
+    /**
+     * public class TestClass {
+     *     public TestClass() {
+     *     }
+     *
+     *     public boolean get() {
+     *         boolean var1 = false;
+     *         var1 = !var1;
+     *         return var1;
+     *     }
+     * }
+     */
     public static Clazz testUnary() {
         ArrayList<Field> fields = new ArrayList<>();
         ArrayList<Method> methods = new ArrayList<>();
@@ -642,20 +671,15 @@ public class TestCodeGeneration {
         ArrayList<Statement> bodyContent = new ArrayList<>();
         ArrayList<Statement> fContent = new ArrayList<>();
 
-        fContent.add(new LocalVarDecl(new AstType("int"), "a", PrimitiveType.INTEGER));
-        var a = new LocalOrFieldVar("a", PrimitiveType.INTEGER);
-        fContent.add(new StmtExprStmt(new Assign(a, new JInteger("3", PrimitiveType.INTEGER)), PrimitiveType.INTEGER));
-        fContent.add(new StmtExprStmt(new Assign(a, new Unary("--", a, PrimitiveType.INTEGER)), PrimitiveType.INTEGER));
+        fContent.add(new LocalVarDecl(new AstType("boolean"), "a", PrimitiveType.BOOLEAN));
+        var a = new LocalOrFieldVar("a", PrimitiveType.BOOLEAN);
+        fContent.add(new StmtExprStmt(new Assign(a, new JBoolean("false", PrimitiveType.BOOLEAN)), PrimitiveType.BOOLEAN));
+        fContent.add(new StmtExprStmt(new Assign(a, new Unary("!", a, PrimitiveType.BOOLEAN)), PrimitiveType.BOOLEAN));
 
         fContent.add(new Return(a));
 
-       /* fContent.add(new LocalVarDecl(new AstType("boolean"), "a", PrimitiveType.BOOLEAN));
-        var a = new LocalOrFieldVar("a", PrimitiveType.BOOLEAN);
-        fContent.add(new StmtExprStmt(new Assign(a, new JBoolean("false", PrimitiveType.BOOLEAN))));
-        fContent.add(new Return(new Unary("!", a, PrimitiveType.BOOLEAN)));*/
-
-        Statement fBody = new Block(fContent, PrimitiveType.INTEGER);
-        Method getter = new Method(PrimitiveType.INTEGER, new AstType("int"), "get", new ArrayList<Parameter>(), fBody);
+        Statement fBody = new Block(fContent, PrimitiveType.BOOLEAN);
+        Method getter = new Method(PrimitiveType.BOOLEAN, new AstType("boolean"), "get", new ArrayList<Parameter>(), fBody);
         methods.add(getter);
 
         Constructor m = new Constructor(new ObjectType("TestClass"), new ArrayList<>(), new Block(bodyContent, null));
@@ -667,17 +691,14 @@ public class TestCodeGeneration {
     /**
      * public class TestClass {
      *     public TestInstVar var;
-     *
      *     public TestClass() {
      *       this.var = new TestInstVar();
      *     }
-     *
      *     public int get() {
      *         this.var.test += 3;
      *         return this.var.test;
      *     }
      * }
-     * @return
      */
 
 
@@ -745,22 +766,20 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClassWhile{
-     * public int callDoWhile(){
-     * return doWhile();
-     * }
+     *      public int callDoWhile(){
+     *          return doWhile();
+     *      }
      * <p>
-     * public int doWhile(){
-     * int i = 10;
-     * int c = 0;
-     * while( i > 0){
-     * i = i - 1;
-     * c = c + 1;
+     *      public int doWhile(){
+     *          int i = 10;
+     *          int c = 0;
+     *          while( i > 0){
+     *              i = i - 1;
+     *              c = c + 1;
+     *          }
+     *          return c;
+     *      }
      * }
-     * return c;
-     * }
-     * }
-     *
-     * @return
      */
     public static Clazz testCaseMethodCall() {
         ArrayList<Field> fields = new ArrayList<>();
@@ -830,12 +849,11 @@ public class TestCodeGeneration {
 
     /**
      * public class TestClassNewCaller{
-     * public TestClass getTestClass(){
-     * return new TestClass();
+     *      int field;
+     *      public TestClass getTestClass(){
+     *          return new TestClass();
+     *      }
      * }
-     * }
-     *
-     * @return
      */
     public static Clazz testCaseNew() {
         ArrayList<Field> fields = new ArrayList<>();
