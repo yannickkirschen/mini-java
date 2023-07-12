@@ -95,8 +95,8 @@ public class ExpressionCheckerTest {
     @Test
     @DisplayName("check Files and set Type")
     void checkExpressionTest10() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-      //  This this = new This();
-      //  assertEquals(this, expressionChecker.check(this) );
+      This this_ = new This();
+      assertEquals(this, expressionChecker.check(this_) );
     }
     @Test
     @DisplayName("check Files and set Type")

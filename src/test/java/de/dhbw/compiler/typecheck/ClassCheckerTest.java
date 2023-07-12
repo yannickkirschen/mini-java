@@ -30,16 +30,17 @@ public class ClassCheckerTest {
             fields,
             null,
             null);
-        classChecker = new ClassChecker(clazz, null, null);
+        List<Field> fieldList = new ArrayList<>();
+        List<Method> methodList = new ArrayList<>();
+        classChecker = new ClassChecker(clazz, fieldList, methodList);
     }
 
     @Test
-    @DisplayName("check Files and set Type")
     void testFieldCheck0() throws SyntaxException {
-        AstType astType1  = new AstType("boolean");
-        Field field = new Field(PrimitiveType.BOOLEAN,astType1 , "boolen");
-
-        assertEquals(PrimitiveType.BOOLEAN, classChecker.check(field).getType());
+        AstType astType1  = new AstType("Boolean");
+        Field field = new Field(PrimitiveType.BOOLEAN,astType1 , "boolean");
+        Field field1 = classChecker.check(field);
+        assertEquals(PrimitiveType.BOOLEAN, field1.getType());
     }
     @Test
     @DisplayName("check Files and set Type")
@@ -51,7 +52,7 @@ public class ClassCheckerTest {
     }@Test
     @DisplayName("check Files and set Type")
     void testFieldCheck2() throws SyntaxException {
-        AstType astType1  = new AstType("boolean");
+        AstType astType1  = new AstType("char");
         Field field = new Field(PrimitiveType.CHARACTER,astType1 , "char");
 
         assertEquals(PrimitiveType.CHARACTER, classChecker.check(field).getType());
