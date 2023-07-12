@@ -24,8 +24,7 @@ public class MethodCodeVisitor implements Opcodes {
     MethodVarStack vars;
 
     /**
-     *
-     * @param v the visitor that handles the actual bytecode creation and everything (like constantPool, etc.) related
+     * @param v         the visitor that handles the actual bytecode creation and everything (like constantPool, etc.) related
      * @param className name of the class the method belongs to
      */
     public MethodCodeVisitor(MethodVisitor v, String className) {
@@ -40,6 +39,7 @@ public class MethodCodeVisitor implements Opcodes {
      * The method puts this and the passed parameters to the localVarStack,
      * visits the mandatory super() call as well as the body containing the statements (if a body is given)
      * The super() call is hardcoded, since inheriting is not included in our java-subset and therefor the only possible super() call is to java.lang.Object
+     *
      * @param m the Constructor to be translated to bytecode
      */
     public void visit(Constructor m) {
@@ -60,6 +60,7 @@ public class MethodCodeVisitor implements Opcodes {
      * The method adds this and the passed parameters to the localVars and visits the body of the method.
      * If the methods returntype is VOID, a default VOID-return is added.
      * If the method does not return VOID, it is assumed the program is valid and the return is part of the body.
+     *
      * @param m the Method to be translated to bytecode
      */
     public void visit(Method m) {
@@ -78,6 +79,7 @@ public class MethodCodeVisitor implements Opcodes {
     /**
      * takes an object of the type Block and translates it to bytecode
      * by iterating over all the statements in the block and calling their respective accept-methods
+     *
      * @param stmt the Block to be translated to bytecode
      */
     public void visit(Block stmt) {
@@ -88,6 +90,7 @@ public class MethodCodeVisitor implements Opcodes {
      * takes an object of the type Return and translates it to bytecode.
      * First the expression that is to be returned is visited and afterward the corresponding (VOID, Integer or other)
      * return statement is translated to bytecode
+     *
      * @param ret the Return to be translated to bytecode
      */
     public void visit(Return ret) {
@@ -132,6 +135,7 @@ public class MethodCodeVisitor implements Opcodes {
      * First the condition is visited. Afterward the whileBody is visited.
      * Thirdly, using Labels provided by the ASM-package,
      * the controlflow is set up such that the whileBody is evaluated as long as the condition evaluates to TRUE.
+     *
      * @param stmt the While to be translated to bytecode
      */
     public void visit(While stmt) {
@@ -150,6 +154,7 @@ public class MethodCodeVisitor implements Opcodes {
 
     /**
      * visits the statementExpression of the passed StmtExprStmt
+     *
      * @param stmt the StmtExprStmt to be translated to bytecode
      */
     public void visit(StmtExprStmt stmt) {
@@ -159,6 +164,7 @@ public class MethodCodeVisitor implements Opcodes {
     /**
      * since the LocalVarDecl does not require any bytecode changes,
      * only the information which variablename corresponds to which number is stored in the loclVarStack
+     *
      * @param stmt the LocalVarDecl to be processed
      */
     public void visit(LocalVarDecl stmt) {
@@ -168,26 +174,27 @@ public class MethodCodeVisitor implements Opcodes {
     /**
      * visits an assign-statement-expression.
      * The method basically works through the following process>
-     *  > determine the string-value of the variable that is meant to attain a new value.
-     *    Since it is ensured by the parser/typechecker that the only possible types for stmtExpr.target ar LocalOrFieldVar or InstVar,
-     *    it is sufficient to just check these to, to properly extract the name
-     *  > if the name is in the localVarStack (vars), the rhs of the assign is simply visited and,
-     *    depending on the type (Integer-like or other) of the Assign the ISTORE or ASTORE opcode is called,
-     *    such that the new value is stored with the corresponding variable-constant-pool-number (extracted from 'vars') is stored.
-     *  > If the lhs of the Assign is an InstVar, the process differs a bit.
-     *    Firstly the instVar is visited.
-     *    The second step involves once again visiting the rhs of the assign.
-     *    Lastly, using the PUTFIELD-Opcode, the value of the assign (which at runtime is at the top of the stack) is stored in the instVar.
-     *  > The last case is now that the assign's lhs is a fieldVar.
-     *    This is handled by putting "this" onto that stack (since a fieldVar is basically a "this.var", which very similiar to an InstVar)
-     *    Afterward the value visited and the value put using PUTFIELD again (with slightly different parameters)
+     * > determine the string-value of the variable that is meant to attain a new value.
+     * Since it is ensured by the parser/typechecker that the only possible types for stmtExpr.target ar LocalOrFieldVar or InstVar,
+     * it is sufficient to just check these to, to properly extract the name
+     * > if the name is in the localVarStack (vars), the rhs of the assign is simply visited and,
+     * depending on the type (Integer-like or other) of the Assign the ISTORE or ASTORE opcode is called,
+     * such that the new value is stored with the corresponding variable-constant-pool-number (extracted from 'vars') is stored.
+     * > If the lhs of the Assign is an InstVar, the process differs a bit.
+     * Firstly the instVar is visited.
+     * The second step involves once again visiting the rhs of the assign.
+     * Lastly, using the PUTFIELD-Opcode, the value of the assign (which at runtime is at the top of the stack) is stored in the instVar.
+     * > The last case is now that the assign's lhs is a fieldVar.
+     * This is handled by putting "this" onto that stack (since a fieldVar is basically a "this.var", which very similiar to an InstVar)
+     * Afterward the value visited and the value put using PUTFIELD again (with slightly different parameters)
+     *
      * @param stmtExpr the Assign to be processed
      */
     public void visit(Assign stmtExpr) {
         String targetName = "";
         if (stmtExpr.target instanceof LocalOrFieldVar)
             targetName = ((LocalOrFieldVar) stmtExpr.target).name;
-        if(stmtExpr.target instanceof InstVar)
+        if (stmtExpr.target instanceof InstVar)
             targetName = ((InstVar) stmtExpr.target).varName;
         System.out.println("targetName: " + targetName);
 
@@ -197,17 +204,15 @@ public class MethodCodeVisitor implements Opcodes {
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
                 v.visitVarInsn(ISTORE, vars.getVar(targetName));
-            }
-            else {
+            } else {
                 v.visitVarInsn(ASTORE, vars.getVar(targetName));
             }
-        } else if(stmtExpr.target instanceof InstVar){
+        } else if (stmtExpr.target instanceof InstVar) {
             System.out.println("visiting instVar");
             visitExpressionInstVar((InstVar) stmtExpr.target, false);
             stmtExpr.value.accept(this);// load new variable value onto stack
             v.visitFieldInsn(PUTFIELD, lastClass, targetName, getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
-        }
-        else{
+        } else {
             v.visitVarInsn(ALOAD, 0);
             stmtExpr.value.accept(this);
             v.visitFieldInsn(PUTFIELD, className, targetName, getFieldDescriptor(stmtExpr.target));
@@ -223,6 +228,7 @@ public class MethodCodeVisitor implements Opcodes {
      * First the lhs (i.e. the bit to the left of the dot in a method call) is visited.
      * Afterward the arguments are visited, such that at runtime the respective values are on the stack.
      * Lastly the actual method-call-opcode is visited.
+     *
      * @param stmtExpr the MethodCall to be processed
      */
     public void visit(MethodCall stmtExpr) {
@@ -252,6 +258,7 @@ public class MethodCodeVisitor implements Opcodes {
      * visits the Binary expr described by the parameter.
      * First the lhs and rhs are visited and thus at runtime their respective values will be on the operand stack.
      * Based on the operator of the expression the corresponding opcode is then visited. At runtime this will trigger the corresponding operation.
+     *
      * @param expr the Binary to be processed
      */
     public void visitExpression(Binary expr) {
@@ -265,6 +272,16 @@ public class MethodCodeVisitor implements Opcodes {
             default -> visitBoolExpression(expr.operator, expr.right);
         }
     }
+
+    /**
+     * visits boolesche binary expressions
+     * This method is an extension of the {@link #visitExpression(Binary) visitBinary} method, for this reason the expressions are already visited
+     * The encapsulation of bool expressions is needed to separate the boolesche return values implemented using labels and jump instructions from the int based return values
+     * In case of && and || instructions we need to visit the expressions separately
+     *
+     * @param operator the Binary operator
+     * @param right the right expression to be processed
+     */
 
     private void visitBoolExpression(String operator, Expression right) {
 
@@ -313,19 +330,34 @@ public class MethodCodeVisitor implements Opcodes {
         v.visitLabel(jumpEnd);
     }
 
-
-    public void visitExpression(InstVar expr){
+    /**
+     * calls {@link #visitExpressionInstVar(InstVar, boolean) visitExpressionInstVar} with the parameters expr and true
+     *
+     * @param expr the InstVar expression to be processed
+     */
+    public void visitExpression(InstVar expr) {
         visitExpressionInstVar(expr, true);
     }
 
+    /**
+     * visits the parameter expr as an instance variable
+     *
+     * @param expr  the InstVar expression to be processed
+     * @param withField Boolean
+     */
     public void visitExpressionInstVar(InstVar expr, boolean withField) {
-        System.out.println("visiting instvar with: "+ expr.thisExpr.getType().getName());
+        System.out.println("visiting instvar with: " + expr.thisExpr.getType().getName());
         expr.thisExpr.accept(this);
         lastClass = expr.thisExpr.getType().getName();
-        if(withField)
+        if (withField)
             v.visitFieldInsn(Opcodes.GETFIELD, lastClass, expr.varName, getFieldDescriptor(expr));
     }
 
+    /**
+     * visits parameter expr and loads corresponding value for true or false on the operand stack
+     *
+     * @param expr the JBoolean expression to be processed
+     */
     public void visitExpression(JBoolean expr) {
         if (expr.value.equals("true"))
             v.visitInsn(Opcodes.ICONST_1);
@@ -333,32 +365,57 @@ public class MethodCodeVisitor implements Opcodes {
             v.visitInsn(Opcodes.ICONST_0);
     }
 
-    // TODO could be optimized
+    /**
+     * visits the parameter expr and loads the corresponding ascii value on the operand stack
+     *
+     * @param expr the JCharacter expression to be processed
+     */
     public void visitExpression(JCharacter expr) {
         int value = (int) expr.value.toCharArray()[0];
         v.visitLdcInsn(value);
     }
 
 
-    // TODO could be optimized
+    /**
+     * visits the parameter expr and loads the corresponding integer value on the operand stack
+     *
+     * @param expr the JInteger expression to be processed
+     */
     public void visitExpression(JInteger expr) {
         v.visitLdcInsn(Integer.valueOf(expr.value));
     }
 
+    /**
+     * loads null value on the operand stack
+     *
+     * @param expr the JNull expression to be processed
+     */
     public void visitExpression(JNull expr) {
         v.visitInsn(Opcodes.ACONST_NULL);
 
     }
 
+    /**
+     * visits the parameter expr and loads the corresponding string value on the operand stack
+     *
+     * @param expr the JString expression to be processed
+     */
     public void visitExpression(JString expr) {
         v.visitLdcInsn(expr.value);
     }
 
+    /**
+     * takes an LocalOrFieldVar object and tries to get the MethodVarStack index of this variable
+     * In case of the index equals -1 it´s a field, and it will be loaded to the operand stack using it´s name
+     * Otherwise it loads the local variable using the provided index
+     *
+     * @param expr the LocalOrFieldVar expression to be processed
+     */
     public void visitExpression(LocalOrFieldVar expr) {
         int varIndex = vars.getIndex(expr.name);
         if (varIndex == -1) {
             v.visitVarInsn(Opcodes.ALOAD, 0);
-            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name, getFieldDescriptor(expr));// TODO -> after merged typing into ast -> get type from instVar
+            v.visitFieldInsn(Opcodes.GETFIELD, className, expr.name, getFieldDescriptor(expr));
 
         } else {
             if (isReference(expr.getType())) {
@@ -369,31 +426,44 @@ public class MethodCodeVisitor implements Opcodes {
         }
     }
 
+    /**
+     * calls the visitor method from the statementExpression of the parameter expr
+     *
+     * @param expr the StmtExprExpr expression to be processed
+     */
+
     public void visitExpression(StmtExprExpr expr) {
         expr.statementExpression.accept(this);
     }
 
+    /**
+     * loads "this" on the operand stack and calls the Object constructor
+     *
+     * @param expr the "Super" expression to be processed
+     */
     public void visitExpression(Super expr) {
         v.visitVarInsn(ALOAD, 0);
         v.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/Object", "<init>", "()V", false);
     }
 
+    /**
+     * loads "this" on the operand stack
+     *
+     * @param expr the "This" expression to be processed
+     */
     public void visitExpression(This expr) {
         v.visitVarInsn(Opcodes.ALOAD, 0);
     }
 
+    /**
+     * visits the parameter expr and loads the negated value on the operand stack
+     *
+     * @param expr the Unary to be processed
+     */
     public void visitExpression(Unary expr) {
         Label jumpTrue = new Label();
         Label jumpFalse = new Label();
         Label jumpEnd = new Label();
-        int varIndex;
-        if (expr.argument instanceof LocalOrFieldVar)
-            varIndex = vars.getIndex(((LocalOrFieldVar) expr.argument).name);
-        else if (expr.argument instanceof InstVar)
-            varIndex = -2;
-        else
-            throw new IllegalArgumentException("not allowed here: " + expr.argument.toString());
-
 
         switch (expr.operator) {
             case "!" -> {
@@ -411,6 +481,13 @@ public class MethodCodeVisitor implements Opcodes {
 
     }
 
+    /**
+     * builds the descriptor of a method in a jvm readable format
+     *
+     * @param returnType the return type of the method
+     * @param paramTypes a list containing all method parameter
+     * @return String
+     */
     private String getDescriptor(Type returnType, List<Expression> paramTypes) {
         var start = new StringBuilder("(");
         for (var expr : paramTypes) start.append(getFieldDescriptor(expr));
@@ -421,10 +498,22 @@ public class MethodCodeVisitor implements Opcodes {
     }
 
 
+    /**
+     * checks if Type t is an instance of ObjectType else return false
+     *
+     * @param t the Type to be checked
+     * @return Boolean
+     */
     private Boolean isReference(Type t) {
         return t instanceof ObjectType;
     }
 
+    /**
+     * builds a jvm readable field descriptor
+     *
+     * @param field LocalOrFieldVar
+     * @return String
+     */
     public String getFieldDescriptor(Expression field) {
         if (field.getType() instanceof ObjectType) {
             return String.format("L%s;", field.getType().getName());
