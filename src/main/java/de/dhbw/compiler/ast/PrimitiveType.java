@@ -1,4 +1,6 @@
-package de.dhbw.compiler.codegeneration;
+package de.dhbw.compiler.ast;
+
+import de.dhbw.compiler.ast.Type;
 
 public enum PrimitiveType implements Type {
     INTEGER("I"),

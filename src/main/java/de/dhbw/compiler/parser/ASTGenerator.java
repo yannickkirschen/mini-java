@@ -3,7 +3,6 @@ package de.dhbw.compiler.parser;
 import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.statements.Block;
 import de.dhbw.compiler.ast.statements.Statement;
-import de.dhbw.compiler.codegeneration.Type;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
 
 import java.util.ArrayList;

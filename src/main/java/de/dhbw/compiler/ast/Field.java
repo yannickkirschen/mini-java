@@ -1,6 +1,5 @@
 package de.dhbw.compiler.ast;
 
-import de.dhbw.compiler.codegeneration.Type;
 import lombok.Getter;
 
 public class Field {

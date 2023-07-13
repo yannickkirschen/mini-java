@@ -5,8 +5,8 @@ import de.dhbw.compiler.ast.Method;
 import de.dhbw.compiler.ast.Parameter;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.Statement;
-import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import lombok.Getter;
 
 import java.util.LinkedList;

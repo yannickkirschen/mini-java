@@ -2,7 +2,7 @@ package de.dhbw.compiler.ast.statements;
 
 import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 import lombok.Getter;
 
 
@@ -29,12 +29,12 @@ public non-sealed class LocalVarDecl implements Statement {
     }
 
     @Override
-    public de.dhbw.compiler.codegeneration.Type getType() {
+    public Type getType() {
         return type;
     }
 
     @Override
-    public void setType(de.dhbw.compiler.codegeneration.Type t) {
+    public void setType(Type t) {
         type = t;
     }
 }

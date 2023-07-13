@@ -1,9 +1,10 @@
 package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.Field;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
-import de.dhbw.compiler.codegeneration.*;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

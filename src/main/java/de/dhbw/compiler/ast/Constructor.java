@@ -2,7 +2,6 @@ package de.dhbw.compiler.ast;
 
 import de.dhbw.compiler.ast.statements.Statement;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
 
 import java.util.List;
 

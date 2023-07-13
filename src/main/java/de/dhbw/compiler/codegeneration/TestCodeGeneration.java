@@ -17,7 +17,7 @@ import java.util.List;
 public class TestCodeGeneration {
     public static void main(String[] args) throws NoSuchMethodException, SyntaxException, TypeException {
         ArrayList<Clazz> clazzes = new ArrayList<>();
-        clazzes.add(testUnary());
+        clazzes.add(testInstVar());
         Program p = new Program(clazzes);
 
         CodeGenVisitor visitor = new CodeGenVisitor();

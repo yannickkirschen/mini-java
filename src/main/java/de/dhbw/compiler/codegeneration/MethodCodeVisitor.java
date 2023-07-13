@@ -1,7 +1,6 @@
 package de.dhbw.compiler.codegeneration;
 
-import de.dhbw.compiler.ast.Constructor;
-import de.dhbw.compiler.ast.Method;
+import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.statements.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
