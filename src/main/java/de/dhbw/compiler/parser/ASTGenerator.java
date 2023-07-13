@@ -48,7 +48,7 @@ public class ASTGenerator {
     }
 
     private static Constructor generateConstructor(MinijavaParser.ConstructorContext ctx) {
-        List<Parameter> parameters = generateParams(ctx.params());
+        List<Parameter> parameters = ctx.params() != null ? generateParams(ctx.params()) : new ArrayList<>();
 
         StatementGenerator sGen = new StatementGenerator();
         Statement stmt = sGen.visit( ctx.block() );

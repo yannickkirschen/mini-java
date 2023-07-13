@@ -62,19 +62,24 @@ public class SubExpressionGenerator extends MinijavaBaseVisitor<Expression> {
         if (ctx.Boolean() != null) {
             return new JBoolean( ctx.Boolean().getText() );
         } else {
-            return new JInteger( ctx.Number().getSymbol().getText() );
+            return new JInteger( ctx.number().getText() );
         }
     }
 
     @Override
+    public Expression visitNumber(MinijavaParser.NumberContext ctx) {
+        return new JInteger( ctx.getText() );
+    }
+
+    @Override
     public Expression visitChar(MinijavaParser.CharContext ctx) {
-        return new JCharacter( ctx.Character().getText() );
+        return new JCharacter( ctx.character().getText() );
     }
 
     @Override
     public Expression visitString(MinijavaParser.StringContext ctx) {
         StringBuilder str = new StringBuilder();
-        for (TerminalNode character : ctx.Character()){
+        for (MinijavaParser.CharacterContext character : ctx.character()){
             str.append(character.getText());
         }
 
