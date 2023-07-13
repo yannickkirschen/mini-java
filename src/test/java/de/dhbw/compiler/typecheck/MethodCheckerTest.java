@@ -46,7 +46,7 @@ public class MethodCheckerTest {
     void ParametercheckTest0() throws SyntaxException {
         AstType astType = new AstType("boolean");
         Parameter parameter = new Parameter(new ObjectType("boolean"),astType,"parameter");
-        assertEquals(PrimitiveType.BOOLEAN, methodChecker.check(parameter));
+        assertEquals(PrimitiveType.BOOLEAN, methodChecker.check(parameter).getType());
     }
     @Test
     void ParametercheckTest1() throws SyntaxException {

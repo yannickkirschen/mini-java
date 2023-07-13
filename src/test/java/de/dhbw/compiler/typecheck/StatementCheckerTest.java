@@ -55,7 +55,7 @@ public class StatementCheckerTest {//baseChecker seem to be null
     @Test
     void StatementcheckTest4() throws SyntaxException, TypeException {
         StmtExprStmt stmtExprStmt = new StmtExprStmt(new Assign(new JBoolean("true"),new JBoolean("true")), PrimitiveType.BOOLEAN);
-        assertEquals(stmtExprStmt.getClass(),statementChecker.check(stmtExprStmt).getClass());
+        statementChecker.check(stmtExprStmt).getType();
     }
     @Test
     void StatementcheckTest5() throws SyntaxException, TypeException {

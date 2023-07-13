@@ -5,6 +5,7 @@ import de.dhbw.compiler.ast.Field;
 import de.dhbw.compiler.ast.Method;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
+import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
 import de.dhbw.compiler.codegeneration.*;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -23,11 +24,11 @@ public class ExpressionCheckerTest {
 
     @BeforeEach
     void setup(){
-        List<Field> fields = new ArrayList<>();
+        List<Field> fields = Arrays.asList(new Field(null , null, "field"));
         List<Method> methods = new ArrayList<>();
         List<LocalOrFieldVar> localVars = new ArrayList<>();
         StatementExpressionChecker statementExpresseionChecker = new StatementExpressionChecker("Null", fields, methods, localVars);
-        LocalOrFieldVar localOrFieldVar = new LocalOrFieldVar("eins", PrimitiveType.BOOLEAN);
+        LocalOrFieldVar localOrFieldVar = new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN);
         List<LocalOrFieldVar> localVariables = Arrays.asList(localOrFieldVar);
         AstType astType0 = new AstType("boolean");
         expressionChecker = new ExpressionChecker("Array",fields,localVariables,statementExpresseionChecker);
@@ -42,13 +43,13 @@ public class ExpressionCheckerTest {
     @Test
     @DisplayName("check Files and set Type")
     void checkExpressionTest1() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-        InstVar instVar = new InstVar(null, "InstVar");
-        assertEquals(instVar, expressionChecker.check(instVar) );
+        InstVar instVar = new InstVar(new JInteger("33"), "InstVar");
+        assertEquals(instVar, expressionChecker.check(instVar));
     }
     @Test
     @DisplayName("check Files and set Type")
     void checkExpressionTest2() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-        JBoolean jBoolean = new JBoolean("0");
+        JBoolean jBoolean = new JBoolean("false");
         assertEquals(jBoolean, expressionChecker.check(jBoolean) );
     }
     @Test
@@ -148,7 +149,7 @@ public class ExpressionCheckerTest {
     @Test
     void checkJNullTest() throws SyntaxException{
         JNull jNull = new JNull();
-        assertEquals(ObjectType.string().getName(), expressionChecker.check(jNull).getType().getName());
+        assertEquals(ObjectType.jNull().getName(), expressionChecker.check(jNull).getType().getName());
     }
     @Test
     void checkJStringTest() throws SyntaxException{
@@ -157,37 +158,38 @@ public class ExpressionCheckerTest {
     }
     @Test
     void checkStmtExprExprTest() throws SyntaxException, TypeException {
-        StmtExprExpr stmtExprExpr = new StmtExprExpr(null, null);
-
+        StmtExprExpr stmtExprExpr = new StmtExprExpr(new Assign(new JBoolean("true", PrimitiveType.BOOLEAN), new JBoolean("false", PrimitiveType.BOOLEAN)), null);
         assertEquals(stmtExprExpr.getType(), expressionChecker.check(stmtExprExpr).getType());
     }
     @Test
-    void checkLocalOrFieldVarTest() throws SyntaxException {
+    void checkLocalOrFieldVarTest0() throws SyntaxException {
         LocalOrFieldVar localOrFieldVar = new LocalOrFieldVar("localOrFieldVar");
+        assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(localOrFieldVar).getType());
+    }
+    @Test
+    void checkLocalOrFieldVarTest1() throws SyntaxException {
+        LocalOrFieldVar localOrFieldVar = new LocalOrFieldVar("field");
         assertEquals(localOrFieldVar.getType(), expressionChecker.check(localOrFieldVar).getType());
     }
     @Test
     void checkSuperTest(){
         Super super_ = new Super(null);
-        String string = new String("");//String Finla im Oben
-        assertEquals(string.getClass(), expressionChecker.check(super_).getType());
+        assertEquals("Array", expressionChecker.check(super_).getType().getName());
     }
     @Test
     void checkThisTest(){
         This this_ = new This(null);
-        String string = new String("");//String Finla im Oben
-        assertEquals(string.getClass(), expressionChecker.check(this_).getType());
+        assertEquals("Array", expressionChecker.check(this_).getType().getName());
     }
     @Test
     void checkUnaryTest0() throws SyntaxException, TypeException {
-
-        de.dhbw.compiler.ast.expressions.Expression expression_ = (de.dhbw.compiler.ast.expressions.Expression) new Expression(null, null, null);
-        Unary unary = new Unary("-", expression_);
+        InstVar instVar = new InstVar(new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),"1",PrimitiveType.BOOLEAN);
+        Unary unary = new Unary("-", instVar);
         assertEquals(PrimitiveType.INTEGER, expressionChecker.check(unary).getType());
     }
     @Test
     void checkUnaryTest1() throws SyntaxException, TypeException {
-        Unary unary = new Unary("!", new InstVar(new InstVar(, "instVar1", PrimitiveType.BOOLEAN), "instVar", PrimitiveType.BOOLEAN));
+        Unary unary = new Unary("!", new InstVar(new InstVar(new LocalOrFieldVar("2"), "instVar1", PrimitiveType.BOOLEAN), "instVar", PrimitiveType.BOOLEAN));
         assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType());
     }
 }
