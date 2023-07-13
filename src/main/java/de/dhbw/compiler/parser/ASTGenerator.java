@@ -3,7 +3,6 @@ package de.dhbw.compiler.parser;
 import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.statements.Block;
 import de.dhbw.compiler.ast.statements.Statement;
-import de.dhbw.compiler.codegeneration.Type;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
 
 import java.util.ArrayList;
@@ -49,7 +48,7 @@ public class ASTGenerator {
     }
 
     private static Constructor generateConstructor(MinijavaParser.ConstructorContext ctx) {
-        List<Parameter> parameters = generateParams(ctx.params());
+        List<Parameter> parameters = ctx.params() != null ? generateParams(ctx.params()) : new ArrayList<>();
 
         StatementGenerator sGen = new StatementGenerator();
         Statement stmt = sGen.visit( ctx.block() );

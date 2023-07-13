@@ -15,24 +15,33 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
 
     private Expression handleLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx) {
         String operator = ctx.binLogicalOperator().getText();
-        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expression() ) );
+        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expr() ) );
     }
 
     private Expression handleArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx) {
-        String operator = ctx.binMulOperator().getText();
-        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.mulOp() ) );
+        if (ctx.binAddOperator() != null) {
+            String operator = ctx.binAddOperator().getText();
+            Expression left = this.visit( ctx.subExpression() );
+            Expression right = this.visit( ctx.mulOp() );
+            return new Binary(operator, left, right);
+        }
+        return this.visit( ctx.mulOp() );
     }
 
     @Override
     public Expression visitMulOp(MinijavaParser.MulOpContext ctx) {
-        String operator = ctx.binMulOperator().getText();
-        return new Binary(operator, this.visit( ctx.mulSubOp() ), this.visit( ctx.mulOp() ) );
+        if (ctx.binMulOperator() != null) {
+            String operator = ctx.binMulOperator().getText();
+            Expression left = this.visit( ctx.mulSubOp() );
+            Expression right = this.visit( ctx.mulOp() );
+            return new Binary(operator, left, right );
+        }
+        return this.visit( ctx.mulSubOp() );
     }
 
     @Override
     public Expression visitMulSubOp(MinijavaParser.MulSubOpContext ctx) {
-        ExpressionGenerator eGen = new ExpressionGenerator();
-        return eGen.visit( ctx.getChild(0) );
+        return this.visit( ctx.getChild(0) );
     }
 
     @Override
@@ -49,5 +58,11 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
 
         SubExpressionGenerator subGen = new SubExpressionGenerator();
         return subGen.visit( ctx );
+    }
+
+    @Override
+    public Expression visitNumber(MinijavaParser.NumberContext ctx) {
+        SubExpressionGenerator subEGen = new SubExpressionGenerator();
+        return subEGen.visit( ctx );
     }
 }
