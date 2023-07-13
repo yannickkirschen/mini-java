@@ -196,10 +196,8 @@ public class MethodCodeVisitor implements Opcodes {
             targetName = ((LocalOrFieldVar) stmtExpr.target).name;
         if (stmtExpr.target instanceof InstVar)
             targetName = ((InstVar) stmtExpr.target).varName;
-        System.out.println("targetName: " + targetName);
 
         if (vars.contains(targetName)) {
-            System.out.println("visiting local var");
             stmtExpr.value.accept(this);
 
             if (stmtExpr.value.getType() instanceof PrimitiveType) {
@@ -208,7 +206,6 @@ public class MethodCodeVisitor implements Opcodes {
                 v.visitVarInsn(ASTORE, vars.getVar(targetName));
             }
         } else if (stmtExpr.target instanceof InstVar) {
-            System.out.println("visiting instVar");
             visitExpressionInstVar((InstVar) stmtExpr.target, false);
             stmtExpr.value.accept(this);// load new variable value onto stack
             v.visitFieldInsn(PUTFIELD, lastClass, targetName, getFieldDescriptor(stmtExpr.target)); //TODO implement method to generate field descriptor from fieldName
@@ -216,7 +213,6 @@ public class MethodCodeVisitor implements Opcodes {
             v.visitVarInsn(ALOAD, 0);
             stmtExpr.value.accept(this);
             v.visitFieldInsn(PUTFIELD, className, targetName, getFieldDescriptor(stmtExpr.target));
-            System.out.println("stmt.expr target type: " + stmtExpr.target.getClass());
         }
     }
 
@@ -346,7 +342,6 @@ public class MethodCodeVisitor implements Opcodes {
      * @param withField Boolean
      */
     public void visitExpressionInstVar(InstVar expr, boolean withField) {
-        System.out.println("visiting instvar with: " + expr.thisExpr.getType().getName());
         expr.thisExpr.accept(this);
         lastClass = expr.thisExpr.getType().getName();
         if (withField)
@@ -461,24 +456,17 @@ public class MethodCodeVisitor implements Opcodes {
      * @param expr the Unary to be processed
      */
     public void visitExpression(Unary expr) {
-        Label jumpTrue = new Label();
+        //Label jumpTrue = new Label();
         Label jumpFalse = new Label();
         Label jumpEnd = new Label();
-
-        switch (expr.operator) {
-            case "!" -> {
-                expr.argument.accept(this);
-                v.visitJumpInsn(Opcodes.IFNE, jumpFalse);
-                v.visitLabel(jumpTrue);
-                v.visitInsn(Opcodes.ICONST_1);
-                v.visitJumpInsn(Opcodes.GOTO, jumpEnd);
-                v.visitLabel(jumpFalse);
-                v.visitInsn(Opcodes.ICONST_0);
-                v.visitLabel(jumpEnd);
-            }
-        }
-
-
+        expr.argument.accept(this);
+        v.visitJumpInsn(Opcodes.IFNE, jumpFalse);
+        //v.visitLabel(jumpTrue);
+        v.visitInsn(Opcodes.ICONST_1);
+        v.visitJumpInsn(Opcodes.GOTO, jumpEnd);
+        v.visitLabel(jumpFalse);
+        v.visitInsn(Opcodes.ICONST_0);
+        v.visitLabel(jumpEnd);
     }
 
     /**
