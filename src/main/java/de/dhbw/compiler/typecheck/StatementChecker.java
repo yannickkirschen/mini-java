@@ -86,6 +86,7 @@ public class StatementChecker implements BaseStatementChecker {
             default -> {
                 if (localVarDecl.getPassedType().name().equals(className)) {
                     localVarDecl.setType(new ObjectType(className));
+                    break;
                 }
 
                 throw new SyntaxException("Unexpected type: %s", localVarDecl.getType().getName());

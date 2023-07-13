@@ -12,8 +12,11 @@ public class Compiler {
         Program p = Parser.parse(
 """
 class NiceClass {
+    NiceClass(){}
+
     void do() {
-        int v = 2;
+        NiceClass v;
+        v = new NiceClass();
         return v;
     }
 }

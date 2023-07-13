@@ -141,7 +141,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
                 }
             }
 
-            Method method = baseClassChecker.check("<init>");
+            Method method = baseClassChecker.check(className);
             methods.add(method);
             return check(new_);
         }
