@@ -71,7 +71,7 @@ public class StatementCheckerTest {//baseChecker seem to be null
     @Test
     void BlockcheckTest1() throws SyntaxException, TypeException {
         List<Statement> blocks = new ArrayList<>(); //this has a problem with the statment path
-        Return return_ = new Return(null,PrimitiveType.BOOLEAN);
+        Return return_ = new Return(new JBoolean("true"),PrimitiveType.BOOLEAN);
         blocks.add(return_);
         Block block0 = new Block(blocks, null);
         assertEquals(PrimitiveType.BOOLEAN, statementChecker.check(block0).getType());
@@ -125,7 +125,7 @@ public class StatementCheckerTest {//baseChecker seem to be null
     }
     @Test
     void StmtExprStmtcheckTest() throws SyntaxException, TypeException {
-        StmtExprStmt stmtExprStmt = new StmtExprStmt(new Assign(null, null, PrimitiveType.BOOLEAN), null);
+        StmtExprStmt stmtExprStmt = new StmtExprStmt(new Assign(new JBoolean("true"), null, PrimitiveType.BOOLEAN), null);
         assertEquals(PrimitiveType.BOOLEAN,statementChecker.check(stmtExprStmt).getType());
     }
     @Test
