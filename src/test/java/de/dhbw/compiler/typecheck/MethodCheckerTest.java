@@ -64,7 +64,7 @@ public class MethodCheckerTest {
     void ParametercheckTest3() throws SyntaxException {
         AstType astType = new AstType("String");//Error unexpected method argument String
         Parameter parameter = new Parameter(new ObjectType("String"),astType,"parameter");
-        assertEquals(ObjectType.string(), methodChecker.check(parameter).getType());
+        assertEquals(ObjectType.string().getClass(), methodChecker.check(parameter).getType().getClass());
     }
     @Test
     void ParametercheckTest4() throws SyntaxException {

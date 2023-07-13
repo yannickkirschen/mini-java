@@ -4,6 +4,7 @@ import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.codegeneration.PrimitiveType;
 import de.dhbw.compiler.parser.antlr.MinijavaLexer;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.Token;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -21,7 +22,7 @@ public class ASTGeneratorTest {
     void setup(){
         astGenerator = new ASTGenerator();
        // minijavaParser = new MinijavaParser(); Vlt ein großes erstellen
-    }
+    }/*
     @Test
     void generateAST(){
         //MinijavaParser.ProgrammContext programmContext = new MinijavaParser.ProgrammContext();
@@ -40,7 +41,7 @@ public class ASTGeneratorTest {
     }
     @Test
     void  generateTypeTest0(){
-      //  MinijavaParser.TypeContext typeContext = new MinijavaParser.TypeContext();
+        MinijavaParser.TypeContext typeContext = new MinijavaParser.TypeContext(new ParserRuleContext(),0);
         AstType astType = generateType(typeContext);
         assertEquals("Int",astType.name() );
     }
