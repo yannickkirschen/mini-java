@@ -36,8 +36,8 @@ public class ExpressionCheckerTest {
 
     @Test
     @DisplayName("check Files and set Type")
-    void checkExpressionTest0() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-        Binary bin = new Binary("root", null, null);
+    void checkExpressionTest0() throws SyntaxException, TypeException {
+        Binary bin = new Binary("root", new JInteger("3",PrimitiveType.INTEGER),  new JInteger("3",PrimitiveType.INTEGER));
         assertEquals(bin, expressionChecker.check(bin) );
     }
     @Test
