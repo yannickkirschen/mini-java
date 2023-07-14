@@ -16,11 +16,14 @@ public class ClassChecker implements BaseClassChecker {
     private final List<Field> fields;
     private final List<Method> methods;
     private final List<Method> typedMethods = new LinkedList<>();
+    private final List<Constructor> constructors;
+    private final List<Constructor> typedConstructors = new LinkedList<>();
 
-    public ClassChecker(Clazz clazz, List<Field> fields, List<Method> methods) {
+    public ClassChecker(Clazz clazz, List<Field> fields, List<Method> methods, List<Constructor> constructors) {
         className = clazz.name.name();
         this.fields = fields;
         this.methods = methods;
+        this.constructors = constructors;
 
         this.methodChecker = new MethodChecker(clazz, this);
         this.statementChecker = methodChecker.getStatementChecker();

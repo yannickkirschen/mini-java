@@ -12,7 +12,7 @@ public class TypeCheck {
             List<Method> checkedMethods = new ArrayList<>(clazz.methods.size());
             List<Constructor> checkedConstructors = new ArrayList<>(clazz.constructors.size());
 
-            BaseClassChecker classVisitor = new ClassChecker(clazz, checkedFields, checkedMethods);
+            BaseClassChecker classVisitor = new ClassChecker(clazz, checkedFields, checkedMethods, checkedConstructors);
             for (Field field : clazz.fields) {
                 checkedFields.add(classVisitor.check(field));
             }

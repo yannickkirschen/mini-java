@@ -22,6 +22,8 @@ public class Parameter {
         return type;
     }
 
+    public AstType getAstType(){return astType;}
+
     public void setType(Type type) {
         this.type = type;
     }

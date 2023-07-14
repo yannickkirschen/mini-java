@@ -1,5 +1,6 @@
 package de.dhbw.compiler.typecheck;
 
+import de.dhbw.compiler.ast.Constructor;
 import de.dhbw.compiler.ast.Field;
 import de.dhbw.compiler.ast.Method;
 import de.dhbw.compiler.ast.expressions.Expression;
@@ -21,6 +22,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
     private final String className;
     private final List<Field> fields;
     private final List<Method> methods;
+    private final List<Constructor> constructors;
     private final List<LocalOrFieldVar> localVariables;
 
     @Setter
@@ -60,7 +62,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
 
         for (LocalOrFieldVar localVar : localVariables) {
             if (localVar.name.equals(name)) {
-                if (localVar.getType().equals(valueExpression.getType())) {
+                if (localVar.getType().getName().equals(valueExpression.getType().getName())) {
                     assign.setType(localVar.getType());
                     return assign;
                 } else {
@@ -71,7 +73,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
 
         for (Field field : fields) {
             if (field.name.equals(name)) {
-                if (field.getType().equals(valueExpression.getType())) {
+                if (field.getType().getName().equals(valueExpression.getType().getName())) {
                     assign.setType(field.getType());
                     return assign;
                 } else {
@@ -88,23 +90,22 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
         Expression receiver = expressionChecker.check(methodCall.thisExpr);
 
         if (receiver.getType().getName().equals(className)) {
-            for (Method method : methods) {
-                if (method.name.equals(methodCall.name)) {
-                    if (method.parameters.size() == methodCall.args.size()) {
-                        for (int i = 0; i < method.parameters.size(); i++) {
+            for (Constructor constructor : constructors) {
+                    if (constructor.parameterList.size() == methodCall.args.size()) {
+                        for (int i = 0; i < constructor.parameterList.size(); i++) {
                             Expression argument = expressionChecker.check(methodCall.args.get(i));
 
-                            if (!method.parameters.get(i).getType().equals(argument.getType())) {
-                                throw new TypeException("Type mismatch: %s and %s for argument %d in method %s", method.parameters.get(i).getType().getName(), argument.getType().getName(), i, method.name);
+                            if (!constructor.parameterList.get(i).getType().equals(argument.getType())) {
+                                throw new TypeException("Type mismatch: %s and %s for argument %d in constructor", constructor.parameterList.get(i).getType().getName(), argument.getType().getName(), i);
                             }
                         }
 
-                        methodCall.setType(method.getType());
+                        methodCall.setType(constructor.getType());
                         return methodCall;
                     } else {
-                        throw new SyntaxException("Wrong number of arguments for method %s", method.name);
+                        throw new SyntaxException("Wrong number of arguments for constructor");
                     }
-                }
+
             }
 
             Method method = baseClassChecker.check(methodCall.name);
@@ -123,12 +124,11 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
                 expressions.add(expressionChecker.check(expression));
             }
 
-            for (Method method : methods) {
-                if (method.name.equals(className)) {
-                    if (method.parameters.size() == new_.expressions.size()) {
-                        for (int i = 0; i < method.parameters.size(); i++) {
-                            if (!method.parameters.get(i).getType().equals(expressions.get(i).getType())) {
-                                throw new TypeException("Type mismatch: %s and %s for argument %d in constructor", method.parameters.get(i).getType().getName(), expressions.get(i).getType().getName(), i);
+            for (Constructor constructor : constructors) {
+                    if (constructor.parameterList.size() == new_.expressions.size()) {
+                        for (int i = 0; i < constructor.parameterList.size(); i++) {
+                            if (!constructor.parameterList.get(i).getType().equals(expressions.get(i).getType())) {
+                                throw new TypeException("Type mismatch: %s and %s for argument %d in constructor", constructor.parameterList.get(i).getType().getName(), expressions.get(i).getType().getName(), i);
                             }
                         }
 
@@ -138,7 +138,6 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
                         // This would be the location to add overloading.
                         throw new SyntaxException("Wrong number of arguments for constructor");
                     }
-                }
             }
 
             Method method = baseClassChecker.check(className);

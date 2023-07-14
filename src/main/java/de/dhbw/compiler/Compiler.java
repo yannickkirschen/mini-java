@@ -11,15 +11,13 @@ public class Compiler {
     public static void main(String[] args) throws SyntaxException, TypeException {
         Program p = Parser.parse(
 """
-class NiceClass {
-    NiceClass(){}
+    class Leer {
 
-    void do() {
-        NiceClass v;
-        v = new NiceClass();
-        return v;
+        void boomethod(int i){
+            int x = i;
+            x = x + 2;
+        }
     }
-}
 """
         );
         TypeCheck t = new TypeCheck();
