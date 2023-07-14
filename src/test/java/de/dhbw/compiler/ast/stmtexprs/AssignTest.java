@@ -18,12 +18,12 @@ public class AssignTest {
         assign1 = new Assign(null, null);
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest")
     void getTypeTest(){
         assertEquals(PrimitiveType.BOOLEAN, assign0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest")
     void setTypeTest(){
         assign0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, assign0.getType() );
