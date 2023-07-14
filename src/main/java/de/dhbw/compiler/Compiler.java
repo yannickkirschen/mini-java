@@ -29,11 +29,13 @@ public class Compiler {
                                       b = j;
                                   }
 
-                                  void boomethod(int i){
+                                  int boomethod(int i){
                                       Leer test = new Leer(i, i);
                                       int x = test.b;
+                                      return test.a + test.b;
                                   }
-                              }                """;
+                              }
+                       """;
         }
         Program p = Parser.parse(code);
         TypeCheck t = new TypeCheck();
