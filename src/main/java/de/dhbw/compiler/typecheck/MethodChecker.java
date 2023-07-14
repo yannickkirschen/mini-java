@@ -39,16 +39,16 @@ public class MethodChecker implements BaseMethodChecker {
 
         Statement statement = statementChecker.check(method.statement, method.parameters);
 
-        method.setType(statement.getType());
-
         switch (method.getAstType().name()) {
             case "Boolean", "boolean" -> method.setType(PrimitiveType.BOOLEAN);
             case "Integer", "int" -> method.setType(PrimitiveType.INTEGER);
             case "Character", "char" -> method.setType(PrimitiveType.CHARACTER);
+            case "void" -> method.setType(PrimitiveType.VOID);
             case "String" -> method.setType(ObjectType.string());
             default -> {
                 if (method.getType().getName().equals(className)) {
                     method.setType(new ObjectType(className));
+                    break;
                 }
 
                 throw new SyntaxException("Unexpected method argument type: %s", method.getType().getName());
@@ -73,6 +73,7 @@ public class MethodChecker implements BaseMethodChecker {
             default -> {
                 if (parameter.getType().getName().equals(className)) {
                     parameter.setType(new ObjectType(className));
+                    break;
                 }
 
                 throw new SyntaxException("Unexpected method argument type: %s", parameter.getType().getName());
