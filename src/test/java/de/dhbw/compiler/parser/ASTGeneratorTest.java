@@ -4,12 +4,16 @@ import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.codegeneration.PrimitiveType;
 import de.dhbw.compiler.parser.antlr.MinijavaLexer;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
+import org.antlr.runtime.CommonToken;
 import org.antlr.runtime.debug.ParseTreeBuilder;
 import org.antlr.runtime.tree.ParseTree;
+import org.antlr.v4.codegen.model.decl.TokenDecl;
 import org.antlr.v4.runtime.ParserRuleContext;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.ErrorNodeImpl;
 import org.antlr.v4.runtime.tree.TerminalNode;
+import org.antlr.v4.runtime.tree.pattern.TokenTagToken;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -38,10 +42,10 @@ public class ASTGeneratorTest {
     @Test
     void  generateTypeTest0(){
         MinijavaParser.TypeContext typeContext = new MinijavaParser.TypeContext(new ParserRuleContext(),0);
-        typeContext.children.add(00,new ParserRuleContext());
         assertEquals(0,generateType(typeContext));
     }
-}/*
+}
+/*
     @Test
     void  generateTypeTest1(){
         //  MinijavaParser.TypeContext typeContext = new MinijavaParser.TypeContext();
