@@ -143,17 +143,17 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
 
     @Override
     public Expression visitChar(MinijavaParser.CharContext ctx) {
-        return new JCharacter( ctx.character().getText() );
+        String fullText = ctx.getText();
+        String textWithoutQuotes = fullText.substring(0, fullText.length()-1).substring(1);
+        return new JCharacter( textWithoutQuotes );
     }
 
     @Override
     public Expression visitString(MinijavaParser.StringContext ctx) {
-        StringBuilder str = new StringBuilder();
-        for (MinijavaParser.CharacterContext character : ctx.character()){
-            str.append(character.getText());
-        }
+        String fullText = ctx.getText();
+        String textWithoutQuotes = fullText.substring(0, fullText.length()-1).substring(1);
 
-        return new JString( str.toString() );
+        return new JString( textWithoutQuotes );
     }
 
     @Override
