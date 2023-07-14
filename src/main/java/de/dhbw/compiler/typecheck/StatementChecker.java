@@ -139,7 +139,7 @@ public class StatementChecker implements BaseStatementChecker {
     @Override
     public While check(While while_) throws SyntaxException, TypeException {
         Expression expression = expressionChecker.check(while_.condition);
-        if (expression.getType() == PrimitiveType.BOOLEAN) {
+        if (expression.getType().getName().equals("Z")) {
             while_.setType(PrimitiveType.BOOLEAN);
             return while_;
         }

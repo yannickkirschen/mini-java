@@ -20,14 +20,20 @@ public class Compiler {
         else{
             code =
                 """
-                 class NiceClass {
-                    void do() {
-                        int v = 2;
-                        v = -v;
-                        return v;
-                    }
-                }
-                """;
+    class Leer {
+                                  int a;
+                                  int b;
+
+                                  Leer(int i, int j){
+                                      a = i;
+                                      b = j;
+                                  }
+
+                                  void boomethod(int i){
+                                      Leer test = new Leer(i, i);
+                                      int x = test.b;
+                                  }
+                              }                """;
         }
         Program p = Parser.parse(code);
         TypeCheck t = new TypeCheck();

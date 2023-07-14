@@ -13,13 +13,11 @@ public class ClassChecker implements BaseClassChecker {
     private final BaseStatementChecker statementChecker;
 
     private final String className;
-    private final List<Field> fields;
     private final List<Method> methods;
     private final List<Method> typedMethods = new LinkedList<>();
 
     public ClassChecker(Clazz clazz, List<Field> fields, List<Method> methods) {
         className = clazz.name.name();
-        this.fields = fields;
         this.methods = methods;
 
         this.methodChecker = new MethodChecker(clazz, this);
@@ -35,8 +33,6 @@ public class ClassChecker implements BaseClassChecker {
             case "String" -> field.setType(ObjectType.string());
             default -> throw new SyntaxException("Unexpected field type: %s", field.astType.name());
         }
-
-        fields.add(field);
         return field;
     }
 
