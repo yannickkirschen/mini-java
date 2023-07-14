@@ -74,7 +74,7 @@ public class UnitTests {
 
     @Test
     void EmptyMethod(){
-        testParseTree("class Leer { boolean boomethod(){ }}", "Leer\nLeer()\nBlock()\nboolean\sboomethod()\nBlock()");
+        testParseTree("class Leer { void boomethod(){ }}", "Leer\nLeer()\nBlock()\nvoid\sboomethod()\nBlock()");
     }
 
     @Test
@@ -84,7 +84,7 @@ public class UnitTests {
 
     @Test
     void Boolean(){
-        testParseTree("class Leer { boolean boomethod(){ boolean x = true; }}", "Leer\nLeer()\nBlock()\nboolean\sboomethod()\nBlock(Block(LocalVarDeclboolean(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=JBoolean:true)))");
+        testParseTree("class Leer { void boomethod(){ boolean x = true; }}", "Leer\nLeer()\nBlock()\nvoid\sboomethod()\nBlock(Block(LocalVarDeclboolean(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=JBoolean:true)))");
     }
 
     @Test
@@ -124,20 +124,20 @@ public class UnitTests {
 
     @Test
     void If(){
-        testParseTree("class Leer { int x; boolean boomethod(){ if(true) {int a = 1;} else { int z = -99;}}}", "Leer\n" +
+        testParseTree("class Leer { int x; void boomethod(){ if(true) {int a = 1;} else { int z = -99;}}}", "Leer\n" +
             "int x\n" +
             "Leer()\n" +
             "Block()\n" +
-            "boolean boomethod()\n" +
+            "void boomethod()\n" +
             "Block(If(Expression: JBoolean:trueif body: Block(Block(LocalVarDeclint(Name: a)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:a=JInteger:1)))else body: Block(Block(LocalVarDeclint(Name: z)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:z=Binary:JInteger:0-JInteger:99)))))");
     }
 
     @Test
     void Return(){
-        testParseTree("class Leer { int boomethod(){ return 25; }}", "Leer\n" +
+        testParseTree("class Leer { void boomethod(){ return 25; }}", "Leer\n" +
             "Leer()\n" +
             "Block()\n" +
-            "int boomethod()\n" +
+            "void boomethod()\n" +
             "Block(Return(Expression: JInteger:25))");
     }
 
@@ -171,16 +171,16 @@ public class UnitTests {
 
     @Test
     void SimpleClass(){
-        testParseTree("class Leer { int x; Leer(int x){ int i = x; } boolean boomethod(){ if(true) {return false;} else { return true;}}}", "Leer\nint x\nLeer(int x )\nBlock(Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=LocalOrFieldVar:x)))\nboolean boomethod()\nBlock(If(Expression: JBoolean:trueif body: Block(Return(Expression: JBoolean:false))else body: Block(Return(Expression: JBoolean:true))))");
+        testParseTree("class Leer { int x; Leer(int x){ int i = x; } void boomethod(){ if(true) {return false;} else { return true;}}}", "Leer\nint x\nLeer(int x )\nBlock(Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=LocalOrFieldVar:x)))\nvoid boomethod()\nBlock(If(Expression: JBoolean:trueif body: Block(Return(Expression: JBoolean:false))else body: Block(Return(Expression: JBoolean:true))))");
     }
 
     @Test
     void CallOwnConstructor(){
-        testParseTree("class Leer { int x; Leer(int x){ int i = x; } boolean boomethod( ){ if(true) {return false;} else { return true;} Leer blah = new Leer(); int i = blah.x;}}", "Leer\n" +
+        testParseTree("class Leer { int x; Leer(int x){ int i = x; } void boomethod( ){ if(true) {return false;} else { return true;} Leer blah = new Leer(); int i = blah.x;}}", "Leer\n" +
             "int x\n" +
             "Leer(int x )\n" +
             "Block(Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=LocalOrFieldVar:x)))\n" +
-            "boolean boomethod()\n" +
+            "void boomethod()\n" +
             "Block(If(Expression: JBoolean:trueif body: Block(Return(Expression: JBoolean:false))else body: Block(Return(Expression: JBoolean:true)))Block(LocalVarDeclLeer(Name: blah)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:blah=StmtExprExpr:New: Type:AstType[name=Leer]))Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=InstVar:x=LocalOrFieldVar:blah)))");
     }
 }
