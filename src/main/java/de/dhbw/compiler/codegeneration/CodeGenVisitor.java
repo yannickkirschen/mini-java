@@ -33,7 +33,7 @@ public class CodeGenVisitor implements Opcodes {
         }
 
         for (Constructor c : clazz.constructors) {
-            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(ACC_PUBLIC, "<init>", "()V", null, null), clazz.name.name());
+            MethodCodeVisitor mcv = new MethodCodeVisitor(cw.visitMethod(ACC_PUBLIC, "<init>", extractMethodDescriptor(PrimitiveType.VOID, c.getParameterList()), null, null), clazz.name.name());
             mcv.visit(c);
         }
 
