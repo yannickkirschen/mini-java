@@ -17,7 +17,7 @@ public class ClassChecker implements BaseClassChecker {
     private final List<Method> methods;
     private final List<Method> typedMethods = new LinkedList<>();
 
-    public ClassChecker(Clazz clazz, List<Field> fields, List<Method> methods, List<Constructor> constructors) {
+    public ClassChecker(Clazz clazz, List<Field> fields, List<Method> methods) {
         className = clazz.name.name();
         this.fields = fields;
         this.methods = methods;
