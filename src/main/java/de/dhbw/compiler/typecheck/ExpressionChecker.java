@@ -55,7 +55,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
         Expression left = this.check(binary.left);
         Expression right = this.check(binary.right);
 
-        if (left.getType().equals(right.getType())) {
+        if (left.getType().getName().equals(right.getType().getName())) {
             if (left.getType() == PrimitiveType.INTEGER) {
                 if (binary.operator.equals("+")
                     || binary.operator.equals("-")
@@ -87,7 +87,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
         if (expression.getType().getName().equals(className)) {
             for (Field field : fields) {
                 if (field.name.equals(instVar.varName)) {
-                    instVar.setType(expression.getType());
+                    instVar.setType(field.getType());
                     return instVar;
                 }
             }
