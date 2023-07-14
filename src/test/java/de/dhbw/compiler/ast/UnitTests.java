@@ -3,6 +3,9 @@ package de.dhbw.compiler.ast;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import com.ibm.icu.impl.Assert;
 import de.dhbw.compiler.ast.Program;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
@@ -13,8 +16,16 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 import org.junit.jupiter.api.Test;
 import de.dhbw.compiler.ast.expressions.*;
+import de.dhbw.compiler.ast.statements.If;
+import de.dhbw.compiler.ast.statements.LocalVarDecl;
+import de.dhbw.compiler.ast.statements.StmtExprStmt;
+import de.dhbw.compiler.ast.stmtexprs.Assign;
+
 import org.objectweb.asm.MethodVisitor;
 import de.dhbw.compiler.parser.antlr.*;
+import de.dhbw.compiler.typecheck.SyntaxException;
+import de.dhbw.compiler.typecheck.TypeCheck;
+import de.dhbw.compiler.typecheck.TypeException;
 
 public class UnitTests {
     protected void testParseTree(String in, String expected) {
@@ -183,4 +194,6 @@ public class UnitTests {
             "void boomethod()\n" +
             "Block(If(Expression: JBoolean:trueif body: Block(Return(Expression: JBoolean:false))else body: Block(Return(Expression: JBoolean:true)))Block(LocalVarDeclLeer(Name: blah)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:blah=StmtExprExpr:New: Type:AstType[name=Leer]))Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=InstVar:x=LocalOrFieldVar:blah)))");
     }
+
+
 }
