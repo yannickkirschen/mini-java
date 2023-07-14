@@ -27,8 +27,11 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     }
 
     private Expression handleLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx) {
-        String operator = ctx.binLogicalOperator().getText();
-        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expr() ) );
+        if (ctx.binLogicalOperator() != null) {
+            String operator = ctx.binLogicalOperator().getText();
+            return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expr() ) );
+        }
+        return this.visit( ctx.logicalBinOp() );
     }
 
     private Expression handleArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx) {
@@ -54,7 +57,10 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
 
     @Override
     public Expression visitMulSubOp(MinijavaParser.MulSubOpContext ctx) {
-        return this.visit( ctx.getChild(0) ); //TODO: solve this for arithmeticBinOp
+        if (ctx.arithmeticBinOp() != null) {
+            return this.visit( ctx.arithmeticBinOp() );
+        }
+        return this.visit( ctx.getChild(0) );
     }
 
     @Override
