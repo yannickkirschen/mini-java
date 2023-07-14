@@ -23,16 +23,19 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 //I'm quite unsure if this class is correct
 public class StatementExpressionCheckerTest {
     StatementExpressionChecker statementExpressionChecker;
+    BaseExpressionChecker baseExpressionChecker;
     @BeforeEach
     void setup(){
         List<Field> fields = new ArrayList<>();
         List<Method> methods = new ArrayList<>();
         List<LocalOrFieldVar> localOrFieldVars = new ArrayList<>();
+        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker", fields, methods, localOrFieldVars);
+        baseExpressionChecker = new ExpressionChecker("statementChecker",fields,localOrFieldVars,statementExpressionChecker);
         statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker",fields,methods,localOrFieldVars);
     }
     @Test
     void StatementExpressioncheck0() throws SyntaxException, TypeException {
-        Assign assign = new Assign(new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),null);
+        Assign assign = new Assign(new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),PrimitiveType.BOOLEAN);
         assertEquals(assign,statementExpressionChecker.check(assign));
     }
     @Test

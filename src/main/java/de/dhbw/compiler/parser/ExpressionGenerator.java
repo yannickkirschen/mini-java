@@ -32,7 +32,7 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     @Override
     public Expression visitMulSubOp(MinijavaParser.MulSubOpContext ctx) {
         ExpressionGenerator eGen = new ExpressionGenerator();
-        return eGen.visit( ctx.getChild(0) );
+        return eGen.visit( ctx.getChild(0));
     }
 
     @Override

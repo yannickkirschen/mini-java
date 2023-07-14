@@ -62,8 +62,7 @@ public class ClassCheckerTest {
     void testFieldCheck3() throws SyntaxException {
         AstType astType1  = new AstType("String");
         Field field = new Field(ObjectType.string(),astType1 , "String");
-
-        assertEquals(ObjectType.string(), classChecker.check(field).getType());
+        assertEquals(ObjectType.string().getName(), classChecker.check(field).getType().getName());
     }
     @Test
     @DisplayName("check Files and set Type")

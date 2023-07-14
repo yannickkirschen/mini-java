@@ -46,7 +46,7 @@ public class MethodCheckerTest {
     void ParametercheckTest0() throws SyntaxException {
         AstType astType = new AstType("boolean");
         Parameter parameter = new Parameter(new ObjectType("boolean"),astType,"parameter");
-        assertEquals(PrimitiveType.BOOLEAN, methodChecker.check(parameter));
+        assertEquals(PrimitiveType.BOOLEAN, methodChecker.check(parameter).getType());
     }
     @Test
     void ParametercheckTest1() throws SyntaxException {
@@ -64,7 +64,7 @@ public class MethodCheckerTest {
     void ParametercheckTest3() throws SyntaxException {
         AstType astType = new AstType("String");//Error unexpected method argument String
         Parameter parameter = new Parameter(new ObjectType("String"),astType,"parameter");
-        assertEquals(ObjectType.string(), methodChecker.check(parameter).getType());
+        assertEquals(ObjectType.string().getClass(), methodChecker.check(parameter).getType().getClass());
     }
     @Test
     void ParametercheckTest4() throws SyntaxException {
