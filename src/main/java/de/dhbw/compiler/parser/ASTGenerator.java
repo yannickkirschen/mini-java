@@ -59,7 +59,6 @@ public class ASTGenerator {
 
     public static AstType generateType(MinijavaParser.TypeContext ctx) {
         if(ctx.Int() != null)
-
             return new AstType(ctx.Int().getText());
         if(ctx.Bool() != null)
             return new AstType(ctx.Bool().getText());

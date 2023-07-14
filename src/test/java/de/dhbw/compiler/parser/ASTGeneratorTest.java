@@ -1,11 +1,15 @@
 package de.dhbw.compiler.parser;
-/*
+
 import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.codegeneration.PrimitiveType;
 import de.dhbw.compiler.parser.antlr.MinijavaLexer;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
+import org.antlr.runtime.debug.ParseTreeBuilder;
+import org.antlr.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.ParserRuleContext;
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -18,33 +22,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ASTGeneratorTest {
     ASTGenerator astGenerator;
     MinijavaParser minijavaParser;
+
     @BeforeEach
-    void setup(){
+    void setup() {
         astGenerator = new ASTGenerator();
-       // minijavaParser = new MinijavaParser(); Vlt ein großes erstellen
-    }/*
-    @Test
-    void generateAST(){
-        //MinijavaParser.ProgrammContext programmContext = new MinijavaParser.ProgrammContext();
-        assertEquals(new Program(null),ASTGenerator.generateAST(programmContext));
+        // minijavaParser = new MinijavaParser(); Vlt ein großes erstellen
     }
 
     @Test
-    void generateClazzTest(){
-        //MinijavaParser.ClassContext classContext = new MinijavaParser.ClassContext();
-        assertEquals(new Clazz(new AstType("Clazz"),null, null, null),ASTGenerator.generateClazz(classContext()));
-    }
-    @Test
-    void generateConstructorTest(){
-        //  MinijavaParser.ConstructorContext constructorContext = new MinijavaParser.ConstructorContext();
-        assertEquals(new Constructor(null,null),ASTGenerator.generateConstructor(constructorContext));
+    void generateAST() {
+       MinijavaParser.ProgramContext programContext = new MinijavaParser.ProgramContext(new ParserRuleContext(),0);
+       programContext.class_(0);
+        assertEquals(new Program(new ArrayList<Clazz>()),ASTGenerator.generateAST(programContext));
     }
     @Test
     void  generateTypeTest0(){
         MinijavaParser.TypeContext typeContext = new MinijavaParser.TypeContext(new ParserRuleContext(),0);
-        AstType astType = generateType(typeContext);
-        assertEquals("Int",astType.name() );
+        typeContext.children.add(00,new ParserRuleContext());
+        assertEquals(0,generateType(typeContext));
     }
+}/*
     @Test
     void  generateTypeTest1(){
         //  MinijavaParser.TypeContext typeContext = new MinijavaParser.TypeContext();

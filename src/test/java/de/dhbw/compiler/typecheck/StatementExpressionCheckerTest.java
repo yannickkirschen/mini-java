@@ -40,12 +40,13 @@ public class StatementExpressionCheckerTest {
     }
     @Test
     void StatementExpressioncheck1() throws SyntaxException, TypeException {
-        MethodCall methodCall = new MethodCall(null,null, null ,null);
+        List<Expression> args = new ArrayList<>();
+        MethodCall methodCall = new MethodCall(new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),"localOrFieldVar", args ,null);
         assertEquals(methodCall,statementExpressionChecker.check(methodCall));
     }
     @Test
     void StatementExpressioncheck2() throws SyntaxException, TypeException {
-        New new_ = new New( null ,null);
+        New new_ = new New( new AstType("astype") ,null);
         assertEquals(new_,statementExpressionChecker.check(new_));
     }
     @Test

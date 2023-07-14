@@ -16,7 +16,6 @@ public class NewTest {
         new0 = new New(null, null, PrimitiveType.BOOLEAN);
         new1 = new New(null, null);
     }
-    //again how should I test the accept
     @Test
     @DisplayName("")
     void getTypeTest(){

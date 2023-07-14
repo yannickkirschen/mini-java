@@ -17,7 +17,6 @@ public class AssignTest {
         assign0 = new Assign(null, null, PrimitiveType.BOOLEAN);
         assign1 = new Assign(null, null);
     }
-    //again how should I test the accept
     @Test
     @DisplayName("")
     void getTypeTest(){
