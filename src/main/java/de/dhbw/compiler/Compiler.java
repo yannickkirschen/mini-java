@@ -7,18 +7,28 @@ import de.dhbw.compiler.typecheck.SyntaxException;
 import de.dhbw.compiler.typecheck.TypeCheck;
 import de.dhbw.compiler.typecheck.TypeException;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
 public class Compiler {
-    public static void main(String[] args) throws SyntaxException, TypeException {
-        Program p = Parser.parse(
-"""
-class NiceClass {
-    void do() {
-        int v = 2;
-        return v;
-    }
-}
-"""
-        );
+    public static void main(String[] args) throws SyntaxException, TypeException, IOException {
+        String code;
+        if(args.length == 1){
+            code = Files.readString(Path.of(args[0]));
+        }
+        else{
+            code =
+                """
+                 class NiceClass {
+                    void do() {
+                        int v = 2;
+                        return v;
+                    }
+                }
+                """;
+        }
+        Program p = Parser.parse(code);
         TypeCheck t = new TypeCheck();
         p = t.check(p);
         CodeGenerator.generateCode(p);
