@@ -2,7 +2,7 @@ package de.dhbw.compiler.ast.expressions;
 
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 
 public non-sealed class StmtExprExpr implements Expression {
 

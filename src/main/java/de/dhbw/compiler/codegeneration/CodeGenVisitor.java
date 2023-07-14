@@ -15,8 +15,16 @@ import java.util.Arrays;
 import java.util.List;
 
 public class CodeGenVisitor implements Opcodes {
-    private static String[] knownDescriptors = new String[]{"V", "B", "C", "D", "F", "I", "J", "S", "Z"};
+    private static final String[] knownDescriptors = new String[]{"V", "B", "C", "D", "F", "I", "J", "S", "Z"};
 
+    /**
+     * visits a class.
+     * Firstly a new classWriter is generated.
+     * The java-version, the access-modifiers of the class (both hardcoded to java8 and public) and the class-name are put into the classwriter.
+     * After that all the fields, constructors and methods are visited.
+     * In the end the writing process is ended using cw.visitEnd() and the actual bytes are written into a file.
+     * @param clazz the Clazz to be processed
+     */
     public void visitClass(Clazz clazz) {
         ClassWriter cw = new ClassWriter(ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
         cw.visit(V1_8, ACC_PUBLIC, clazz.name.name(), null, "java/lang/Object", null);
@@ -37,6 +45,14 @@ public class CodeGenVisitor implements Opcodes {
         writeFile(cw.toByteArray(), clazz.name.name());
     }
 
+
+    /**
+     * visits a field.
+     * This is done using the visitField method of the ASM-classwriter.
+     * Since only public non-static fields are allowed, the ACC_PUBLIC can be hardcoded.
+     * @param field the abstract-syntax description of the field
+     * @param cw the classwriter for the class that the field is to be written to
+     */
     public void visitField(Field field, ClassWriter cw) {
         cw.visitField(ACC_PUBLIC, field.name, extractTypeString(field.getType()), null, null).visitEnd();
     }
@@ -45,20 +61,6 @@ public class CodeGenVisitor implements Opcodes {
         return "";
     }
 
-    /*public void visitMethod(Method method, ClassWriter cw) {
-        MethodVisitor v = cw.visitMethod(extractMethodKeywords(), method.name(), extractMethodDescriptor(method.returnType(), method.parameters()), null, null);
-        v.visitCode();
-        // TODO introduce localVarStack
-        method.parameters().forEach(t -> );
-        // TODO transform classes and add visitor
-        // visitStatement(method.typedStatement(), v);
-
-    }
-    */
-
-    public void visitExpression(Expression stmt) {
-
-    }
 
     public Type parseType(Expression obj) {
         return parseType(obj.getType());

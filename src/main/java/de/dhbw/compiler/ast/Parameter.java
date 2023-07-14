@@ -1,7 +1,5 @@
 package de.dhbw.compiler.ast;
 
-import de.dhbw.compiler.codegeneration.Type;
-
 public class Parameter {
     Type type;
     AstType astType;

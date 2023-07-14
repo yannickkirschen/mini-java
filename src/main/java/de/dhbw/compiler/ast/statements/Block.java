@@ -1,7 +1,7 @@
 package de.dhbw.compiler.ast.statements;
 
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 
 import java.util.List;
 
@@ -25,7 +25,7 @@ public non-sealed class Block implements Statement {
 
 
     @Override
-    public de.dhbw.compiler.codegeneration.Type getType() {
+    public Type getType() {
         return type;
     }
 
