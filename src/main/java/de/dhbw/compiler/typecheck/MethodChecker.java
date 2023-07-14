@@ -33,11 +33,11 @@ public class MethodChecker implements BaseMethodChecker {
 
     @Override
     public Method check(Method method) throws SyntaxException, TypeException {
-        Statement statement = statementChecker.check(method.statement);
-
         for (Parameter parameter : method.parameters) {
             parameter.setType(check(parameter).getType());
         }
+
+        Statement statement = statementChecker.check(method.statement, method.parameters);
 
         method.setType(statement.getType());
         return method;
