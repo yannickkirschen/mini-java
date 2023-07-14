@@ -134,7 +134,7 @@ public class UnitTests {
 
     @Test
     void Return(){
-        testParseTree("class Leer { int boomethod(){ return 25 }}", "Leer\n" +
+        testParseTree("class Leer { int boomethod(){ return 25; }}", "Leer\n" +
             "Leer()\n" +
             "Block()\n" +
             "int boomethod()\n" +
