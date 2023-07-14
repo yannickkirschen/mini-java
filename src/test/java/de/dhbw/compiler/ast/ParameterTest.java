@@ -19,23 +19,23 @@ public class ParameterTest {
         parameter1 = new Parameter(astType, "paramater1");
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest0")
     void getTypeTest0(){
         assertEquals(PrimitiveType.BOOLEAN, parameter0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest1")
     void getTypeTest1(){
         assertEquals(PrimitiveType.BOOLEAN, parameter1.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest0")
     void setTypeTest0(){
         parameter0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, parameter0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest1")
     void setTypeTest1(){
         parameter1.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, parameter1.getType() );

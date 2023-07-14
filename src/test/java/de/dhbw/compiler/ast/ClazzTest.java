@@ -16,12 +16,12 @@ public class ClazzTest {
         clazz1 = new Clazz( null, null, null, null);
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest")
     void getTypeTest(){
         assertEquals(PrimitiveType.BOOLEAN, clazz0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest")
     void setTypeTest1(){
         clazz0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, clazz0.getType() );
