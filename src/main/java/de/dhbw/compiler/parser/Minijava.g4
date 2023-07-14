@@ -115,7 +115,7 @@ Void : 'void';
 Boolean : 'true' | 'false' ;
 
 Id : [a-zA-Z]+;
-number : ('-')? Numeral+;
+number : Numeral+;
 
 Numeral : [0-9];
 CharValue: '\'' ~[\r\n]? '\'';

@@ -14,7 +14,7 @@ public class Compiler {
     class Leer {
 
         void boomethod(int i){
-            char test = 'H';
+            int test = -42;
         }
     }
 """
