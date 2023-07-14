@@ -1,8 +1,8 @@
 package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 
 import java.util.LinkedList;
 import java.util.List;

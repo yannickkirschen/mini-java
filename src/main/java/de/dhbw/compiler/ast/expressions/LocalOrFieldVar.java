@@ -1,5 +1,6 @@
 package de.dhbw.compiler.ast.expressions;
 
+import de.dhbw.compiler.ast.Type;
 import de.dhbw.compiler.codegeneration.*;
 
 public non-sealed class LocalOrFieldVar implements Expression {

@@ -4,8 +4,8 @@ import de.dhbw.compiler.ast.Parameter;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.*;
-import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;

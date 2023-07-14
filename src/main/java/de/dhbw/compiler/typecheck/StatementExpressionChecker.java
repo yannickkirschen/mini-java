@@ -10,7 +10,7 @@ import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
-import de.dhbw.compiler.codegeneration.ObjectType;
+import de.dhbw.compiler.ast.ObjectType;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 

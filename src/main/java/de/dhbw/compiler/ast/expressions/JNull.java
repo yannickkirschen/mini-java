@@ -1,7 +1,7 @@
 package de.dhbw.compiler.ast.expressions;
 
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 

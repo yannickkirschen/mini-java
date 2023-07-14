@@ -1,7 +1,5 @@
 package de.dhbw.compiler.ast;
 
-import de.dhbw.compiler.codegeneration.Type;
-
 import java.util.List;
 
 public class Clazz {
