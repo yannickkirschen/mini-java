@@ -81,7 +81,7 @@ public class UnitTests {
 
     @Test
     void Binary(){
-        testParseTree("class Leer { void boomethod(){ int x = 1; x = x / x; }}", "Leer\nLeer()\nBlock()\nvoid\sboomethod()\nBlock(Block(LocalVarDeclint(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=JInteger:1))Block(irgendwas zur Rechnung?!))");
+        testParseTree("class Leer { void boomethod(){ int x = 0; x = x + x; }}", "Leer\nLeer()\nBlock()\nvoid\sboomethod()\nBlock(VariableDeclaration(int, x, JInteger:0), StmtExprStmt(Assign(x, Binary(x, +, x))))");
     }
 
     @Test
@@ -91,12 +91,12 @@ public class UnitTests {
 
     @Test
     void InstVar(){
-        testParseTree("class Leer  {boolean x; boolean boomethod(){ this.x }}", "Leer\nboolean x\nLeer()\nBlock()\nboolean boomethod()\nBlock(irgendwas mit der kack variable)");
+        testParseTree("class Leer  {boolean x; boolean boomethod(){ this.x }}", "Leer\nboolean x\nLeer()\nBlock()\nboolean boomethod()\nBlock(this.x)");
     }
 
     @Test
     void Character(){
-        testParseTree("class Leer  {void boomethod(){ char x = 'x'; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(Block(LocalVarDeclchar(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=JCharacter:x)))");
+        testParseTree("class Leer  {void boomethod(){ char x='x'; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(Block(LocalVarDeclchar(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=JCharacter:x)))");
     }
 
     @Test
@@ -116,7 +116,7 @@ public class UnitTests {
 
     @Test
     void LocalOrFieldVar(){
-        testParseTree("class Leer  {void boomethod(){ int y; int x; x = y; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(Block(LocalOrFieldVar + irgendwas mit assign schlag mich tot))");
+        testParseTree("class Leer  {void boomethod(){ int y; int x; x = y; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(Block(LocalVarDecl('y'), LocalVarDecl('x'), Assign(x,y))");
     }
 
     @Test
@@ -149,7 +149,7 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "void boomethod()\n" +
-            "????????????");
+            "Block(While(Expression:Binary(true == false), Block(Return(Expression: JBoolean:true))))");
     }
 
     @Test
@@ -158,7 +158,7 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "void boomethod()\n" +
-            "????????????");
+            "Block(MethodCall(This, \\\"boomethod\\\", []))");
     }
 
     @Test
@@ -167,11 +167,9 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "void boomethod()\n" +
-            "????????????");
+            "Block(VariableDeclaration(Leer, empty, NewExpression(Leer, [])))");
     }
     //Verschiedenes
-
-
 
     @Test
     void SimpleClass(){
