@@ -1,7 +1,7 @@
 package de.dhbw.compiler.ast.statments;
 
 import de.dhbw.compiler.ast.statements.StmtExprStmt;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 

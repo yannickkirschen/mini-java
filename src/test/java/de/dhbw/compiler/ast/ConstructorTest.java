@@ -2,7 +2,7 @@ package de.dhbw.compiler.ast;
 
 import de.dhbw.compiler.ast.statements.Block;
 import de.dhbw.compiler.ast.statements.Statement;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

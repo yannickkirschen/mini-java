@@ -1,8 +1,6 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.AstType;
-import de.dhbw.compiler.ast.Field;
-import de.dhbw.compiler.ast.Method;
+import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
@@ -27,7 +25,8 @@ public class ExpressionCheckerTest {
         List<Field> fields = Arrays.asList(new Field(null , null, "field"));
         List<Method> methods = new ArrayList<>();
         List<LocalOrFieldVar> localVars = new ArrayList<>();
-        StatementExpressionChecker statementExpresseionChecker = new StatementExpressionChecker("Null", fields, methods, localVars);
+        List<Constructor> constructors = new ArrayList<>();
+        StatementExpressionChecker statementExpresseionChecker = new StatementExpressionChecker("Null", fields, methods, constructors, localVars);
         LocalOrFieldVar localOrFieldVar = new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN);
         List<LocalOrFieldVar> localVariables = Arrays.asList(localOrFieldVar);
         AstType astType0 = new AstType("boolean");

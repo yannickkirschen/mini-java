@@ -1,7 +1,7 @@
 package de.dhbw.compiler.parser;
 
 import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import de.dhbw.compiler.parser.antlr.MinijavaLexer;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
 import org.antlr.runtime.CommonToken;

@@ -20,13 +20,7 @@ public class Compiler {
         else{
             code =
                 """
-                 class NiceClass {
-                    void do() {
-                        int v = 2;
-                        v = -v;
-                        return v;
-                    }
-                }
+                 class Leer  {boolean x; void boomethod(){ this.x = false;}}
                 """;
         }
         Program p = Parser.parse(code);

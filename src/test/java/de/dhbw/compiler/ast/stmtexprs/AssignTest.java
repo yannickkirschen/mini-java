@@ -1,7 +1,7 @@
 package de.dhbw.compiler.ast.stmtexprs;
 
 import de.dhbw.compiler.ast.Parameter;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -29,4 +29,3 @@ public class AssignTest {
         assertEquals(PrimitiveType.INTEGER, assign0.getType() );
     }
 }
-

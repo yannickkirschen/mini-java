@@ -1,6 +1,6 @@
 package de.dhbw.compiler.ast;
 
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 import de.dhbw.compiler.ast.statements.*;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.*;
@@ -40,7 +40,7 @@ public class Clazz {
     public String toString(){
         StringBuilder builder = new StringBuilder(this.name.name());
         for(Field f : this.fields){
-            builder.append("\n").append(f.astType.name()).append(f.name);
+            builder.append("\n").append(f.astType.name()).append(" ").append(f.name);
         }
         for(Constructor c : this.constructors){
             builder.append("\n").append(this.name.name()).append("(");
@@ -102,9 +102,9 @@ public class Clazz {
         } else if (statement.getClass().equals(While.class)) {
             While castedStatement = (While) statement;
             builder.append("While").append("(");
-            builder.append("Statement: ").append(printStatement(castedStatement.statement));
             builder.append("Expression: ");
             builder.append(printExpression(castedStatement.condition));
+            builder.append("Statement: ").append(printStatement(castedStatement.statement));
             builder.append(")");
         }
         return builder.toString();
@@ -181,9 +181,9 @@ public class Clazz {
         } else if(stmtExpr.getClass() == MethodCall.class) {
             MethodCall castedStmtExpression = (MethodCall) stmtExpr;
             builder.append("MethodCall:");
-            builder.append(castedStmtExpression.name);
             builder.append(printExpression(castedStmtExpression.thisExpr));
-            builder.append("args:");
+            builder.append(castedStmtExpression.name);
+            builder.append(":args:");
             for( Expression expr : castedStmtExpression.args) {
                 builder.append(expr);
             }

@@ -6,8 +6,6 @@ import static org.junit.jupiter.api.Assertions.fail;
 import com.ibm.icu.impl.Assert;
 import de.dhbw.compiler.ast.Program;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
-import de.dhbw.compiler.codegeneration.Visitor;
 import de.dhbw.compiler.parser.ASTGenerator;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -81,7 +79,7 @@ public class UnitTests {
 
     @Test
     void Binary(){
-        testParseTree("class Leer { void boomethod(){ int x = 0; x = x + x; }}", "Leer\nLeer()\nBlock()\nvoid\sboomethod()\nBlock(VariableDeclaration(int, x, JInteger:0), StmtExprStmt(Assign(x, Binary(x, +, x))))");
+        testParseTree("class Leer { void boomethod(){ int x = 0; x = x + x; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(Block(LocalVarDeclint(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=JInteger:0))StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=Binary:LocalOrFieldVar:x+LocalOrFieldVar:x))");
     }
 
     @Test
@@ -91,7 +89,7 @@ public class UnitTests {
 
     @Test
     void InstVar(){
-        testParseTree("class Leer  {boolean x; boolean boomethod(){ this.x }}", "Leer\nboolean x\nLeer()\nBlock()\nboolean boomethod()\nBlock(this.x)");
+        testParseTree("class Leer  {boolean x; void boomethod(){ this.x = false; }}", "Leer\nboolean x\nLeer()\nBlock()\nvoid boomethod()\nBlock(StmtExprStmt(StatementExpression: Assign:InstVar:x=This:=JBoolean:false))");
     }
 
     @Test
@@ -116,7 +114,7 @@ public class UnitTests {
 
     @Test
     void LocalOrFieldVar(){
-        testParseTree("class Leer  {void boomethod(){ int y; int x; x = y; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(Block(LocalVarDecl('y'), LocalVarDecl('x'), Assign(x,y))");
+        testParseTree("class Leer  {void boomethod(){ int y; int x; x = y; }}", "Leer\nLeer()\nBlock()\nvoid boomethod()\nBlock(LocalVarDeclint(Name: y)LocalVarDeclint(Name: x)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:x=LocalOrFieldVar:y))");
     }
 
     @Test
@@ -131,7 +129,7 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "boolean boomethod()\n" +
-            "Block(If(Expression: JBoolean:trueif body: Block(Block(LocalVarDeclint(Name: a)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:a=JInteger:1)))else body: Block(Block(LocalVarDeclint(Name: z)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:z=Unary:JInteger:99-)))))");
+            "Block(If(Expression: JBoolean:trueif body: Block(Block(LocalVarDeclint(Name: a)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:a=JInteger:1)))else body: Block(Block(LocalVarDeclint(Name: z)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:z=Binary:JInteger:0-JInteger:99)))))");
     }
 
     @Test
@@ -149,7 +147,7 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "void boomethod()\n" +
-            "Block(While(Expression:Binary(true == false), Block(Return(Expression: JBoolean:true))))");
+            "Block(While(Expression: Binary:JBoolean:true==JBoolean:falseStatement: Block(Return(Expression: JBoolean:true))))");
     }
 
     @Test
@@ -158,7 +156,7 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "void boomethod()\n" +
-            "Block(MethodCall(This, \\\"boomethod\\\", []))");
+            "Block(StmtExprStmt(StatementExpression: MethodCall:This:boomethod:args:))");
     }
 
     @Test
@@ -167,7 +165,7 @@ public class UnitTests {
             "Leer()\n" +
             "Block()\n" +
             "void boomethod()\n" +
-            "Block(VariableDeclaration(Leer, empty, NewExpression(Leer, [])))");
+            "Block(Block(LocalVarDeclLeer(Name: empty)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:empty=StmtExprExpr:New: Type:AstType[name=Leer])))");
     }
     //Verschiedenes
 
@@ -178,6 +176,11 @@ public class UnitTests {
 
     @Test
     void CallOwnConstructor(){
-        testParseTree("class Leer { int x; Leer(int x){ int i = x; } boolean boomethod( ){ if(true) {return false;} else { return true;} Leer blah = new Leer(); int i = blah.x;}}", "Leer\nint x\nLeer(int x )\n\nboolean boomethod()\n");
+        testParseTree("class Leer { int x; Leer(int x){ int i = x; } boolean boomethod( ){ if(true) {return false;} else { return true;} Leer blah = new Leer(); int i = blah.x;}}", "Leer\n" +
+            "int x\n" +
+            "Leer(int x )\n" +
+            "Block(Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=LocalOrFieldVar:x)))\n" +
+            "boolean boomethod()\n" +
+            "Block(If(Expression: JBoolean:trueif body: Block(Return(Expression: JBoolean:false))else body: Block(Return(Expression: JBoolean:true)))Block(LocalVarDeclLeer(Name: blah)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:blah=StmtExprExpr:New: Type:AstType[name=Leer]))Block(LocalVarDeclint(Name: i)StmtExprStmt(StatementExpression: Assign:LocalOrFieldVar:i=InstVar:x=LocalOrFieldVar:blah)))");
     }
 }

@@ -7,8 +7,8 @@ import de.dhbw.compiler.ast.statements.LocalVarDecl;
 import de.dhbw.compiler.ast.statements.Statement;
 import de.dhbw.compiler.ast.stmtexprs.Assign;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
-import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,8 @@ public class StatementCheckerTest {//baseChecker seem to be null
         List<LocalOrFieldVar> localOrFieldVars = new ArrayList<>();
         List<Field> fields = new ArrayList<>();
         List<Method> methods = new ArrayList<>();
-        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker", fields, methods, localOrFieldVars);
+        List<Constructor> constructors = new ArrayList<>();
+        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker", fields, methods, constructors, localOrFieldVars);
         baseExpressionChecker = new ExpressionChecker("statementChecker",fields,localOrFieldVars,statementExpressionChecker);
         statementChecker = new StatementChecker("statementChecker",localOrFieldVars,baseExpressionChecker,statementExpressionChecker );
     }

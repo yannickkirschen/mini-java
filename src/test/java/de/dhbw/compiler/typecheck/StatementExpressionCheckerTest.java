@@ -1,9 +1,6 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.AstType;
-import de.dhbw.compiler.ast.Field;
-import de.dhbw.compiler.ast.Method;
-import de.dhbw.compiler.ast.Parameter;
+import de.dhbw.compiler.ast.*;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.expressions.InstVar;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
@@ -12,7 +9,6 @@ import de.dhbw.compiler.ast.stmtexprs.MethodCall;
 import de.dhbw.compiler.ast.stmtexprs.New;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -29,9 +25,10 @@ public class StatementExpressionCheckerTest {
         List<Field> fields = new ArrayList<>();
         List<Method> methods = new ArrayList<>();
         List<LocalOrFieldVar> localOrFieldVars = new ArrayList<>();
-        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker", fields, methods, localOrFieldVars);
+        List<Constructor> constructors = new ArrayList<>();
+        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker", fields, methods, constructors, localOrFieldVars);
         baseExpressionChecker = new ExpressionChecker("statementChecker",fields,localOrFieldVars,statementExpressionChecker);
-        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker",fields,methods,localOrFieldVars);
+        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker",fields,methods,constructors, localOrFieldVars);
     }
     @Test
     void StatementExpressioncheck0() throws SyntaxException, TypeException {
