@@ -17,17 +17,27 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
     public Statement visitBlock(MinijavaParser.BlockContext ctx) {
         List<Statement> stmts = new ArrayList<>();
 
+        Statement stmt;
         for (MinijavaParser.StmtContext stmtContext : ctx.stmt()) {
-            stmts.add( this.visit( stmtContext ) );
+            stmt = this.visit( stmtContext );
+            stmts.add( stmt );
         }
 
         return new Block(stmts);
     }
 
     @Override
+    protected Statement aggregateResult(Statement aggregate, Statement nextResult) {
+        if (nextResult != null)
+            return nextResult;
+        else return aggregate;
+    }
+
+    @Override
     public Statement visitReturn(MinijavaParser.ReturnContext ctx) {
         ExpressionGenerator eGen = new ExpressionGenerator();
-        return new Return( eGen.visit( ctx.expr() ) );
+        Expression expr = eGen.visit( ctx.expr() );
+        return new Return( expr );
     }
 
     @Override

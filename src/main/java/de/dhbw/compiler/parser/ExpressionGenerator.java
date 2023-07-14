@@ -3,36 +3,64 @@ package de.dhbw.compiler.parser;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.parser.antlr.MinijavaBaseVisitor;
 import de.dhbw.compiler.parser.antlr.MinijavaParser;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
+import java.util.List;
 
 public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     @Override
     public Expression visitBinaryOperation(MinijavaParser.BinaryOperationContext ctx) {
-        return ctx.arithmeticBinOp() != null ?
-            handleArithmeticBinOp( ctx.arithmeticBinOp() ) :
-            handleLogicalBinOp( ctx.logicalBinOp() )
-            ;
+        Expression out;
+        if (ctx.arithmeticBinOp() != null) {
+            out = handleArithmeticBinOp( ctx.arithmeticBinOp() );
+        } else {
+            out = handleLogicalBinOp( ctx.logicalBinOp() );
+        }
+        return out;
+    }
+
+    @Override
+    protected Expression aggregateResult(Expression aggregate, Expression nextResult) {
+        if (nextResult != null)
+            return nextResult;
+        else return aggregate;
     }
 
     private Expression handleLogicalBinOp(MinijavaParser.LogicalBinOpContext ctx) {
-        String operator = ctx.binLogicalOperator().getText();
-        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expression() ) );
+        if (ctx.binLogicalOperator() != null) {
+            String operator = ctx.binLogicalOperator().getText();
+            return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.expr() ) );
+        }
+        return this.visit( ctx.logicalBinOp() );
     }
 
     private Expression handleArithmeticBinOp(MinijavaParser.ArithmeticBinOpContext ctx) {
-        String operator = ctx.binMulOperator().getText();
-        return new Binary(operator, this.visit( ctx.subExpression() ), this.visit( ctx.mulOp() ) );
+        if (ctx.binAddOperator() != null) {
+            String operator = ctx.binAddOperator().getText();
+            Expression left = this.visit( ctx.subExpression() );
+            Expression right = this.visit( ctx.mulOp() );
+            return new Binary(operator, left, right);
+        }
+        return this.visit( ctx.mulOp() );
     }
 
     @Override
     public Expression visitMulOp(MinijavaParser.MulOpContext ctx) {
-        String operator = ctx.binMulOperator().getText();
-        return new Binary(operator, this.visit( ctx.mulSubOp() ), this.visit( ctx.mulOp() ) );
+        if (ctx.binMulOperator() != null) {
+            String operator = ctx.binMulOperator().getText();
+            Expression left = this.visit( ctx.mulSubOp() );
+            Expression right = this.visit( ctx.mulOp() );
+            return new Binary(operator, left, right );
+        }
+        return this.visit( ctx.mulSubOp() );
     }
 
     @Override
     public Expression visitMulSubOp(MinijavaParser.MulSubOpContext ctx) {
-        ExpressionGenerator eGen = new ExpressionGenerator();
-        return eGen.visit( ctx.getChild(0));
+        if (ctx.arithmeticBinOp() != null) {
+            return this.visit( ctx.arithmeticBinOp() );
+        }
+        return this.visit( ctx.getChild(0) );
     }
 
     @Override
@@ -47,7 +75,99 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
             return new JNull();
         }
 
-        SubExpressionGenerator subGen = new SubExpressionGenerator();
-        return subGen.visit( ctx );
+        return this.visit( ctx.getChild(0) );
+    }
+
+    @Override
+    public Expression visitLocalOrFieldVar(MinijavaParser.LocalOrFieldVarContext ctx) {
+        return new LocalOrFieldVar( ctx.getText() );
+    }
+
+    @Override
+    public Expression visitInstVar(MinijavaParser.InstVarContext ctx) {
+        Expression var = generateInstVar( ctx.This(), ctx.Id(), null, 0);
+        if (var instanceof LocalOrFieldVar) {
+            return new InstVar( new This(), ((LocalOrFieldVar) var).name );
+        }
+        return var;
+    }
+    private Expression generateInstVar(TerminalNode this_, List<TerminalNode> ids, Expression previous, int index) {
+        TerminalNode id = ids.get(index);
+
+        if (previous == null) {
+            previous = this_ == null ?
+                new LocalOrFieldVar( id.getText() ) :
+                new InstVar( new This(), id.getText())
+            ;
+        }
+        else {
+            previous = new InstVar( previous, id.getText() );
+        }
+
+        if (index < ids.size() - 1) {
+            return generateInstVar(null, ids, previous, index + 1);
+        }
+        return previous;
+    }
+
+    @Override
+    public Expression visitUnaryOperation(MinijavaParser.UnaryOperationContext ctx) {
+        String operator = null;
+        ExpressionGenerator eGen = new ExpressionGenerator();
+
+        if (ctx.unaryOp().Not() != null) {
+            operator = "!";
+        }
+        if (ctx.unaryOp().Plus() != null) {
+            operator = "+";
+            return new Binary(operator, new JInteger("0"), eGen.visit(ctx.expr()));
+        }
+        if (ctx.unaryOp().Minus() != null) {
+            operator = "-";
+            return new Binary(operator, new JInteger("0"), eGen.visit(ctx.expr()));
+        }
+
+        return new Unary( operator, eGen.visit( ctx.expr() ) );
+    }
+
+    @Override
+    public Expression visitConstant(MinijavaParser.ConstantContext ctx) {
+        if (ctx.Boolean() != null) {
+            return new JBoolean( ctx.Boolean().getText() );
+        } else {
+            return new JInteger( ctx.number().getText() );
+        }
+    }
+
+    @Override
+    public Expression visitNumber(MinijavaParser.NumberContext ctx) {
+        return new JInteger( ctx.getText() );
+    }
+
+    @Override
+    public Expression visitChar(MinijavaParser.CharContext ctx) {
+        String fullText = ctx.getText();
+        String textWithoutQuotes = fullText.substring(0, fullText.length()-1).substring(1);
+        return new JCharacter( textWithoutQuotes );
+    }
+
+    @Override
+    public Expression visitString(MinijavaParser.StringContext ctx) {
+        String fullText = ctx.getText();
+        String textWithoutQuotes = fullText.substring(0, fullText.length()-1).substring(1);
+
+        return new JString( textWithoutQuotes );
+    }
+
+    @Override
+    public Expression visitExpression(MinijavaParser.ExpressionContext ctx) {
+        ExpressionGenerator eGen = new ExpressionGenerator();
+        return eGen.visit( ctx.expr() );
+    }
+
+    @Override
+    public Expression visitStmtExpr(MinijavaParser.StmtExprContext ctx) {
+        StatementExpressionGenerator stmtExprGen = new StatementExpressionGenerator();
+        return new StmtExprExpr( stmtExprGen.visit( ctx ) );
     }
 }

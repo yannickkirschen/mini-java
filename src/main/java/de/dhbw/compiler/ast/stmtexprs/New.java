@@ -3,7 +3,7 @@ package de.dhbw.compiler.ast.stmtexprs;
 import de.dhbw.compiler.ast.AstType;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 import lombok.Getter;
 
 import java.util.List;

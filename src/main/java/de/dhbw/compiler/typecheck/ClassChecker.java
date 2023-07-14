@@ -1,8 +1,8 @@
 package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.*;
-import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -46,8 +46,9 @@ public class ClassChecker implements BaseClassChecker {
             parameter.setType(methodChecker.check(parameter).getType());
         }
 
+
         if (constructor.getBody() != null) {
-            statementChecker.check(constructor.getBody());
+            statementChecker.check(constructor.getBody(), constructor.getParameterList());
         }
 
         constructor.setType(new ObjectType(className));

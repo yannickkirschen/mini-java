@@ -1,10 +1,11 @@
 package de.dhbw.compiler.typecheck;
 
+import de.dhbw.compiler.ast.Parameter;
 import de.dhbw.compiler.ast.expressions.Expression;
 import de.dhbw.compiler.ast.expressions.LocalOrFieldVar;
 import de.dhbw.compiler.ast.statements.*;
-import de.dhbw.compiler.codegeneration.ObjectType;
-import de.dhbw.compiler.codegeneration.PrimitiveType;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -19,6 +20,32 @@ public class StatementChecker implements BaseStatementChecker {
 
     @Override
     public Statement check(Statement statement) throws SyntaxException, TypeException {
+        Class<?> clazz = statement.getClass();
+
+        if (clazz.equals(Block.class)) {
+            return check((Block) statement);
+        } else if (clazz.equals(If.class)) {
+            return check((If) statement);
+        } else if (clazz.equals(LocalVarDecl.class)) {
+            return check((LocalVarDecl) statement);
+        } else if (clazz.equals(Return.class)) {
+            return check((Return) statement);
+        } else if (clazz.equals(StmtExprStmt.class)) {
+            return check((StmtExprStmt) statement);
+        } else if (clazz.equals(While.class)) {
+            return check((While) statement);
+        }
+
+        throw new SyntaxException("Unexpected statement: %s", statement);
+    }
+
+    @Override
+    public Statement check(Statement statement, List<Parameter> parameters) throws SyntaxException, TypeException {
+
+        for (Parameter param : parameters){
+            localVariables.add(new LocalOrFieldVar(param.name, param.getType()));
+        }
+
         Class<?> clazz = statement.getClass();
 
         if (clazz.equals(Block.class)) {
@@ -86,6 +113,7 @@ public class StatementChecker implements BaseStatementChecker {
             default -> {
                 if (localVarDecl.getPassedType().name().equals(className)) {
                     localVarDecl.setType(new ObjectType(className));
+                    break;
                 }
 
                 throw new SyntaxException("Unexpected type: %s", localVarDecl.getType().getName());

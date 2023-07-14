@@ -1,7 +1,5 @@
 package de.dhbw.compiler.ast;
 
-import de.dhbw.compiler.codegeneration.Type;
-
 public class Parameter {
     Type type;
     AstType astType;
@@ -21,6 +19,8 @@ public class Parameter {
     public Type getType() {
         return type;
     }
+
+    public AstType getAstType(){return astType;}
 
     public void setType(Type type) {
         this.type = type;

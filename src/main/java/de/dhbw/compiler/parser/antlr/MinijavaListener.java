@@ -417,4 +417,14 @@ public interface MinijavaListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitArgs(MinijavaParser.ArgsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link MinijavaParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumber(MinijavaParser.NumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link MinijavaParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumber(MinijavaParser.NumberContext ctx);
 }

@@ -1,7 +1,7 @@
 package de.dhbw.compiler.ast.statements;
 
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
-import de.dhbw.compiler.codegeneration.Type;
+import de.dhbw.compiler.ast.Type;
 
 public sealed interface Statement permits Block, Return, While, LocalVarDecl, If, StmtExprStmt {
 

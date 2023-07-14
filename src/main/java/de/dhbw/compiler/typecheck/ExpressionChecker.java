@@ -1,9 +1,10 @@
 package de.dhbw.compiler.typecheck;
 
 import de.dhbw.compiler.ast.Field;
+import de.dhbw.compiler.ast.ObjectType;
+import de.dhbw.compiler.ast.PrimitiveType;
 import de.dhbw.compiler.ast.expressions.*;
 import de.dhbw.compiler.ast.stmtexprs.StatementExpression;
-import de.dhbw.compiler.codegeneration.*;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
@@ -65,7 +66,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
                 } else {
                     throw new SyntaxException("Unexpected operator: %s. Expected +, -, * or %.", binary.operator);
                 }
-            } else if (left.getType().getName().equals("java.lang.Boolean")) {
+            } else if (left.getType() == PrimitiveType.BOOLEAN) {
                 if (binary.operator.equals("&&")
                     || binary.operator.equals("||")) {
                     binary.setType(PrimitiveType.BOOLEAN);
@@ -182,14 +183,14 @@ public class ExpressionChecker implements BaseExpressionChecker {
     @Override
     public Unary check(Unary unary) throws SyntaxException, TypeException {
         Expression expression = this.check(unary.argument);
-        if (expression.getType().getName().equals("java.lang.Integer")) {
+        if (expression.getType() == PrimitiveType.INTEGER) {
             if (unary.operator.equals("+") || unary.operator.equals("-")) {
                 unary.setType(PrimitiveType.INTEGER);
                 return unary;
             } else {
                 throw new SyntaxException("Unexpected operator: %s. Expected + or -.", unary.operator);
             }
-        } else if (expression.getType().getName().equals("java.lang.Boolean")) {
+        } else if (expression.getType() == PrimitiveType.BOOLEAN) {
             if (unary.operator.equals("!")) {
                 unary.setType(PrimitiveType.BOOLEAN);
                 return unary;

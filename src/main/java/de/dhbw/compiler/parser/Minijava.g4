@@ -25,7 +25,7 @@ stmt : block
     | return
     | while
     | localVarDeclAssign
-    | varDecl
+    | varDecl ';'
     | if
     | stmtExpr ';'
     ;
@@ -36,17 +36,17 @@ This : 'this';
 Super : 'super';
 localOrFieldVar : Id;
 unaryOperation : unaryOp expr;
-constant : Number | Boolean;
-char : '\'' Character? '\'';
-string : '"' Character* '"';
+constant : number | Boolean;
+char : CharValue;
+string : StringValue;
 Null : 'null';
 expression : '(' expr ')';
 
 binaryOperation : arithmeticBinOp | logicalBinOp;
-arithmeticBinOp : subExpression binMulOperator mulOp | mulOp;
+arithmeticBinOp : subExpression binAddOperator mulOp | mulOp;
 mulOp : mulOp binMulOperator mulSubOp | mulSubOp;
-mulSubOp : Number | localOrFieldVar | instVar | methodCall | '(' arithmeticBinOp ')';
-logicalBinOp : subExpression binLogicalOperator expression;
+mulSubOp : number | localOrFieldVar | instVar | methodCall | '(' arithmeticBinOp ')';
+logicalBinOp : subExpression binLogicalOperator expr | '(' logicalBinOp ')';
 
 expr : subExpression | binaryOperation;
 // introduce subExpression to avoid left-recursion
@@ -115,9 +115,11 @@ Void : 'void';
 Boolean : 'true' | 'false' ;
 
 Id : [a-zA-Z]+;
-Number : [0-9]+;
-Character : [a-zA-Z0-9];
+number : Numeral+;
 
+Numeral : [0-9];
+CharValue: '\'' ~[\r\n]? '\'';
+StringValue: '"' ~[\r\n]* '"';
 
 WS : [ \t\r\n] -> skip;
 Comment:'//' ~[\r\n]* -> skip;

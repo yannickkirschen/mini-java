@@ -256,4 +256,10 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArgs(MinijavaParser.ArgsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link MinijavaParser#number}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitNumber(MinijavaParser.NumberContext ctx);
 }
