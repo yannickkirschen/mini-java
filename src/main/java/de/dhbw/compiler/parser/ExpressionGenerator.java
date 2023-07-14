@@ -113,17 +113,20 @@ public class ExpressionGenerator extends MinijavaBaseVisitor<Expression> {
     @Override
     public Expression visitUnaryOperation(MinijavaParser.UnaryOperationContext ctx) {
         String operator = null;
+        ExpressionGenerator eGen = new ExpressionGenerator();
+
         if (ctx.unaryOp().Not() != null) {
             operator = "!";
         }
         if (ctx.unaryOp().Plus() != null) {
             operator = "+";
+            return new Binary(operator, new JInteger("0"), eGen.visit(ctx.expr()));
         }
         if (ctx.unaryOp().Minus() != null) {
             operator = "-";
+            return new Binary(operator, new JInteger("0"), eGen.visit(ctx.expr()));
         }
 
-        ExpressionGenerator eGen = new ExpressionGenerator();
         return new Unary( operator, eGen.visit( ctx.expr() ) );
     }
 
