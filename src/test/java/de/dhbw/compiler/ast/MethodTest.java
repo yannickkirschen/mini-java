@@ -17,12 +17,12 @@ public class MethodTest {
         method1 = new Method( null, null, null, null);
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest")
     void getTypeTest(){
         assertEquals(PrimitiveType.BOOLEAN, method0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest1")
     void setTypeTest1(){
         method0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, method0.getType() );
