@@ -12,10 +12,17 @@ public class Compiler {
         Program p = Parser.parse(
 """
     class Leer {
+        int a;
+        int b;
+
+        Leer(int i, int j){
+            a = i;
+            b = j;
+        }
 
         void boomethod(int i){
-            int x = i;
-            x = x + 2;
+            Leer test = new Leer(i, i);
+            int x = test.b;
         }
     }
 """

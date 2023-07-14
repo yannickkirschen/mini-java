@@ -51,28 +51,38 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
         Expression targetExpression = expressionChecker.check(assign.target);
         Expression valueExpression = expressionChecker.check(assign.value);
 
-        String name;
+        String targetName;
         if (targetExpression.getClass().equals(LocalOrFieldVar.class)) {
-            name = ((LocalOrFieldVar) targetExpression).name;
+            targetName = ((LocalOrFieldVar) targetExpression).name;
         } else if (targetExpression.getClass().equals(InstVar.class)) {
-            name = ((InstVar) targetExpression).varName;
+            targetName = ((InstVar) targetExpression).varName;
         } else {
             throw new SyntaxException("Unexpected target expression: %s", targetExpression);
         }
 
         for (LocalOrFieldVar localVar : localVariables) {
-            if (localVar.name.equals(name)) {
+            if (localVar.name.equals(targetName)) {
                 if (localVar.getType().getName().equals(valueExpression.getType().getName())) {
                     assign.setType(localVar.getType());
                     return assign;
-                } else {
+                }
+                else if(valueExpression.getClass().equals(InstVar.class)){
+                        for (Field field : fields){
+                            if(((InstVar) valueExpression).varName.equals(field.name) && field.getType().getName().equals(targetExpression.getType().getName())){
+                                assign.setType(targetExpression.getType());
+                                return assign;
+                            }
+                        }
+                        throw new SyntaxException("Field %s not found in type %s",((InstVar) valueExpression).varName , className);
+                }
+                else {
                     throw new TypeException("Type mismatch: %s and %s for variable %s", localVar.getType(), valueExpression.getType(), localVar.name);
                 }
             }
         }
 
         for (Field field : fields) {
-            if (field.name.equals(name)) {
+            if (field.name.equals(targetName)) {
                 if (field.getType().getName().equals(valueExpression.getType().getName())) {
                     assign.setType(field.getType());
                     return assign;
@@ -82,7 +92,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
             }
         }
 
-        throw new SyntaxException("Variable or field %s not found in type %s", name, className);
+        throw new SyntaxException("Variable or field %s not found in type %s", targetName, className);
     }
 
     @Override
