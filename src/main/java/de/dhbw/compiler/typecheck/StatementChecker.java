@@ -18,10 +18,6 @@ public class StatementChecker implements BaseStatementChecker {
     private final BaseExpressionChecker expressionChecker;
     private final BaseStatementExpressionChecker statementExpressionChecker;
 
-    public void addParametersToLocalVar(List<Parameter> parameters){
-        //this.localVariables.add()
-    }
-
     @Override
     public Statement check(Statement statement) throws SyntaxException, TypeException {
         Class<?> clazz = statement.getClass();
