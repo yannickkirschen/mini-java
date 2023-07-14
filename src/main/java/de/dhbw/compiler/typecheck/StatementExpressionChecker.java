@@ -94,7 +94,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
                         for (int i = 0; i < method.parameters.size(); i++) {
                             Expression argument = expressionChecker.check(methodCall.args.get(i));
 
-                            if (!method.parameters.get(i).getType().getName().equals(argument.getType().getName())) {
+                            if (!method.parameters.get(i).getType().equals(argument.getType())) {
                                 throw new TypeException("Type mismatch: %s and %s for argument %d in method %s", method.parameters.get(i).getType().getName(), argument.getType().getName(), i, method.name);
                             }
                         }
@@ -124,10 +124,10 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
             }
 
             for (Method method : methods) {
-                if (method.name.equals("<init>")) {
+                if (method.name.equals(className)) {
                     if (method.parameters.size() == new_.expressions.size()) {
                         for (int i = 0; i < method.parameters.size(); i++) {
-                            if (!method.parameters.get(i).getType().getName().equals(expressions.get(i).getType().getName())) {
+                            if (!method.parameters.get(i).getType().equals(expressions.get(i).getType())) {
                                 throw new TypeException("Type mismatch: %s and %s for argument %d in constructor", method.parameters.get(i).getType().getName(), expressions.get(i).getType().getName(), i);
                             }
                         }
