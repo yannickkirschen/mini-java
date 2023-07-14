@@ -22,7 +22,7 @@ public class MethodChecker implements BaseMethodChecker {
         this.className = clazz.name.name();
 
         List<LocalOrFieldVar> localVariables = new LinkedList<>();
-        BaseStatementExpressionChecker statementExpressionChecker = new StatementExpressionChecker(className, clazz.fields, clazz.methods, localVariables);
+        BaseStatementExpressionChecker statementExpressionChecker = new StatementExpressionChecker(className, clazz.fields, clazz.methods, clazz.constructors, localVariables);
         BaseExpressionChecker expressionChecker = new ExpressionChecker(className, clazz.fields, localVariables, statementExpressionChecker);
 
         statementExpressionChecker.setBaseClassChecker(baseClassChecker);
@@ -33,11 +33,11 @@ public class MethodChecker implements BaseMethodChecker {
 
     @Override
     public Method check(Method method) throws SyntaxException, TypeException {
-        Statement statement = statementChecker.check(method.statement);
-
         for (Parameter parameter : method.parameters) {
             parameter.setType(check(parameter).getType());
         }
+
+        Statement statement = statementChecker.check(method.statement, method.parameters);
 
         method.setType(statement.getType());
         return method;
@@ -45,7 +45,7 @@ public class MethodChecker implements BaseMethodChecker {
 
     @Override
     public Parameter check(Parameter parameter) throws SyntaxException {
-        switch (parameter.getType().getName()) {
+        switch (parameter.getAstType().name()) {
             case "Boolean", "boolean" -> parameter.setType(PrimitiveType.BOOLEAN);
             case "Integer", "int" -> parameter.setType(PrimitiveType.INTEGER);
             case "Character", "char" -> parameter.setType(PrimitiveType.CHARACTER);

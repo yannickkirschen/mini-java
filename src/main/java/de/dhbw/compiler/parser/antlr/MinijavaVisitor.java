@@ -262,10 +262,4 @@ public interface MinijavaVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitNumber(MinijavaParser.NumberContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link MinijavaParser#character}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitCharacter(MinijavaParser.CharacterContext ctx);
 }

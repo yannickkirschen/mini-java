@@ -37,8 +37,8 @@ Super : 'super';
 localOrFieldVar : Id;
 unaryOperation : unaryOp expr;
 constant : number | Boolean;
-char : '\'' character '\'';
-string : '"' character* '"';
+char : CharValue;
+string : StringValue;
 Null : 'null';
 expression : '(' expr ')';
 
@@ -115,12 +115,11 @@ Void : 'void';
 Boolean : 'true' | 'false' ;
 
 Id : [a-zA-Z]+;
-number : ('-')? Numeral+;
-character : (Numeral | Alphabetic);
+number : Numeral+;
 
 Numeral : [0-9];
-Alphabetic : [a-zA-Z];
-
+CharValue: '\'' ~[\r\n]? '\'';
+StringValue: '"' ~[\r\n]* '"';
 
 WS : [ \t\r\n] -> skip;
 Comment:'//' ~[\r\n]* -> skip;

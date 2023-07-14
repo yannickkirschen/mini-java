@@ -25,6 +25,8 @@ public class StatementGenerator extends MinijavaBaseVisitor<Statement> {
 
         return new Block(stmts);
     }
+
+    @Override
     protected Statement aggregateResult(Statement aggregate, Statement nextResult) {
         if (nextResult != null)
             return nextResult;

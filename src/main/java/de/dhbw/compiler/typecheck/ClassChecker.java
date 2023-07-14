@@ -46,8 +46,9 @@ public class ClassChecker implements BaseClassChecker {
             parameter.setType(methodChecker.check(parameter).getType());
         }
 
+
         if (constructor.getBody() != null) {
-            statementChecker.check(constructor.getBody());
+            statementChecker.check(constructor.getBody(), constructor.getParameterList());
         }
 
         constructor.setType(new ObjectType(className));

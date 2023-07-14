@@ -23,6 +23,7 @@ public class Compiler {
                  class NiceClass {
                     void do() {
                         int v = 2;
+                        v = -v;
                         return v;
                     }
                 }
