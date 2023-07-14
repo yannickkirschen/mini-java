@@ -243,8 +243,9 @@ public class MethodCodeVisitor implements Opcodes {
     public void visit(New stmtExpr) {
         ObjectType voidType = new ObjectType("V");  // was VOID
         v.visitTypeInsn(NEW, stmtExpr.getType().getName());
-        stmtExpr.expressions.forEach(p -> p.accept(this));
+
         v.visitInsn(Opcodes.DUP);   // invoke-special pops the top, but doesn't return it back -> duplicate first
+        stmtExpr.expressions.forEach(p -> p.accept(this));
         v.visitMethodInsn(INVOKESPECIAL, stmtExpr.getType().getName(), "<init>", getDescriptor(voidType, stmtExpr.expressions), false);
     }
 
