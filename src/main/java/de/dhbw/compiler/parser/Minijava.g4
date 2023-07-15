@@ -114,7 +114,7 @@ String : 'String';
 Void : 'void';
 Boolean : 'true' | 'false' ;
 
-Id : [a-zA-Z]+;
+Id : [a-zA-Z] ( [a-zA-Z] | [0-9] | '$' | '_' )*;
 number : Numeral+;
 
 Numeral : [0-9];
