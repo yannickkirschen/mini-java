@@ -20,5 +20,5 @@ Project members:
 - Jakob Kautz (@JakobPK)
 - Benjamin Frahm (@Rex2002)
 - Liz Wellhausen (@Lizzyhara)
-- Moritz Thoma
+- Moritz Thoma (@mrtz4thm)
 ---
