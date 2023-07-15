@@ -1,6 +1,9 @@
-## Info - Testing
+## Developers
 
-### Info
+## Usage
+The Tests cover the Features of the Compiler.
+
+## Description
 The Tests are written as JUnit5 Tests. There are two kinds of tests: the general tests (author: Jakob Kautz) and further Tests (Liz Wellhausen)
 The Tests cover the Features, Parser and the Typechecker. 
 
