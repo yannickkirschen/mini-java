@@ -39,3 +39,7 @@ Their only implementations are the classes `ClassChecker`, `MethodChecker`,
 All interfaces have a method `check` which takes the corresponding AST node as
 an argument and returns a typed AST node. In case type checking fails, either a
 `TypeException` or a `SyntaxException` is thrown.
+
+## Testing
+
+The Typechecker can be tested useing the Unit Tests Files. Each method was tested on their own.To start Testing the User just needs to click on the Option to the left of @Test.
