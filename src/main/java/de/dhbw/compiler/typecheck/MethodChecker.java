@@ -55,7 +55,7 @@ public class MethodChecker implements BaseMethodChecker {
             }
         }
 
-        if(method.getType() == statement.getType() ){
+        if(method.getType() == statement.getType()  || method.getType().getName().equals(statement.getType().getName())){
             return method;
         }
         else {

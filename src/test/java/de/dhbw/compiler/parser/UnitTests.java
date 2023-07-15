@@ -1,4 +1,4 @@
-package de.dhbw.compiler.ast;
+package de.dhbw.compiler.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.fail;
@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import com.ibm.icu.impl.Assert;
+import de.dhbw.compiler.ast.PrimitiveType;
 import de.dhbw.compiler.ast.Program;
 import de.dhbw.compiler.codegeneration.MethodCodeVisitor;
 import de.dhbw.compiler.parser.ASTGenerator;

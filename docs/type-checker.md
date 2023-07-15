@@ -10,6 +10,10 @@
 Construct an abstract ``Program`` and pass it to `TypeCheck.check`. The result
 is a typed `Program`.
 
+Please note that currently typechecking for `MethodCall` does not work.
+If the tester wishes to verify that `MethodCall` parsing works, please refer to the MethodCall-parser UnitTest.
+If the tester wishes to verify that `MethodCall` codegeneration works, please refer to the `TestCodeGeneration.java` class (testCaseMethodCall, line 784).
+
 ```java
 Program program = new Program();
 // Construct program here ...
@@ -39,3 +43,7 @@ Their only implementations are the classes `ClassChecker`, `MethodChecker`,
 All interfaces have a method `check` which takes the corresponding AST node as
 an argument and returns a typed AST node. In case type checking fails, either a
 `TypeException` or a `SyntaxException` is thrown.
+
+## Testing
+
+The Typechecker can be tested using the Unit Tests Files. Each method was tested on their own.  To start testing the user just needs to click on the option to the left of @Test. \

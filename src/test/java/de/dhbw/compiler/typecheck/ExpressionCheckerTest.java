@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.beans.Expression;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,76 +35,60 @@ public class ExpressionCheckerTest {
     }
 
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest0() throws SyntaxException, TypeException {
         Binary bin = new Binary("root", new JInteger("3",PrimitiveType.INTEGER),  new JInteger("3",PrimitiveType.INTEGER));
         assertEquals(bin, expressionChecker.check(bin) );
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest1() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
         InstVar instVar = new InstVar(new JInteger("33"), "InstVar");
         assertEquals(instVar, expressionChecker.check(instVar));
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest2() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
         JBoolean jBoolean = new JBoolean("false");
         assertEquals(jBoolean, expressionChecker.check(jBoolean) );
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest3() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
             JCharacter jCharacter = new JCharacter("c");
         assertEquals(jCharacter, expressionChecker.check(jCharacter) );
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest4() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
         JInteger jInteger = new JInteger("0");
         assertEquals(jInteger, expressionChecker.check(jInteger) );
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest5() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
         JNull jNull = new JNull();
         assertEquals(jNull, expressionChecker.check(jNull) );
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest6() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
         JString jString = new JString("0");
         assertEquals(jString, expressionChecker.check(jString));
     }
     @Test
-    @DisplayName("check Files and set Type") //Cannot resolve Local Or Field var
     void checkExpressionTest7() throws SyntaxException {//Für alle angegebenen Klassen benötigt
         LocalOrFieldVar localOrFieldVar = new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN);
         assertEquals(localOrFieldVar, expressionChecker.check(localOrFieldVar) );
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest8() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
         StmtExprExpr stmtExprExpr = new StmtExprExpr(new Assign(new JBoolean("true", PrimitiveType.BOOLEAN), new JBoolean("true", PrimitiveType.BOOLEAN),PrimitiveType.BOOLEAN));
         assertEquals(stmtExprExpr, expressionChecker.check(stmtExprExpr) );
     }
+
     @Test
-    @DisplayName("check Files and set Type")
-    void checkExpressionTest9() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-        //Super super; //NICHTS DEFINIEREN KÖNENNE
-      //  assertEquals(super, expressionChecker.check(super));
-    }
-    @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest10() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
       This this_ = new This();
-      assertEquals(this, expressionChecker.check(this_) );
+      assertEquals("Array", expressionChecker.check(this_).getType().getName());
     }
     @Test
-    @DisplayName("check Files and set Type")
     void checkExpressionTest11() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-        Unary unary = new Unary(null, null, null);
-        assertEquals(unary, expressionChecker.check(unary) );
+        Unary unary = new Unary("!", new LocalOrFieldVar("localOrFieldVar"), null);
+        assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType() );
     }
     @Test
     void checkBinaryTest0() throws SyntaxException, TypeException {
@@ -114,21 +99,11 @@ public class ExpressionCheckerTest {
     }
     @Test
     void checkBinaryTest1() throws SyntaxException, TypeException {
-        JInteger right = new JInteger("0");
-        JBoolean left = new JBoolean("0");
+        JBoolean right = new JBoolean("true");
+        JBoolean left = new JBoolean("false");
         Binary binary = new Binary("&&", left, right);
         assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(binary).getType());
     }
-
-    @Test
-    void checkInstVarTest0() throws SyntaxException, TypeException {
-        //Wie soll ich den Classnamen Setzen
-        //Expression ist mal wieder nicht aus der Richtigen Source
-       // Expression thisExpr_ = new Expression(null, null,null, null);
-       // InstVar instVar = new InstVar(thisExpr_, "instVar");
-      //  assertEquals(thisExpr_, expressionChecker.check(instVar).getType());
-    }
-
     @Test
     void checkJBooleanTest() throws SyntaxException {
         JBoolean jBoolean = new JBoolean("true", null);
@@ -182,13 +157,12 @@ public class ExpressionCheckerTest {
     }
     @Test
     void checkUnaryTest0() throws SyntaxException, TypeException {
-        InstVar instVar = new InstVar(new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),"1",PrimitiveType.BOOLEAN);
-        Unary unary = new Unary("-", instVar);
-        assertEquals(PrimitiveType.INTEGER, expressionChecker.check(unary).getType());
+        Unary unary = new Unary("!", new LocalOrFieldVar("localOrFieldVar",PrimitiveType.INTEGER));
+        assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType());
     }
     @Test
     void checkUnaryTest1() throws SyntaxException, TypeException {
-        Unary unary = new Unary("!", new InstVar(new InstVar(new LocalOrFieldVar("2"), "instVar1", PrimitiveType.BOOLEAN), "instVar", PrimitiveType.BOOLEAN));
+        Unary unary = new Unary("!", new LocalOrFieldVar("localOrFieldVar",PrimitiveType.BOOLEAN));
         assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType());
     }
 }

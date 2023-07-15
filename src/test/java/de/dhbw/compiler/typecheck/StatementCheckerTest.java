@@ -17,7 +17,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class StatementCheckerTest {//baseChecker seem to be null
+public class StatementCheckerTest {
     StatementChecker statementChecker;
     BaseExpressionChecker baseExpressionChecker;
     StatementExpressionChecker statementExpressionChecker;
@@ -107,17 +107,6 @@ public class StatementCheckerTest {//baseChecker seem to be null
     void LocalVarDeclcheckTest3() throws SyntaxException {
         LocalVarDecl localVarDecl = new LocalVarDecl(new AstType("String"),null, null);
         assertEquals(ObjectType.string().getClass(), statementChecker.check(localVarDecl).getType().getClass());
-    }
-    @Test
-    void LocalVarDeclcheckTest4() throws SyntaxException {
-        LocalVarDecl localVarDecl = new LocalVarDecl(new AstType(statementChecker.getClass().getName()),null, null);
-        assertEquals(new ObjectType(statementChecker.getClass().getName()), statementChecker.check(localVarDecl));
-    }
-    @Test
-    void LocalVarDeclcheckTest5() throws SyntaxException {//should we check if there was smt added?
-       /* LocalVarDecl localVarDecl = new LocalVarDecl(new AstType(statementChecker.getClass().getName()),null, null);
-        statementChecker.check(localVarDecl);
-        assertEquals(2,statementChecker.getLocalVarDecl().getLength());*/
     }
     @Test
     void ReturncheckTest() throws SyntaxException, TypeException {

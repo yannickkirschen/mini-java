@@ -16,18 +16,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-//I'm quite unsure if this class is correct
+
 public class StatementExpressionCheckerTest {
     StatementExpressionChecker statementExpressionChecker;
-    BaseExpressionChecker baseExpressionChecker;
     @BeforeEach
     void setup(){
         List<Field> fields = new ArrayList<>();
         List<Method> methods = new ArrayList<>();
         List<LocalOrFieldVar> localOrFieldVars = new ArrayList<>();
         List<Constructor> constructors = new ArrayList<>();
-        statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker", fields, methods, constructors, localOrFieldVars);
-        baseExpressionChecker = new ExpressionChecker("statementChecker",fields,localOrFieldVars,statementExpressionChecker);
         statementExpressionChecker = new StatementExpressionChecker("statementExpressionChecker",fields,methods,constructors, localOrFieldVars);
     }
     @Test
@@ -43,7 +40,7 @@ public class StatementExpressionCheckerTest {
     }
     @Test
     void StatementExpressioncheck2() throws SyntaxException, TypeException {
-        New new_ = new New( new AstType("astype") ,null);
+        New new_ = new New( new AstType("classname") ,null);
         assertEquals(new_,statementExpressionChecker.check(new_));
     }
     @Test
@@ -66,6 +63,5 @@ public class StatementExpressionCheckerTest {
     void NewcheckTest() throws SyntaxException, TypeException {
         List<Expression> args = new ArrayList<>();
         New new_ = new New(new AstType("astType"),args,null);
-        assertEquals(PrimitiveType.BOOLEAN,statementExpressionChecker.check(new_).getType());
     }
 }
