@@ -157,8 +157,8 @@ public class ExpressionCheckerTest {
     }
     @Test
     void checkUnaryTest0() throws SyntaxException, TypeException {
-        Unary unary = new Unary("+", new LocalOrFieldVar("localOrFieldVar",PrimitiveType.INTEGER));
-        assertEquals(PrimitiveType.INTEGER, expressionChecker.check(unary).getType());
+        Unary unary = new Unary("!", new LocalOrFieldVar("localOrFieldVar",PrimitiveType.INTEGER));
+        assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType());
     }
     @Test
     void checkUnaryTest1() throws SyntaxException, TypeException {

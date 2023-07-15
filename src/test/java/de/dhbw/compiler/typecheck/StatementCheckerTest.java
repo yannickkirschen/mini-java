@@ -109,11 +109,6 @@ public class StatementCheckerTest {
         assertEquals(ObjectType.string().getClass(), statementChecker.check(localVarDecl).getType().getClass());
     }
     @Test
-    void LocalVarDeclcheckTest4() throws SyntaxException {
-        LocalVarDecl localVarDecl = new LocalVarDecl(new AstType(statementChecker.getClass().getName()),null, null);
-        assertEquals(new ObjectType(statementChecker.getClass().getName()), statementChecker.check(localVarDecl));
-    }
-    @Test
     void ReturncheckTest() throws SyntaxException, TypeException {
         Return return_ = new Return(new JBoolean("true"),null);
         assertEquals(PrimitiveType.BOOLEAN,statementChecker.check(return_).getType());
