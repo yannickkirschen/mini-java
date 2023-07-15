@@ -43,14 +43,12 @@ public class ClassCheckerTest {
         assertEquals(PrimitiveType.BOOLEAN, field1.getType());
     }
     @Test
-    @DisplayName("check Files and set Type")
     void testFieldCheck1() throws SyntaxException {
         AstType astType1  = new AstType("int");
         Field field = new Field(PrimitiveType.INTEGER,astType1 , "int");
 
         assertEquals(PrimitiveType.INTEGER, classChecker.check(field).getType());
     }@Test
-    @DisplayName("check Files and set Type")
     void testFieldCheck2() throws SyntaxException {
         AstType astType1  = new AstType("char");
         Field field = new Field(PrimitiveType.CHARACTER,astType1 , "char");
@@ -58,14 +56,12 @@ public class ClassCheckerTest {
         assertEquals(PrimitiveType.CHARACTER, classChecker.check(field).getType());
     }
     @Test
-    @DisplayName("check Files and set Type")
     void testFieldCheck3() throws SyntaxException {
         AstType astType1  = new AstType("String");
         Field field = new Field(ObjectType.string(),astType1 , "String");
         assertEquals(ObjectType.string().getName(), classChecker.check(field).getType().getName());
     }
     @Test
-    @DisplayName("check Files and set Type")
     void testConstructorCheck0(){
         AstType astType1  = new AstType("boolean");
         Parameter parameter0 = new Parameter(astType1, "parameter0");

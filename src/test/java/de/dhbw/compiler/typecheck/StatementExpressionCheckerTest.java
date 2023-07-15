@@ -16,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-//I'm quite unsure if this class is correct
+
 public class StatementExpressionCheckerTest {
     StatementExpressionChecker statementExpressionChecker;
     @BeforeEach
