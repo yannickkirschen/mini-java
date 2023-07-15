@@ -21,20 +21,20 @@ public class Compiler {
             code =
                 """
     class Leer {
-                                  int a;
-                                  int b;
+          int a;
+          int b;
 
-                                  Leer(int i, int j){
-                                      a = i;
-                                      b = j;
-                                  }
+          Leer(int i, int j){
+              a = i;
+              b = j;
+          }
 
-                                  int boomethod(int i){
-                                      Leer test = new Leer(i, i);
-                                      int x = test.b;
-                                      return test.a + test.b;
-                                  }
-                              }
+          int boomethod(int i){
+              Leer test = new Leer(i, i);
+              int x2 = test.b;
+              return test.a + x2;
+          }
+    }
                        """;
         }
         Program p = Parser.parse(code);
