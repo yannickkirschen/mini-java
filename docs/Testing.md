@@ -1,8 +1,7 @@
 # Testing
 ## Developers
 - Jakob Kautz ([@JakobPK](https://github.com/JakobPK))
-- Liz Wellhausen ([@](https://github.com/))
-- 
+- Liz Wellhausen ([@Lizzyhara](https://github.com/Lizzyhara))
 ## Usage
 The Tests cover the Features of the Compiler.
 
