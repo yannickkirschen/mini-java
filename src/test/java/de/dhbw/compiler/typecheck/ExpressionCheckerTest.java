@@ -11,6 +11,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import java.beans.Expression;
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -97,13 +98,13 @@ public class ExpressionCheckerTest {
     @DisplayName("check Files and set Type")
     void checkExpressionTest10() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
       This this_ = new This();
-      assertEquals(this, expressionChecker.check(this_) );
+      assertEquals("Array", expressionChecker.check(this_).getType().getName());
     }
     @Test
     @DisplayName("check Files and set Type")
     void checkExpressionTest11() throws SyntaxException, TypeException {//Für alle angegebenen Klassen benötigt
-        Unary unary = new Unary(null, null, null);
-        assertEquals(unary, expressionChecker.check(unary) );
+        Unary unary = new Unary("!", new LocalOrFieldVar("localOrFieldVar"), null);
+        assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType() );
     }
     @Test
     void checkBinaryTest0() throws SyntaxException, TypeException {
@@ -114,8 +115,8 @@ public class ExpressionCheckerTest {
     }
     @Test
     void checkBinaryTest1() throws SyntaxException, TypeException {
-        JInteger right = new JInteger("0");
-        JBoolean left = new JBoolean("0");
+        JBoolean right = new JBoolean("true");
+        JBoolean left = new JBoolean("false");
         Binary binary = new Binary("&&", left, right);
         assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(binary).getType());
     }
@@ -182,13 +183,12 @@ public class ExpressionCheckerTest {
     }
     @Test
     void checkUnaryTest0() throws SyntaxException, TypeException {
-        InstVar instVar = new InstVar(new LocalOrFieldVar("localOrFieldVar", PrimitiveType.BOOLEAN),"1",PrimitiveType.BOOLEAN);
-        Unary unary = new Unary("-", instVar);
+        Unary unary = new Unary("+", new LocalOrFieldVar("localOrFieldVar",PrimitiveType.INTEGER));
         assertEquals(PrimitiveType.INTEGER, expressionChecker.check(unary).getType());
     }
     @Test
     void checkUnaryTest1() throws SyntaxException, TypeException {
-        Unary unary = new Unary("!", new InstVar(new InstVar(new LocalOrFieldVar("2"), "instVar1", PrimitiveType.BOOLEAN), "instVar", PrimitiveType.BOOLEAN));
+        Unary unary = new Unary("!", new LocalOrFieldVar("localOrFieldVar",PrimitiveType.BOOLEAN));
         assertEquals(PrimitiveType.BOOLEAN, expressionChecker.check(unary).getType());
     }
 }

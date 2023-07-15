@@ -196,7 +196,7 @@ public class ExpressionChecker implements BaseExpressionChecker {
     @Override
     public Unary check(Unary unary) throws SyntaxException, TypeException {
         Expression expression = this.check(unary.argument);
-        if (expression.getType() == PrimitiveType.INTEGER) {
+        if (expression.getType().getName() == "Z") {
             if (unary.operator.equals("+") || unary.operator.equals("-")) {
                 unary.setType(PrimitiveType.INTEGER);
                 return unary;

@@ -110,7 +110,7 @@ public class StatementCheckerTest {//baseChecker seem to be null
     }
     @Test
     void LocalVarDeclcheckTest4() throws SyntaxException {
-        LocalVarDecl localVarDecl = new LocalVarDecl(new AstType(statementChecker.getClass().getName()),null, null);
+        LocalVarDecl localVarDecl = new LocalVarDecl(new AstType(statementChecker.getClass().getName()),"localVarDecl", PrimitiveType.BOOLEAN);
         assertEquals(new ObjectType(statementChecker.getClass().getName()), statementChecker.check(localVarDecl));
     }
     @Test
