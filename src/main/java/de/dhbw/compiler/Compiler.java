@@ -20,22 +20,8 @@ public class Compiler {
         else{
             code =
                 """
-    class Leer {
-          int a;
-          int b;
-
-          Leer(int i, int j){
-              a = i;
-              b = j;
-          }
-
-          int boomethod(int i){
-              Leer test = new Leer(i, i);
-              int x2 = test.b;
-              return test.a + x2;
-          }
-    }
-                       """;
+                class EmptyClass {}
+                """;
         }
         Program p = Parser.parse(code);
         TypeCheck t = new TypeCheck();
