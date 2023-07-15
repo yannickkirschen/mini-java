@@ -26,34 +26,34 @@ public class ConstructorTest {
     }
     //How shoud I accept(MethodeCodeVisitor
     @Test
-    @DisplayName("")
+    @DisplayName("getParameterTest")
     void getParameterTest(){
         assertEquals(parameterList, constructor0.getParameterList());
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setParameterTest")
     void setParameterTest(){
         constructor0.setParameterList(parameterList1);
         assertEquals(parameterList1, constructor0.getParameterList());
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getBodyTest")
     void getBodyTest(){
         assertEquals(body, constructor0.getBody());
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setBodyTest")
     void setBodyTest(){
         constructor0.setBody(body1);
         assertEquals(body1, constructor0.getBody());
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest")
     void getTypeTest(){
         assertEquals(PrimitiveType.BOOLEAN, constructor0.getType());
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest")
     void setTypeTest(){
         constructor0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, constructor0.getType());

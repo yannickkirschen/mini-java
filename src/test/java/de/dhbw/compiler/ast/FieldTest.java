@@ -16,12 +16,12 @@ public class FieldTest {
         field1 = new Field( null,  null);
     }
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest")
     void getTypeTest(){
         assertEquals(PrimitiveType.BOOLEAN, field0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest1")
     void setTypeTest1(){
         field0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, field0.getType() );

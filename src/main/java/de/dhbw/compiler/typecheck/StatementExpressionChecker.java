@@ -1,6 +1,5 @@
 package de.dhbw.compiler.typecheck;
 
-import de.dhbw.compiler.ast.Clazz;
 import de.dhbw.compiler.ast.Constructor;
 import de.dhbw.compiler.ast.Field;
 import de.dhbw.compiler.ast.Method;
@@ -71,7 +70,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
                 else if(valueExpression.getClass().equals(InstVar.class)){
                         for (Field field : fields){
                             if(((InstVar) valueExpression).varName.equals(field.name) && field.getType().getName().equals(targetExpression.getType().getName())){
-                                assign.setType(targetExpression.getType());
+                                assign.setType(field.getType());
                                 return assign;
                             }
                         }

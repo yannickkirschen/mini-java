@@ -18,12 +18,12 @@ public class MethodCallTest {
     }
     //again how should I test the accept
     @Test
-    @DisplayName("")
+    @DisplayName("getTypeTest")
     void getTypeTest(){
         assertEquals(PrimitiveType.BOOLEAN, methodCall0.getType() );
     }
     @Test
-    @DisplayName("")
+    @DisplayName("setTypeTest")
     void setTypeTest(){
         methodCall0.setType(PrimitiveType.INTEGER);
         assertEquals(PrimitiveType.INTEGER, methodCall0.getType() );

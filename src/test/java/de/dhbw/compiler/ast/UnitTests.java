@@ -145,10 +145,10 @@ public class UnitTests {
 
     @Test
     void Return(){
-        testParseTree("class Leer { void boomethod(){ return 25; }}", "Leer\n" +
+        testParseTree("class Leer { int boomethod(){ return 25; }}", "Leer\n" +
             "Leer()\n" +
             "Block()\n" +
-            "void boomethod()\n" +
+            "int boomethod()\n" +
             "Block(Return(Expression: JInteger:25))");
     }
 
