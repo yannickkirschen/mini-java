@@ -20,8 +20,12 @@ public class Compiler {
         else{
             code =
                 """
-                class EmptyClass {}
-                """;
+                    class Hello {
+                        String helloWorld(){
+                            return "Hello World";
+                           }
+                    }
+                                       """;
         }
         Program p = Parser.parse(code);
         TypeCheck t = new TypeCheck();
