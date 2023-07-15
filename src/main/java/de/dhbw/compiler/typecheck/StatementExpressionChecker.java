@@ -77,7 +77,7 @@ public class StatementExpressionChecker implements BaseStatementExpressionChecke
                         throw new SyntaxException("Field %s not found in type %s",((InstVar) valueExpression).varName , className);
                 }
                 else {
-                    throw new TypeException("Type mismatch: %s and %s for variable %s", localVar.getType(), valueExpression.getType(), localVar.name);
+                    throw new TypeException("Type mismatch: %s and %s for variable %s", localVar.getType().getName(), valueExpression.getType().getName(), localVar.name);
                 }
             }
         }

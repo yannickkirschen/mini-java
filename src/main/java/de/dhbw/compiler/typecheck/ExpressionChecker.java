@@ -60,15 +60,28 @@ public class ExpressionChecker implements BaseExpressionChecker {
                 if (binary.operator.equals("+")
                     || binary.operator.equals("-")
                     || binary.operator.equals("*")
-                    || binary.operator.equals("%")) {
+                    || binary.operator.equals("%")
+                ) {
                     binary.setType(PrimitiveType.INTEGER);
+                    return binary;
+                } else if (
+                    binary.operator.equals("<")
+                        || binary.operator.equals(">")
+                        || binary.operator.equals("<=")
+                        || binary.operator.equals(">=")
+                        || binary.operator.equals("!=")
+                        || binary.operator.equals("==")
+                ){
+                    binary.setType(PrimitiveType.BOOLEAN);
                     return binary;
                 } else {
                     throw new SyntaxException("Unexpected operator: %s. Expected +, -, * or %.", binary.operator);
                 }
             } else if (left.getType() == PrimitiveType.BOOLEAN) {
                 if (binary.operator.equals("&&")
-                    || binary.operator.equals("||")) {
+                    || binary.operator.equals("||")
+                    || binary.operator.equals("!=")
+                    || binary.operator.equals("==")) {
                     binary.setType(PrimitiveType.BOOLEAN);
                     return binary;
                 } else {
